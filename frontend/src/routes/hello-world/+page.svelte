@@ -6,10 +6,15 @@
 
 	let lateData;
 	fetchData().then((lateRes) => (lateData = lateRes.text));
+
+	//late component update
+	let lateData2;
+	setTimeout(function () {
+		fetchData().then((res) => (lateData2 = res));
+	}, 5000);
 </script>
 
-<h1>Hello and welcome to my site!</h1>
-<a href="/about">About my site</a>
+<h3>Test data fetch</h3>
 
 {#await fetchData()}
 	<p>waiting</p>
@@ -18,6 +23,8 @@
 {/await}
 
 <p>{lateData == null ? 'waiting' : lateData}</p>
+
+<p>{lateData2 == null ? 'waiting' : lateData}</p>
 
 <style>
 </style>
