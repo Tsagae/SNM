@@ -1,6 +1,8 @@
 const express = require('express')
-const app = express()
-const port = 3000
+const cors = require('cors');
+const app = express();
+app.use(cors());
+const port = 3000;
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://Catu:PassoPesante1@cluster0.pwhgb.mongodb.net/?retryWrites=true&w=majority";
 
@@ -38,9 +40,9 @@ async function listDatabases(client){
 };
 
 app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+    res.send({ text: "Hello World" });
+});
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
-})
+});
