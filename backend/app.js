@@ -1,10 +1,11 @@
 const express = require('express')
 const cors = require('cors');
+const config = require('config');
 const app = express();
-app.use(cors());
-const port = 3000;
+const port = config.get('server.port');
+const host = config.get('server.host');
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://Catu:PassoPesante1@cluster0.pwhgb.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://" + config.get('db.user') + ":" + config.get('db.pass') + "@" + config.get('db.cluster') + "/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -39,10 +40,12 @@ async function listDatabases(client){
   databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 };
 
+app.use(cors());
+
 app.get('/', (req, res) => {
     res.send({ text: "Hello World" });
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+app.listen(port, host, () => {
+  console.log(`Server is running on ${host}:${port}`);
 });
