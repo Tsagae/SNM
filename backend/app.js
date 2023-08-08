@@ -6,7 +6,6 @@ const app = express();
 const port = config.get('server.port');
 const host = config.get('server.host');
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const { generateSecret } = require('./authentication');
 const uri = "mongodb+srv://" + config.get('db.user') + ":" + config.get('db.pass') + "@" + config.get('db.cluster') + "/?retryWrites=true&w=majority";
 const authSecret = config.get('auth.secret');
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
