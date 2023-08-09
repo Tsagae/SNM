@@ -9,12 +9,6 @@ const authSecret = config.get('auth.secret');
 // Registration
 const registeredUsers = [];
 
-/**
- * 
- * @param {*} req 
- * @param {*} res 
- * @returns 
- */
 exports.login = function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -59,10 +53,6 @@ function generateAccessToken(user, expiringTime = 1800) {
 }
 
 
-exports.generateSecret = function () { return require('crypto').randomBytes(64).toString('hex') };
-
-
-
 /*
 exports.authenticateRequest = function (req, res) {
     const authHeader = req.headers['authorization'];
@@ -97,8 +87,6 @@ exports.authenticateRequest = function (req, res) {
 }
 
 
-
-
 /**
  * authenticates a token returning the user that requested the token or an error
  * @param {string} token authentication token 
@@ -120,6 +108,7 @@ function authenticateToken(token) {
     return tokenUser;
 }
 
+exports.generateSecret = function () { return require('crypto').randomBytes(64).toString('hex') };
 
 
 
