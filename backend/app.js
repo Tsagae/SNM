@@ -27,11 +27,6 @@ app.post('/register', validation.loginValidate, auth.registerUser); // TODO chan
 app.post('/login', validation.loginValidate, auth.login);
 
 
-app.get('/getToken', (req, res) => {
-  res.status(200).send({ token: auth.generateAccessToken({ username: "testName" }) });
-});
-
-
 app.get('/authToken', (req, res) => {
   auth.authenticateRequest(req, res, authSecret);
 });
