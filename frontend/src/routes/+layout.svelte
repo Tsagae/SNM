@@ -1,37 +1,50 @@
-<script>
-	import { Navbar, Nav, NavItem, NavLink, NavbarBrand } from 'sveltestrap';
+<script lang="ts">
+	import {
+	  Collapse,
+	  Navbar,
+	  NavbarToggler,
+	  NavbarBrand,
+	  Nav,
+	  NavItem,
+	  NavLink
+	} from 'sveltestrap';  
 	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
+
+	let src = '/Spotify_icon.svg.png';
   
 	let ready = false;
 	onMount(() => ready = true);
+	  
+	let isOpen = false;
+  
+	function handleUpdate(event) {
+	  isOpen = event.detail.isOpen;
+	}
 </script>
-
-<Navbar color="success" light>
+  
+<Navbar color="success" light expand="md">
 	{#if ready}
-	<h1 transition:fly={{ x: 200, duration: 1500 }} >
-	SNM
-	</h1>
+	<NavbarBrand href="/"><img src={src} transition:fly={{ x: 200, duration: 1500 }} alt="logo" height="50px"></NavbarBrand>
 	{/if}
+    <NavbarToggler on:click={() => (isOpen = !isOpen)} />
+    <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
+		<Nav class="ms-auto" navbar>
+			<NavItem>
+				<NavLink href="/registration">Registration</NavLink>
+			</NavItem>
+			<NavItem>
+				<NavLink href="/hello-world">Hello World!</NavLink>
+			</NavItem>
+			<NavItem>
+				<NavLink href="/login">Login</NavLink>
+			</NavItem>
+			<NavItem>
+				<NavLink>Logout</NavLink>
+			</NavItem>
+		</Nav>
+    </Collapse>
 </Navbar>
-
-<Navbar color="light" light expand="md">
-	<NavbarBrand href="/">Home</NavbarBrand>
-	  <Nav class="ms-auto" navbar>
-		<NavItem>
-			<NavLink href="/registration">Registration</NavLink>
-		</NavItem>
-		<NavItem>
-			<NavLink href="/hello-world">Hello World!</NavLink>
-		</NavItem>
-		<NavItem>
-		  <NavLink href="/login">Login</NavLink>
-		</NavItem>
-		<NavItem>
-		  <NavLink>Logout</NavLink>
-		</NavItem>
-	  </Nav>
-  </Navbar>
 
 <div class="page-content">
 
@@ -39,13 +52,7 @@
 
 </div>
 
-<style>
-	
-	:global(body) {
-		background-color: #535353;
-		color: #1db954;
-	}
-
+<style>	
     .page-content {
         padding: 20px;
     }
