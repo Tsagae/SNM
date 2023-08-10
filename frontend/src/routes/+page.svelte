@@ -1,7 +1,6 @@
 <script>
     import { 
         Button, 
-        Modal, 
         Container,
         Card,
         CardBody,
@@ -10,9 +9,14 @@
         CardSubtitle,
         CardText,
         CardTitle } from 'sveltestrap';
+    import { onMount } from 'svelte';
+    import { fly } from 'svelte/transition';
 
     let isOpen = false;
     const toggle = () => (isOpen = !isOpen);
+
+    let ready = false;
+	onMount(() => ready = true);
 
     let keyword = '';
 
@@ -34,11 +38,10 @@
 </Container>
 
 <Container fluid>
-    <div class="display">
-
         {#each songs as { id, name }, i}
-        <div class="fixed-width">
-            <Card class="mb-3">
+        {#if ready}
+        <div transition:fly={{ delay: i*250, y: 200, duration: 1500 }}>
+            <Card class="card_style">
                 <CardHeader>
                 <CardTitle>{name}</CardTitle>
                 </CardHeader>
@@ -53,9 +56,8 @@
                 <CardFooter>Footer</CardFooter>
             </Card>
         </div>
+        {/if}
         {/each}
-
-    </div>
 </Container>
 
 <style>
@@ -66,11 +68,7 @@
         padding: 10px;
         text-align: center;
     }
-    .fixed-width{
-        width: 200px;
-        display: block;
-    }
-    .display {
-        display: block;
+    :global(.card_style){
+        margin: 2rem;
     }
 </style>
