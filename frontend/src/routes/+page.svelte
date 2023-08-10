@@ -23,9 +23,18 @@
     let songs = [
 		{ id: '001', name: 'song1' },
 		{ id: '002', name: 'song2' },
-		{ id: '003', name: 'song3' }
+		{ id: '003', name: 'song3' },
+		{ id: '004', name: 'song4' },
+		{ id: '005', name: 'song5' }
 	];
 </script>
+
+<div class="bg_img">
+
+    <img
+    class="demo-bg"
+    src="/logo.png"
+    alt="">
 
 <Container fluid>
     <div class="center">
@@ -60,6 +69,8 @@
         {/each}
 </Container>
 
+</div>
+
 <style>
     .center {
         margin: 20px auto 20px auto;
@@ -70,5 +81,16 @@
     }
     :global(.card_style){
         margin: 2rem;
+    }
+    :global(.bg_img){
+        overflow: hidden;
+        position: relative;
+    }
+    :global(.demo-bg) {
+        opacity: 0.2;
+        position: fixed;
+        left: 20rem;
+        top: 15rem;
+        width: 50%;
     }
 </style>
