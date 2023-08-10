@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { matchedData, validationResult } = require('express-validator');
+const dataAccess = require('./dataAccess');
+const bcrypt = require("bcrypt")
 
 const authSecret = config.get('auth.secret');
 
@@ -9,7 +11,17 @@ const authSecret = config.get('auth.secret');
 // Registration
 const registeredUsers = [];
 
-exports.login = function (req, res) {
+
+async function hash(text) {
+    return await bcrypt.hash(text, 10);
+}
+
+async function compareHashed(plaintext, hash) {
+    const result = await bcrypt.compare(plaintext, hash);
+    return result;
+}
+
+exports.login = async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
@@ -18,8 +30,25 @@ exports.login = function (req, res) {
         const data = matchedData(req);
         const username = data.username;
         const password = data.password;
-        const foundUser = registeredUsers.find((user) => { return user.username == username && user.password == password });
-        if (foundUser != null) {
+        let queryResult = [];
+        let cursor;
+        let successfulLogin = false;
+        await dataAccess.executeQuery(async (db) => {
+            cursor = await db.collection('Users').find({
+                username: username,
+                // TODO missing email
+            });
+            for await (const doc of cursor) {
+                queryResult.push(doc);
+            }
+        });
+        if (queryResult.length = 1) {
+            successfulLogin = await compareHashed(password, queryResult[0].password);
+        } else if (queryResult.length > 1) {
+            console.log("more than one user with the same name");
+        }
+        //const foundUser = registeredUsers.find((user) => { return user.username == username && user.password == password });
+        if (successfulLogin) {
             return res.send(generateAccessToken({ username: username }));
         }
         return res.status(401).send("invalid login");
@@ -35,10 +64,18 @@ exports.registerUser = function (req, res) {
         const data = matchedData(req);
         const username = data.username;
         const password = data.password;
-        registeredUsers.push({ username: username, password: password });
+        //registeredUsers.push({ username: username, password: password });
+        dataAccess.executeQuery(async (db) => {
+            await db.collection('Users').insertOne({
+                username: username,
+                // TODO missing email
+                password: await hash(password),
+            });
+        });
         return res.send(`registered successfully! ${username}`);
     }
 }
+
 
 
 /**

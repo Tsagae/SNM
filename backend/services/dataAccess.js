@@ -11,14 +11,16 @@ const client = new MongoClient(uri, {
     }
 });
 
+exports.executeQuery = executeQuery;
 /**
  * Executes a query or a series of queries
- * @param {Function} query function that takes as input a client 
+ * @param {Function} query function that takes as input a database 
  */
 async function executeQuery(query) {
     try {
         await client.connect();
-        query(client);
+        const db = client.db('snm_db');
+        await query(db);
     } finally {
         await client.close();
     }
