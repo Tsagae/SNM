@@ -41,7 +41,7 @@ exports.login = async function (req, res) {
                 queryResult.push(doc);
             }
         });
-        if (queryResult.length = 1) {
+        if (queryResult.length = 1 && password != null) {
             successfulLogin = await compareHashed(password, queryResult[0].password);
         } else if (queryResult.length > 1) {
             console.log("more than one user with the same name");
