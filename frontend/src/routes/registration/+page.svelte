@@ -5,9 +5,20 @@
 	const form = useForm();
 	
 	const requiredMessage = "This field is required";
+
+  function onSubmit() {
+	console.log("form: ", $form);
+	const data = {
+		email: $form.email.value,
+		username: $form.name.value,
+		password: $form.password.value,
+	};
+    console.log("data", data);
+  }
 </script>
+
 <main>
-	<form use:form>
+	<form use:form method="post">
 		<h1>
 			Registration
 		</h1>
@@ -38,7 +49,7 @@
 			<Hint on="passwordMatch" hideWhenRequired>Passwords do not match</Hint>	
 		</HintGroup><br />
 
-		<button disabled={!$form.valid} on:click|preventDefault>
+		<button disabled={!$form.valid} on:click|preventDefault={onSubmit}>
 			Submit
 		</button>
 	</form>
