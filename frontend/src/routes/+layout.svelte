@@ -22,7 +22,7 @@
   
 <Navbar color="success" light expand="md">
 	{#if ready}
-	<NavbarBrand href="/"><img src={src} transition:fly={{ x: 200, duration: 1500 }} alt="logo" height="50px"></NavbarBrand>
+	<NavbarBrand href="/"><img src={src} in:fly={{ x: 200, duration: 1500 }} alt="logo" height="50px"></NavbarBrand>
 	{/if}
     <NavbarToggler on:click={() => (isOpen = !isOpen)} />
     <Collapse {isOpen} navbar expand="md">

@@ -12,9 +12,6 @@
     import { onMount } from 'svelte';
     import { fly } from 'svelte/transition';
 
-    let isOpen = false;
-    const toggle = () => (isOpen = !isOpen);
-
     let ready = false;
 	onMount(() => ready = true);
 
@@ -49,7 +46,7 @@
 <Container fluid>
         {#each songs as { id, name }, i}
         {#if ready}
-        <div transition:fly={{ delay: i*250, y: 200, duration: 1500 }}>
+        <div in:fly={{ delay: i*250, y: 200, duration: 1500 }}>
             <Card class="card_style">
                 <CardHeader>
                 <CardTitle>{name}</CardTitle>
