@@ -48,9 +48,9 @@ exports.login = async function (req, res) {
         }
         //const foundUser = registeredUsers.find((user) => { return user.username == username && user.password == password });
         if (successfulLogin) {
-            return res.send(generateAccessToken({ username: username }));
+            return res.send({ accessToken: generateAccessToken({ username: username }) });
         }
-        return res.status(401).send("invalid login");
+        return res.status(401).send({ result: "invalid login" });
     }
 }
 
@@ -72,7 +72,7 @@ exports.registerUser = function (req, res) {
                 password: await hash(password),
             });
         });
-        return res.send(`registered successfully! ${username}`);
+        return res.send({ result: `registered successfully! ${username}` });
     }
 }
 
@@ -120,7 +120,7 @@ exports.authenticateRequest = function (req, res) {
     console.log(tokenValidation);
     if (tokenValidation == null) return res.sendStatus(401);
     if (tokenValidation.err != null) return res.status(403).send("invalid token");
-    return res.send(tokenValidation.user);
+    return res.send({ result: "success", user: tokenValidation.user });
 }
 
 
