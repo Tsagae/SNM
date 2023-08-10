@@ -11,7 +11,7 @@
 	import { fly } from 'svelte/transition';
 	import { onMount } from 'svelte';
 
-	let src = '/Spotify_icon.svg.png';
+	let src = '/logo.png';
   
 	let ready = false;
 	onMount(() => ready = true);
