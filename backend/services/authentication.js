@@ -7,11 +7,6 @@ const bcrypt = require("bcrypt")
 const authSecret = config.get('auth.secret');
 
 
-
-// Registration
-const registeredUsers = [];
-
-
 async function hash(text) {
     return await bcrypt.hash(text, 10);
 }
@@ -21,6 +16,7 @@ async function compareHashed(plaintext, hash) {
     return result;
 }
 
+// Registration and login
 exports.login = async function (req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -46,7 +42,6 @@ exports.login = async function (req, res) {
         } else if (queryResult.length > 1) {
             console.log("more than one user with the same name");
         }
-        //const foundUser = registeredUsers.find((user) => { return user.username == username && user.password == password });
         if (successfulLogin) {
             return res.send({ accessToken: generateAccessToken({ username: username }) });
         }
@@ -64,7 +59,6 @@ exports.registerUser = function (req, res) {
         const username = data.username;
         const email = data.email;
         const password = data.password;
-        //registeredUsers.push({ username: username, password: password });
         dataAccess.executeQuery(async (db) => {
             await db.collection('Users').insertOne({
                 username: username,
@@ -89,28 +83,6 @@ function generateAccessToken(user, expiringTime = 1800) {
     return jwt.sign(user, authSecret, { expiresIn: expiringTime + 's' });
 }
 
-
-/*
-exports.authenticateRequest = function (req, res) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-
-    if (token == null) return res.sendStatus(401);
-
-    jwt.verify(token, authSecret, (err, user) => {
-
-        if (err) {
-            console.log(err);
-            return res.status(403).send("invalid token");
-        };
-
-        req.user = user;
-
-        res.status(200).send("token is valid, user: " + user.username + " email: " + user.email);
-    });
-}
-*/
-
 exports.authenticateRequest = function (req, res) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -119,7 +91,7 @@ exports.authenticateRequest = function (req, res) {
     tokenValidation = authenticateToken(token);
     console.log(tokenValidation);
     if (tokenValidation == null) return res.sendStatus(401);
-    if (tokenValidation.err != null) return res.status(403).send("invalid token");
+    if (tokenValidation.err != null) return res.status(403).send({result: "invalid token"});
     return res.send({ result: "success", user: tokenValidation.user });
 }
 
