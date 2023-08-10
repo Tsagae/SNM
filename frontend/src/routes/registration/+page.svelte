@@ -6,15 +6,30 @@
 	
 	const requiredMessage = "This field is required";
 
-  function onSubmit() {
+  async function onSubmit() {
 	console.log("form: ", $form);
 	const data = {
 		email: $form.email.value,
 		username: $form.name.value,
 		password: $form.password.value,
 	};
-    console.log("data", data);
+    console.log("data: ", JSON.stringify(data));
+	await registerUser(data);
   }
+
+  async function registerUser (user) {
+		const res = await fetch('http://localhost:3000/register', {
+			method: 'POST',
+			headers: {
+			"Content-Type": "application/json",
+			},
+			body: JSON.stringify(user)
+		})
+		
+		const json = await res.json()
+		let result = JSON.stringify(json)
+		console.log(result);
+	}
 </script>
 
 <main>
