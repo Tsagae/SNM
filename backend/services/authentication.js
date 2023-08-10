@@ -36,7 +36,6 @@ exports.login = async function (req, res) {
         await dataAccess.executeQuery(async (db) => {
             cursor = await db.collection('Users').find({
                 username: username,
-                // TODO missing email
             });
             for await (const doc of cursor) {
                 queryResult.push(doc);
@@ -63,12 +62,13 @@ exports.registerUser = function (req, res) {
     else {
         const data = matchedData(req);
         const username = data.username;
+        const email = data.email;
         const password = data.password;
         //registeredUsers.push({ username: username, password: password });
         dataAccess.executeQuery(async (db) => {
             await db.collection('Users').insertOne({
                 username: username,
-                // TODO missing email
+                email: email,
                 password: await hash(password),
             });
         });

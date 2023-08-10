@@ -7,6 +7,11 @@ exports.loginValidate = [
         .trim()
         .notEmpty()
         .escape(),
+    body('email', 'Not a valid email')
+        .isEmail()
+        .trim()
+        .notEmpty()
+        .escape(),
     // Check Password
     body('password')
         .trim()
