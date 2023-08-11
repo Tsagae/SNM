@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 
 
 // Registration
-app.post('/register', validation.loginValidate, auth.registerUser); // TODO change loginValidate with registerValidate
+app.post('/register', validation.registerValidate, auth.registerUser); // TODO change loginValidate with registerValidate
 
 
 
