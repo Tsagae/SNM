@@ -27,6 +27,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"js-cookie": "^3.0.5",
 		"sveltestrap": "^5.11.1"
 	}
 }
