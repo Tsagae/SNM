@@ -91,8 +91,8 @@ exports.authenticateRequest = function (req, res) {
     tokenValidation = authenticateToken(token);
     console.log(tokenValidation);
     if (tokenValidation == null) return res.sendStatus(401);
-    if (tokenValidation.err != null) return res.status(403).send({result: "invalid token"});
-    return res.send({ result: "success", user: tokenValidation.user });
+    if (tokenValidation.err != null) return res.status(403).send({ result: "invalid token" });
+    return res.send({ user: tokenValidation.user });
 }
 
 
