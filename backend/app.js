@@ -1,5 +1,6 @@
 const auth = require('./services/authentication')
 const validation = require('./services/validation')
+const spotify = require('./services/spotify')
 const express = require('express')
 const cors = require('cors');
 const config = require('config');
@@ -31,6 +32,10 @@ app.post('/authToken', (req, res) => {
   auth.authenticateRequest(req, res, authSecret);
 });
 
+//Spotify
+app.get('/testSpotify', (req, res) => {
+  spotify.searchAlbum("the wall").then((results) => res.send(results));
+});
 
 app.listen(port, host, () => {
   console.log(`Server is running on ${host}:${port}`);
