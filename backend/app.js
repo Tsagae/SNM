@@ -27,7 +27,7 @@ app.post('/register', validation.loginValidate, auth.registerUser); // TODO chan
 app.post('/login', validation.loginValidate, auth.login);
 
 
-app.get('/authToken', (req, res) => {
+app.post('/authToken', (req, res) => {
   auth.authenticateRequest(req, res, authSecret);
 });
 
