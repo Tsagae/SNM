@@ -20,7 +20,7 @@
 
 </script>
   
-<Navbar color="success" light expand="md">
+<Navbar class="NavStyle" expand="md">
 	{#if ready}
 	<NavbarBrand href="/"><img src={src} in:fly={{ x: 200, duration: 1500 }} alt="logo" height="50px"></NavbarBrand>
 	{/if}
@@ -53,4 +53,8 @@
     .page-content {
         padding: 20px;
     }
+	:global(.NavStyle){
+		background-color: #373737;
+		border-bottom: 1px solid #1db954;
+	}
 </style>

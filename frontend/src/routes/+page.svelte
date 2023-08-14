@@ -26,16 +26,12 @@
 	];
 </script>
 
-<div class="bg_img">
-
-    <img
-    class="demo-bg"
-    src="/logo.png"
-    alt="">
+<!-- <img class="demo-bg" src="/logo.png" alt="logoBG"> -->
 
 <Container fluid>
     <div class="center">
 
+        <img class="resize" src="/SNMlogo.png" alt="SNM">
         <p>Searching playlist by {keyword || '...'}</p>
 
         <input bind:value={keyword} placeholder="enter keyword" />
@@ -66,28 +62,28 @@
         {/each}
 </Container>
 
-</div>
 
 <style>
     .center {
         margin: 20px auto 20px auto;
         width: 50%;
-        border: 3px solid green;
         padding: 10px;
         text-align: center;
     }
     :global(.card_style){
         margin: 2rem;
     }
-    :global(.bg_img){
-        overflow: hidden;
-        position: relative;
-    }
     :global(.demo-bg) {
         opacity: 0.2;
         position: fixed;
-        left: 20rem;
-        top: 15rem;
-        width: 50%;
+        left: 5rem;
+        top: 8rem;
+        width: 30%;
+        z-index: -1;
+    }
+    .resize {
+        width: 100%; 
+        max-width: 500px; 
+        max-height: 300px;
     }
 </style>
