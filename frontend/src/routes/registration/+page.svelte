@@ -49,22 +49,23 @@
 <main>
 	<form use:form method="post">
 		<h1>Registration</h1>
-		<label for="email">Email</label>
+
 		<input type="email" name="email" use:validators={[required, email]} />
+		<label for="email">Email</label>
 		<HintGroup for="email">
 			<Hint on="required">{requiredMessage}</Hint>
 			<Hint on="email" hideWhenRequired>This must be a valid email</Hint>
 		</HintGroup>
 
-		<label for="username">Username</label>
 		<input type="text" name="username" />
+		<label for="username">Username</label>
 
-		<label for="password">Password</label>
 		<input
 			type="password"
 			name="password"
 			use:validators={[required, minLength(5), containNumbers(2)]}
 		/>
+		<label for="password">Password</label>
 		<HintGroup for="password">
 			<Hint on="required">{requiredMessage}</Hint>
 			<Hint on="minLength" hideWhenRequired let:value
@@ -75,12 +76,12 @@
 			</Hint>
 		</HintGroup>
 
-		<label for="passwordConfirmation">Password Confirmation</label>
 		<input type="password" name="passwordConfirmation" use:validators={[required, passwordMatch]} />
+		<label for="passwordConfirmation">Password Confirmation</label>
 		<HintGroup for="passwordConfirmation">
 			<Hint on="required">{requiredMessage}</Hint>
 			<Hint on="passwordMatch" hideWhenRequired>Passwords do not match</Hint>
-		</HintGroup><br />
+		</HintGroup><br/><br/>	
 
 		<button disabled={!$form.valid} on:click|preventDefault={onSubmit}> Submit </button>
 	</form>
@@ -97,6 +98,22 @@
 	:global(.touched:invalid) {
 		border-color: red;
 		outline-color: red;
+	}
+
+	h1{
+		font-size: 50px;
+		font-weight: 600;
+		font-family: var(--font-family,CircularSp,CircularSp-Arab,CircularSp-Hebr,CircularSp-Cyrl,CircularSp-Grek,CircularSp-Deva,var(--fallback-fonts,sans-serif));
+		color: #1db954;
+		text-shadow: 0px 0px 5px #363636, 0px 0px 10px #363636, 0px 0px 10px #363636, 0px 0px 20px #363636;
+	}
+
+	input {
+		border:none;
+		border-bottom: 1px ridge #1db954;
+		background-color: transparent;
+		padding:8px;
+		display:block;
 	}
 
 	main {

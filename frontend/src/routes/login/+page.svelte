@@ -66,15 +66,16 @@
 <main>
 	<form use:form method="post">
 		<h1>Login</h1>
-		<label for="Username">Username</label>
-		<input type="text" name="username" />
 
-		<label for="password">Password</label>
+		<input type="text" name="username" />
+		<label for="Username">Username</label>
+
 		<input
 			type="password"
 			name="password"
 			use:validators={[required, minLength(5), containNumbers(2)]}
-		/>
+		/>		
+		<label for="password">Password</label>
 		<HintGroup for="password">
 			<Hint on="required">{requiredMessage}</Hint>
 			<Hint on="minLength" hideWhenRequired let:value
@@ -83,7 +84,7 @@
 			<Hint on="containNumbers" hideWhen="minLength" let:value>
 				This field must contain at least {value} numbers.
 			</Hint>
-		</HintGroup>
+		</HintGroup> <br><br>
 
 		<button disabled={!$form.valid} on:click|preventDefault={onSubmit}> Login </button>
 	</form>
@@ -103,6 +104,22 @@
 	:global(.touched:invalid) {
 		border-color: red;
 		outline-color: red;
+	}
+
+	h1{
+		font-size: 50px;
+		font-weight: 600;
+		font-family: var(--font-family,CircularSp,CircularSp-Arab,CircularSp-Hebr,CircularSp-Cyrl,CircularSp-Grek,CircularSp-Deva,var(--fallback-fonts,sans-serif));
+		color: #1db954;
+		text-shadow: 0px 0px 5px #363636, 0px 0px 10px #363636, 0px 0px 10px #363636, 0px 0px 20px #363636;
+	}
+
+	input {
+		border:none;
+		border-bottom: 1px ridge #1db954;
+		background-color: transparent;
+		padding:8px;
+		display:block;
 	}
 
 	main {
