@@ -42,17 +42,28 @@ async function refreshApiToken() {
         });
 }
 
-exports.searchAlbum = searchAlbum;
-
-async function searchAlbum(albumName) {
-    return get("https://api.spotify.com/v1/search?type=album&q=" + albumName);
+/**
+ @param {string} query
+ @param {array<string>} filters can't be empty and has to be one of ["album", "artist", "playlist", "track"] or any combination of them
+ */
+exports.search = async function search(query, filters) {
+    if (filters.length === 0) {
+        throw new Error("filters can't be empty");
+    }
+    let url = "https://api.spotify.com/v1/search?type=";
+    //filters: ["album", "artist", "playlist", "track"]
+    for (const val of filters) {
+        url += `${val},`;
+    }
+    url = url.slice(0, -1);
+    return get(url + "&q=" + query);
 }
 
 
 /**
  * Get request with the authentication token to the spotify api. If the current token is invalid makes a second request after refreshing the token
  * @param {*} url url of the request, including all parameters
- * @returns a json with the response
+ * @returns res json with the response
  */
 async function get(url) {
     const res = await fetch(url, {

@@ -14,14 +14,12 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send({ text: "Hello World" });
+    res.send({text: "Hello World"});
 });
-
 
 
 // Registration
 app.post('/register', validation.registerValidate, auth.registerUser); // TODO change loginValidate with registerValidate
-
 
 
 // Authentication
@@ -29,16 +27,18 @@ app.post('/login', validation.loginValidate, auth.login);
 
 
 app.post('/authToken', (req, res) => {
-  auth.authenticateRequest(req, res, authSecret);
+    if (auth.authenticateRequest(req, res) != null) return;
+    res.send({result: "valid token"});
 });
 
 //Spotify
-app.get('/testSpotify', (req, res) => {
-  spotify.searchAlbum("the wall").then((results) => res.send(results));
+app.get('/search', (req, res) => {
+    if (auth.authenticateRequest(req, res) != null) return;
+    return spotify.search(req.query.q, req.query.filters).then((results) => res.send(results));
 });
 
 app.listen(port, host, () => {
-  console.log(`Server is running on ${host}:${port}`);
+    console.log(`Server is running on ${host}:${port}`);
 });
 
 
