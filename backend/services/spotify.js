@@ -9,6 +9,34 @@ var url = "https://accounts.spotify.com/api/token"
 let apiToken;
 updateApiTokenFromDB();
 
+module.exports = {get}
+
+/**
+ * Get request with the authentication token to the spotify api. If the current token is invalid makes a second request after refreshing the token
+ * @param {string} url url of the request, including all parameters
+ * @returns res json with the response
+ */
+async function get(url) {
+    const res = await fetch(url, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + apiToken,
+        },
+    });
+    let jsonRes = await res.json();
+    if (jsonRes?.error?.status === 401) { //token refresh
+        console.log("refreshing token...");
+        await refreshApiToken();
+        return await (await fetch(url, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + apiToken,
+            },
+        })).json()
+    }
+    return jsonRes;
+}
+
 function updateApiTokenFromDB() {
     console.log("loading token from db...");
     let res;
@@ -43,29 +71,3 @@ async function refreshApiToken() {
 }
 
 
-
-/**
- * Get request with the authentication token to the spotify api. If the current token is invalid makes a second request after refreshing the token
- * @param {string} url url of the request, including all parameters
- * @returns res json with the response
- */
-async function get(url) {
-    const res = await fetch(url, {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + apiToken,
-        },
-    });
-    let jsonRes = await res.json();
-    if (jsonRes?.error?.status === 401) { //token refresh
-        console.log("refreshing token...");
-        await refreshApiToken();
-        return await (await fetch(url, {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + apiToken,
-            },
-        })).json()
-    }
-    return jsonRes;
-}
