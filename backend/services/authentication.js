@@ -67,7 +67,7 @@ async function registerUser(req, res) {
         const username = data.username;
         const email = data.email;
         const password = data.password;
-        dataAccess.executeQuery(async (db) => {
+        await dataAccess.executeQuery(async (db) => {
             await db.collection('Users').insertOne({
                 username: username,
                 email: email,
