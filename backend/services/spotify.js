@@ -1,10 +1,9 @@
 const config = require('config');
 const dataAccess = require('./dataAccess');
 
-
 const client_id = config.get('spotify.clientId')
 const client_secret = config.get('spotify.clientSecret')
-var url = "https://accounts.spotify.com/api/token"
+const url = "https://accounts.spotify.com/api/token";
 
 let apiToken;
 updateApiTokenFromDB();
