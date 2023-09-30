@@ -1,5 +1,5 @@
 const config = require('config');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const {MongoClient, ServerApiVersion} = require('mongodb');
 const uri = "mongodb+srv://" + config.get('db.user') + ":" + config.get('db.pass') + "@" + config.get('db.cluster') + "/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -12,9 +12,10 @@ const client = new MongoClient(uri, {
 });
 
 exports.executeQuery = executeQuery;
+
 /**
- * Executes a query or a series of queries
- * @param {Function} query function that takes as input a database 
+ * Executes a query or a series of queries. Remember to use await before every db operation inside the query function or a MongoExpiredSessionError could be thrown
+ * @param {Function} query function that takes as input a database
  */
 async function executeQuery(query) {
     try {
@@ -31,7 +32,7 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
         // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
+        await client.db("admin").command({ping: 1});
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
         await listDatabases(client);

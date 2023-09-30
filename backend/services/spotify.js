@@ -45,7 +45,7 @@ async function refreshApiToken() {
 /**
  https://developer.spotify.com/documentation/web-api/reference/search
  @param {string} query
- @param {array<string>} filters can't be empty and has to be one of ["album", "artist", "playlist", "track"] or any combination of them
+ @param {string[]} filters can't be empty and has to be one of ["album", "artist", "playlist", "track"] or any combination of them
  */
 exports.search = async function search(query, filters) {
     if (filters.length === 0) {
