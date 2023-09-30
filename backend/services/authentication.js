@@ -83,19 +83,25 @@ function generateAccessToken(user, expiringTime = 1800) {
  * Authenticates a request by checking the token in the authorization header
  * @param req
  * @param res
- * @returns null if the token is valid, responds with 401 if the token is not present, responds with 403 if the token is invalid
+ * @returns {{authenticated: boolean, user: {username: string, iat: number, exp: number} | null}} if the token is not valid authenticated is false and responds with 401 if the token is not present, responds with 403 if the token is invalid
  */
-exports.authenticateRequest = function (req, res) {
+function authenticateRequest(req, res) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
     let tokenValidation;
     tokenValidation = authenticateToken(token);
     console.log(tokenValidation);
-    if (tokenValidation == null) return res.sendStatus(401);
-    if (tokenValidation.err != null) return res.status(403).send({result: "invalid token"});
+    if (tokenValidation == null) {
+        res.sendStatus(401);
+        return {authenticated: false, user: null};
+    }
+    if (tokenValidation.err != null) {
+        res.status(403).send({result: "invalid token"});
+        return {authenticated: false, user: null};
+    }
     //return res.send({user: tokenValidation.user});
-    return null;
+    return {authenticated: true, user: tokenValidation.user};
 }
 
 
