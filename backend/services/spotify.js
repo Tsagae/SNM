@@ -43,6 +43,7 @@ async function refreshApiToken() {
 }
 
 /**
+ https://developer.spotify.com/documentation/web-api/reference/search
  @param {string} query
  @param {array<string>} filters can't be empty and has to be one of ["album", "artist", "playlist", "track"] or any combination of them
  */
@@ -62,7 +63,7 @@ exports.search = async function search(query, filters) {
 
 /**
  * Get request with the authentication token to the spotify api. If the current token is invalid makes a second request after refreshing the token
- * @param {*} url url of the request, including all parameters
+ * @param {string} url url of the request, including all parameters
  * @returns res json with the response
  */
 async function get(url) {
