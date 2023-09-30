@@ -120,7 +120,7 @@ function authenticateRequest(req, res) {
 /**
  * authenticates a token returning the user that requested the token or an error
  * @param {string} token authentication token
- * @returns tokenValidation: {user, err}
+ * @returns {{user: { username: string, iat: number, exp: number } | null, err: *} }
  */
 function authenticateToken(token) {
     if (token == null) return null;
