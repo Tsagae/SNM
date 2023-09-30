@@ -42,23 +42,6 @@ async function refreshApiToken() {
         });
 }
 
-/**
- https://developer.spotify.com/documentation/web-api/reference/search
- @param {string} query
- @param {string[]} filters can't be empty and has to be one of ["album", "artist", "playlist", "track"] or any combination of them
- */
-exports.search = async function search(query, filters) {
-    if (filters.length === 0) {
-        throw new Error("filters can't be empty");
-    }
-    let url = "https://api.spotify.com/v1/search?type=";
-    //filters: ["album", "artist", "playlist", "track"]
-    for (const val of filters) {
-        url += `${val},`;
-    }
-    url = url.slice(0, -1);
-    return get(url + "&q=" + query);
-}
 
 
 /**
