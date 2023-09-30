@@ -2,6 +2,9 @@ const config = require('config');
 const {MongoClient, ServerApiVersion} = require('mongodb');
 const uri = "mongodb+srv://" + config.get('db.user') + ":" + config.get('db.pass') + "@" + config.get('db.cluster') + "/?retryWrites=true&w=majority";
 
+module.exports = { executeQuery }
+
+
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
     serverApi: {
@@ -11,7 +14,6 @@ const client = new MongoClient(uri, {
     }
 });
 
-exports.executeQuery = executeQuery;
 
 /**
  * Executes a query or a series of queries. Remember to use await before every db operation inside the query function or a MongoExpiredSessionError could be thrown
