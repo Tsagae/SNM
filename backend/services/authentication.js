@@ -6,6 +6,8 @@ const bcrypt = require("bcrypt")
 
 const authSecret = config.get('auth.secret');
 
+module.exports = {login, registerUser, authenticateRequest}
+
 async function hash(text) {
     return await bcrypt.hash(text, 10);
 }
@@ -15,7 +17,12 @@ async function compareHashed(plaintext, hash) {
 }
 
 // Registration and login
-exports.login = async function (req, res) {
+/**
+ * Login controller
+ * @param req
+ * @param res
+ */
+async function login(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({errors: errors.array()});
@@ -46,7 +53,12 @@ exports.login = async function (req, res) {
     }
 }
 
-exports.registerUser = function (req, res) {
+/**
+ * Register user controller
+ * @param req
+ * @param res
+ */
+async function registerUser(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({errors: errors.array()});
@@ -126,9 +138,9 @@ function authenticateToken(token) {
     return tokenUser;
 }
 
-exports.generateSecret = function () {
+function generateSecret() {
     return require('crypto').randomBytes(64).toString('hex')
-};
+}
 
 
 
