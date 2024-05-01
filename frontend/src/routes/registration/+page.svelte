@@ -8,7 +8,7 @@
 		minLength,
 		email
 	} from 'svelte-use-form';
-	import { passwordMatch, containNumbers } from './customValidators';
+	import { passwordMatch, containNumbers, hasUppercase } from './customValidators';
 
 	const form = useForm();
 
@@ -63,16 +63,19 @@
 		<input
 			type="password"
 			name="password"
-			use:validators={[required, minLength(5), containNumbers(2)]}
+			use:validators={[required, minLength(5), containNumbers(2), hasUppercase()]}
 		/>
 		<label for="password">Password</label>
 		<HintGroup for="password">
 			<Hint on="required">{requiredMessage}</Hint>
-			<Hint on="minLength" hideWhenRequired let:value
-				>This field must have at least {value} characters.</Hint
-			>
+			<Hint on="minLength" hideWhenRequired let:value>
+				This field must have at least {value} characters.
+			</Hint>
 			<Hint on="containNumbers" hideWhen="minLength" let:value>
 				This field must contain at least {value} numbers.
+			</Hint>
+			<Hint on="hasUppercase">
+				This field must contain an uppercase letter.
 			</Hint>
 		</HintGroup>
 
