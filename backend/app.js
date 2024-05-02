@@ -1,5 +1,6 @@
 import auth from './services/authentication.js';
 import validation from './services/validation.js';
+import dataAccess from './services/dataAccess.js';
 import express from 'express';
 import cors from 'cors';
 import config from 'config';
@@ -11,6 +12,8 @@ import generic from './services/repositories/generic.js';
 import playlists from './services/repositories/playlists.js';
 import tracks from './services/repositories/tracks.js';
 import users from './services/repositories/users.js';
+import spotify from "./services/spotify.js";
+
 
 const app = express();
 const port = config.get('server.port');
@@ -100,9 +103,8 @@ app.get('/getUser', (req, res) => {
     return users.getUser(req.query.id).then((results) => res.send(results));
 });
 
-
-app.listen(port, host, () => {
+app.listen(port, host, async() => {
     console.log(`Server is running on ${host}:${port}`);
+    await dataAccess.testConnection();
+    await spotify.getApiTokenFromDB();
 });
-
-

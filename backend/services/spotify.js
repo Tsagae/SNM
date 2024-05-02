@@ -7,7 +7,6 @@ const client_secret = config.get('spotify.clientSecret')
 const url = "https://accounts.spotify.com/api/token";
 
 let apiToken;
-updateApiTokenFromDB();
 
 /**
  * Get request with the authentication token to the spotify api. If the current token is invalid makes a second request after refreshing the token
@@ -33,7 +32,11 @@ async function get(url) {
     return jsonRes;
 }
 
-function updateApiTokenFromDB() {
+/**
+ * Updated the current api token with the one from the database. Should be called once at initialization
+ * @returns {Promise<void>}
+ */
+async function getApiTokenFromDB() {
     console.log("loading token from db...");
     let res;
     dataAccess.executeQuery(async (db) => {
@@ -66,4 +69,4 @@ async function refreshApiToken() {
 }
 
 
-export default {get};
+export default {get, getApiTokenFromDB};
