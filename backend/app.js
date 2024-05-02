@@ -59,6 +59,11 @@ app.get('/getTracks', (req, res) => {
     return tracks.getTracks(req.query.ids).then((results) => res.send(results));
 });
 
+app.get('/searchTracks', (req, res) => {
+    if (!auth.authenticateRequest(req, res).authenticated) return;
+    return tracks.searchTracks(req.query.trackname).then((results) => res.send(results));
+});
+
 
 // -------- Albums --------
 app.get('/getAlbum', (req, res) => {

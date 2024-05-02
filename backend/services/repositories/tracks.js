@@ -14,7 +14,7 @@ async function getTrack(id) {
  * @param {string[]} trackIds of the tracks max 50
  */
 async function getTracks(trackIds) {
-    if (trackIds.length > 50) {
+    if(trackIds.length > 50){
         throw new Error("Max 50 tracks");
     }
     let url = "https://api.spotify.com/v1/tracks?ids=";
@@ -23,4 +23,14 @@ async function getTracks(trackIds) {
     return spotify.get(url);
 }
 
-export default {getTrack, getTracks};
+/**
+ * https://api.spotify.com/v1/search?q=remaster%2520track%3ADoxy%2520artist%3AMiles%2520Davis&type=track
+ * @param trackName name of the track
+ * @returns {Promise<any>}
+ */
+async function searchTracks(trackName) {
+    return spotify.get("https://api.spotify.com/v1/search?q=" + trackName + "&type=track");
+}
+
+
+export default {getTrack, getTracks, searchTracks};
