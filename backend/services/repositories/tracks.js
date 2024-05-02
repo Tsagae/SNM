@@ -1,8 +1,5 @@
-const spotify = require('../spotify')
-
-
-module.exports = { getTrack, getTracks }
-
+"use strict";
+import spotify from '../spotify.js';
 
 /**
  * https://developer.spotify.com/documentation/web-api/reference/get-track
@@ -17,7 +14,7 @@ async function getTrack(id) {
  * @param {string[]} trackIds of the tracks max 50
  */
 async function getTracks(trackIds) {
-    if(trackIds.length > 50){
+    if (trackIds.length > 50) {
         throw new Error("Max 50 tracks");
     }
     let url = "https://api.spotify.com/v1/tracks?ids=";
@@ -25,3 +22,5 @@ async function getTracks(trackIds) {
     url = url.slice(0, -1);
     return spotify.get(url);
 }
+
+export default {getTrack, getTracks};

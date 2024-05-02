@@ -1,9 +1,7 @@
-const dataAccess = require('../dataAccess')
-const ObjectId = require('mongodb').ObjectId;
-
-const spotify = require('../spotify')
-
-module.exports = {getPlaylist, getAllPublicPlaylists, editPlaylist, createPlaylist}
+"use strict";
+import spotify from '../spotify.js';
+import dataAccess from '../dataAccess.js'
+import ObjectId from 'mongodb';
 
 /**
  * Gets a playlist from the db
@@ -51,7 +49,7 @@ async function editPlaylist(id, user, name, isPublic, tracks) {
         }
     });
     await dataAccess.executeQuery(async (db) => {
-        res = await db.collection('Playlists').updateOne({_id: new ObjectId(id) }, {
+        res = await db.collection('Playlists').updateOne({_id: new ObjectId(id)}, {
             $set: {
                 name: name,
                 public: isPublic,
@@ -81,3 +79,5 @@ async function createPlaylist(user, name, isPublic, tracks) {
     });
     return res;
 }
+
+export default {getPlaylist, getAllPublicPlaylists, editPlaylist, createPlaylist};

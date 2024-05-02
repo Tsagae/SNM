@@ -1,12 +1,11 @@
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const {matchedData, validationResult} = require('express-validator');
-const dataAccess = require('./dataAccess');
-const bcrypt = require("bcrypt")
+"use strict";
+import jwt from 'jsonwebtoken';
+import config from 'config';
+import {matchedData, validationResult} from 'express-validator';
+import dataAccess from './dataAccess.js';
+import bcrypt from "bcrypt";
 
 const authSecret = config.get('auth.secret');
-
-module.exports = {login, registerUser, authenticateRequest}
 
 async function hash(text) {
     return await bcrypt.hash(text, 10);
@@ -142,7 +141,4 @@ function generateSecret() {
     return require('crypto').randomBytes(64).toString('hex')
 }
 
-
-
-
-
+export default {login, registerUser, authenticateRequest};

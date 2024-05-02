@@ -1,9 +1,8 @@
-const config = require('config');
-const {MongoClient, ServerApiVersion} = require('mongodb');
+"use strict";
+import config from 'config';
+import {MongoClient, ServerApiVersion} from 'mongodb';
+
 const uri = "mongodb+srv://" + config.get('db.user') + ":" + config.get('db.pass') + "@" + config.get('db.cluster') + "/?retryWrites=true&w=majority";
-
-module.exports = { executeQuery }
-
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -51,3 +50,5 @@ async function listDatabases(client) {
     console.log("Databases:");
     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 }
+
+export default {executeQuery};

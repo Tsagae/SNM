@@ -1,17 +1,16 @@
-const auth = require('./services/authentication')
-const validation = require('./services/validation')
-const spotify = require('./services/spotify')
-const express = require('express')
-const cors = require('cors');
-const config = require('config');
+import auth from './services/authentication.js';
+import validation from './services/validation.js';
+import express from 'express';
+import cors from 'cors';
+import config from 'config';
 
 // Repositories
-const albums = require('./services/repositories/albums');
-const artists = require('./services/repositories/artists');
-const generic = require('./services/repositories/generic');
-const playlists = require('./services/repositories/playlists');
-const tracks = require('./services/repositories/tracks');
-const users = require('./services/repositories/users');
+import albums from './services/repositories/albums.js';
+import artists from './services/repositories/artists.js';
+import generic from './services/repositories/generic.js';
+import playlists from './services/repositories/playlists.js';
+import tracks from './services/repositories/tracks.js';
+import users from './services/repositories/users.js';
 
 const app = express();
 const port = config.get('server.port');
