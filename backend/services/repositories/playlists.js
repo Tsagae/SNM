@@ -42,12 +42,10 @@ async function getAllPublicPlaylists() {
  */
 async function editPlaylist(id, user, name, isPublic, tracks) {
     let res;
-    await dataAccess.executeQuery(async (db) => {
-        let playlist = await getPlaylist(id);
-        if (playlist?.user !== user) {
-            throw new Error("You can't edit this playlist");
-        }
-    });
+    let playlist = await getPlaylist(id);
+    if (playlist?.user !== user) {
+        throw new Error("You can't edit this playlist");
+    }
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').updateOne({_id: new ObjectId(id)}, {
             $set: {
