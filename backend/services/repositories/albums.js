@@ -1,6 +1,5 @@
-const spotify = require('../spotify')
-
-module.exports = { getAlbum }
+"use strict";
+import spotify from '../spotify.js';
 
 /**
  * https://developer.spotify.com/documentation/web-api/reference/get-an-album
@@ -9,3 +8,5 @@ module.exports = { getAlbum }
 async function getAlbum(id) {
     return spotify.get("https://api.spotify.com/v1/albums/" + id);
 }
+
+export default {getAlbum};

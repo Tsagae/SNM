@@ -1,8 +1,5 @@
-const spotify = require('../spotify')
-
-
-module.exports = { getTrack, getTracks }
-
+"use strict";
+import spotify from '../spotify.js';
 
 /**
  * https://developer.spotify.com/documentation/web-api/reference/get-track
@@ -25,3 +22,15 @@ async function getTracks(trackIds) {
     url = url.slice(0, -1);
     return spotify.get(url);
 }
+
+/**
+ * https://api.spotify.com/v1/search?q=remaster%2520track%3ADoxy%2520artist%3AMiles%2520Davis&type=track
+ * @param trackName name of the track
+ * @returns {Promise<any>}
+ */
+async function searchTracks(trackName) {
+    return spotify.get("https://api.spotify.com/v1/search?q=" + trackName + "&type=track");
+}
+
+
+export default {getTrack, getTracks, searchTracks};

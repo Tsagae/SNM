@@ -1,6 +1,5 @@
-const spotify = require('../spotify')
-
-module.exports = { search }
+"use strict";
+import spotify from '../spotify.js';
 
 /**
  https://developer.spotify.com/documentation/web-api/reference/search
@@ -23,3 +22,5 @@ async function search(query, filters) {
     url = url.slice(0, -1);
     return spotify.get(url + "&q=" + query);
 }
+
+export default {search};

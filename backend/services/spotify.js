@@ -1,14 +1,12 @@
-const config = require('config');
-const dataAccess = require('./dataAccess');
+"use strict";
+import config from 'config';
+import dataAccess from './dataAccess.js';
 
 const client_id = config.get('spotify.clientId')
 const client_secret = config.get('spotify.clientSecret')
 const url = "https://accounts.spotify.com/api/token";
 
 let apiToken;
-updateApiTokenFromDB();
-
-module.exports = {get}
 
 /**
  * Get request with the authentication token to the spotify api. If the current token is invalid makes a second request after refreshing the token
@@ -18,8 +16,7 @@ module.exports = {get}
 async function get(url) {
     const res = await fetch(url, {
         headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + apiToken,
+            "Content-Type": "application/json", Authorization: "Bearer " + apiToken,
         },
     });
     let jsonRes = await res.json();
@@ -28,15 +25,18 @@ async function get(url) {
         await refreshApiToken();
         return await (await fetch(url, {
             headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + apiToken,
+                "Content-Type": "application/json", Authorization: "Bearer " + apiToken,
             },
         })).json()
     }
     return jsonRes;
 }
 
-function updateApiTokenFromDB() {
+/**
+ * Updated the current api token with the one from the database. Should be called once at initialization
+ * @returns {Promise<void>}
+ */
+async function getApiTokenFromDB() {
     console.log("loading token from db...");
     let res;
     dataAccess.executeQuery(async (db) => {
@@ -53,8 +53,7 @@ function updateApiTokenFromDB() {
  */
 async function refreshApiToken() {
     await fetch(url, {
-        method: "POST",
-        headers: {
+        method: "POST", headers: {
             Authorization: "Basic " + btoa(`${client_id}:${client_secret}`),
             "Content-Type": "application/x-www-form-urlencoded",
         }, body: new URLSearchParams({grant_type: "client_credentials"}),
@@ -70,3 +69,4 @@ async function refreshApiToken() {
 }
 
 
+export default {get, getApiTokenFromDB};

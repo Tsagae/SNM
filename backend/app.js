@@ -1,17 +1,19 @@
-const auth = require('./services/authentication')
-const validation = require('./services/validation')
-const spotify = require('./services/spotify')
-const express = require('express')
-const cors = require('cors');
-const config = require('config');
+import auth from './services/authentication.js';
+import validation from './services/validation.js';
+import dataAccess from './services/dataAccess.js';
+import express from 'express';
+import cors from 'cors';
+import config from 'config';
 
 // Repositories
-const albums = require('./services/repositories/albums');
-const artists = require('./services/repositories/artists');
-const generic = require('./services/repositories/generic');
-const playlists = require('./services/repositories/playlists');
-const tracks = require('./services/repositories/tracks');
-const users = require('./services/repositories/users');
+import albums from './services/repositories/albums.js';
+import artists from './services/repositories/artists.js';
+import generic from './services/repositories/generic.js';
+import playlists from './services/repositories/playlists.js';
+import tracks from './services/repositories/tracks.js';
+import users from './services/repositories/users.js';
+import spotify from "./services/spotify.js";
+
 
 const app = express();
 const port = config.get('server.port');
@@ -55,6 +57,11 @@ app.get('/getTrack', (req, res) => {
 app.get('/getTracks', (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
     return tracks.getTracks(req.query.ids).then((results) => res.send(results));
+});
+
+app.get('/searchTracks', (req, res) => {
+    if (!auth.authenticateRequest(req, res).authenticated) return;
+    return tracks.searchTracks(req.query.trackname).then((results) => res.send(results));
 });
 
 
@@ -101,9 +108,8 @@ app.get('/getUser', (req, res) => {
     return users.getUser(req.query.id).then((results) => res.send(results));
 });
 
-
-app.listen(port, host, () => {
+app.listen(port, host, async() => {
     console.log(`Server is running on ${host}:${port}`);
+    await dataAccess.testConnection();
+    await spotify.getApiTokenFromDB();
 });
-
-

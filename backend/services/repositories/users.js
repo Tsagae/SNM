@@ -1,5 +1,4 @@
-
-module.exports = {getUser}
+"use strict";
 
 /**
  * Gets a user from the db
@@ -9,3 +8,5 @@ async function getUser(id) {
     throw new Error("Not implemented");
     //TODO to implement
 }
+
+export default {getUser};

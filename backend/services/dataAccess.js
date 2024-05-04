@@ -1,16 +1,13 @@
-const config = require('config');
-const {MongoClient, ServerApiVersion} = require('mongodb');
+"use strict";
+import config from 'config';
+import {MongoClient, ServerApiVersion} from 'mongodb';
+
 const uri = "mongodb+srv://" + config.get('db.user') + ":" + config.get('db.pass') + "@" + config.get('db.cluster') + "/?retryWrites=true&w=majority";
-
-module.exports = { executeQuery }
-
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
     serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
+        version: ServerApiVersion.v1, strict: true, deprecationErrors: true,
     }
 });
 
@@ -29,7 +26,11 @@ async function executeQuery(query) {
     }
 }
 
-async function run() {
+/**
+ * Tests the connection to the database and prints the list of available databases
+ * @returns {Promise<void>}
+ */
+async function testConnection() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
@@ -51,3 +52,5 @@ async function listDatabases(client) {
     console.log("Databases:");
     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 }
+
+export default {executeQuery, testConnection};
