@@ -93,7 +93,7 @@ app.get('/editPlaylist', (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
     return playlists.editPlaylist(req.query.id, authReq.user.username, req.query.name, req.query.isPublic, req.query.tracks).then((results) => res.send(results)).catch((e) => {
-        return res.status(400).send({error: e.message});
+        return res.status(403).send({error: e.message});
     });
 });
 
