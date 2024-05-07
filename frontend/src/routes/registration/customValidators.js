@@ -11,3 +11,11 @@ export function containNumbers(numbers) {
 		}
 	}
 }
+
+export function hasUppercase() {
+	return function(value) {
+		if (value.replace(/[^A-Z]/g,"").length == 0) {
+			return { hasUppercase: true };
+		}
+	}
+}
