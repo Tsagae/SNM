@@ -1,5 +1,4 @@
 "use strict";
-import spotify from '../spotify.js';
 import dataAccess from '../dataAccess.js'
 import mongodb from 'mongodb';
 
