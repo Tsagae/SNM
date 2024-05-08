@@ -1,7 +1,7 @@
 "use strict";
 import spotify from '../spotify.js';
 import dataAccess from '../dataAccess.js'
-import ObjectId from 'mongodb';
+import mongodb from 'mongodb';
 
 /**
  * Gets a playlist from the db
@@ -12,7 +12,7 @@ import ObjectId from 'mongodb';
 async function getPlaylist(id, user) {
     let res;
     await dataAccess.executeQuery(async (db) => {
-        res = await db.collection('Playlists').findOne({_id: new ObjectId(id)});
+        res = await db.collection('Playlists').findOne({_id: new mongodb.ObjectId(id)});
     });
     if (!res?.isPublic || res?.user !== user) {
         throw new Error("You can't see this playlist");
@@ -52,7 +52,7 @@ async function editPlaylist(id, user, name, isPublic, tracks, tags) {
         throw new Error("You can't edit this playlist");
     }
     await dataAccess.executeQuery(async (db) => {
-        res = await db.collection('Playlists').updateOne({_id: new ObjectId(id)}, {
+        res = await db.collection('Playlists').updateOne({_id: new mongodb.ObjectId(id)}, {
             $set: {
                 name: name,
                 public: isPublic,
@@ -100,7 +100,7 @@ async function deletePlaylist(id, user) {
         throw new Error("You can't delete this playlist");
     }
     await dataAccess.executeQuery(async (db) => {
-        res = await db.collection('Playlists').deleteOne(db.Playlists.deleteOne({_id: new ObjectId(id)}));
+        res = await db.collection('Playlists').deleteOne(db.Playlists.deleteOne({_id: new mongodb.ObjectId(id)}));
     });
     return res;
 }

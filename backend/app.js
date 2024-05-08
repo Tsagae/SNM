@@ -81,7 +81,9 @@ app.get('/getArtist', (req, res) => {
 // -------- Playlists --------
 app.get('/getPlaylist', (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
-    return playlists.getPlaylist(req.query.id, authReq.user.username).then((results) => res.send(results));
+    return playlists.getPlaylist(req.query.id, authReq.user.username).then((results) => res.send(results)).catch((e) => {
+        return res.status(403).send({error: e.message});
+    });
 });
 
 app.get('/getAllPublicPlaylists', (req, res) => {
