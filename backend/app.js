@@ -80,8 +80,8 @@ app.get('/getArtist', (req, res) => {
 
 // -------- Playlists --------
 app.get('/getPlaylist', (req, res) => {
-    if (!auth.authenticateRequest(req, res).authenticated) return;
-    return playlists.getPlaylist(req.query.id).then((results) => res.send(results));
+    let authReq = auth.authenticateRequest(req, res);
+    return playlists.getPlaylist(req.query.id, authReq.user.username).then((results) => res.send(results));
 });
 
 app.get('/getAllPublicPlaylists', (req, res) => {

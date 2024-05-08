@@ -5,14 +5,18 @@ import ObjectId from 'mongodb';
 
 /**
  * Gets a playlist from the db
- * @param {string} id of the playlist
+ @param {string} id of the playlist
+ @param {string} user that is requesting the playlist
+ @throws {Error} if the user is not the owner of the playlist and the playlist is private
  */
-async function getPlaylist(id) {
-    //db.Playlists.findOne({_id: ObjectId("65182db9baff8944c190d742")})
+async function getPlaylist(id, user) {
     let res;
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').findOne({_id: new ObjectId(id)});
     });
+    if (!res?.isPublic || res?.user !== user) {
+        throw new Error("You can't see this playlist");
+    }
     return res;
 }
 
