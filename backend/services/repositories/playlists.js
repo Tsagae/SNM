@@ -38,9 +38,10 @@ async function getAllPublicPlaylists() {
  @param {string} name
  @param {boolean} isPublic
  @param {string[]} tracks
+ @param {string[]} tags
  @throws {Error} if the user is not the owner of the playlist
  */
-async function editPlaylist(id, user, name, isPublic, tracks) {
+async function editPlaylist(id, user, name, isPublic, tracks, tags) {
     let res;
     let playlist = await getPlaylist(id);
     if (playlist?.user !== user) {
@@ -51,7 +52,8 @@ async function editPlaylist(id, user, name, isPublic, tracks) {
             $set: {
                 name: name,
                 public: isPublic,
-                tracks: tracks
+                tracks: tracks,
+                tags: tags
             }
         });
     });
@@ -64,15 +66,17 @@ async function editPlaylist(id, user, name, isPublic, tracks) {
  @param {string} name
  @param {boolean} isPublic
  @param {string[]} tracks
+ @param {string[]} tags
  */
-async function createPlaylist(user, name, isPublic, tracks) {
+async function createPlaylist(user, name, isPublic, tracks, tags) {
     let res;
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').insertOne({
             user: user,
             name: name,
             public: isPublic,
-            tracks: tracks
+            tracks: tracks,
+            tags: tags
         });
     });
     return res;

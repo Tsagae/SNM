@@ -92,7 +92,7 @@ app.get('/getAllPublicPlaylists', (req, res) => {
 app.get('/editPlaylist', (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
-    return playlists.editPlaylist(req.query.id, authReq.user.username, req.query.name, req.query.isPublic, req.query.tracks).then((results) => res.send(results)).catch((e) => {
+    return playlists.editPlaylist(req.query.id, authReq.user.username, req.query.name, req.query.isPublic, req.query.tracks, req.query.tags).then((results) => res.send(results)).catch((e) => {
         return res.status(403).send({error: e.message});
     });
 });
@@ -117,7 +117,7 @@ app.get('/getUser', (req, res) => {
     return users.getUser(req.query.id).then((results) => res.send(results));
 });
 
-app.listen(port, host, async() => {
+app.listen(port, host, async () => {
     console.log(`Server is running on ${host}:${port}`);
     await dataAccess.testConnection();
     await spotify.getApiTokenFromDB();
