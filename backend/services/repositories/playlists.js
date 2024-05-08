@@ -14,7 +14,7 @@ async function getPlaylist(id, user) {
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').findOne({_id: new mongodb.ObjectId(id)});
     });
-    if (!res?.isPublic || res?.user !== user) {
+    if (!res?.isPublic && res?.user !== user) {
         throw new Error("You can't see this playlist");
     }
     return res;
@@ -47,7 +47,7 @@ async function getAllPublicPlaylists() {
  */
 async function editPlaylist(id, user, name, isPublic, tracks, tags) {
     let res;
-    let playlist = await getPlaylist(id);
+    let playlist = await getPlaylist(id, user);
     if (playlist?.user !== user) {
         throw new Error("You can't edit this playlist");
     }
