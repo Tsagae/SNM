@@ -100,7 +100,7 @@ app.get('/editPlaylist', (req, res) => {
 app.get('/createPlaylist', (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
-    return playlists.createPlaylist(authReq.user.username, req.query.name, req.query.isPublic, req.query.tracks).then((results) => res.send(results));
+    return playlists.createPlaylist(authReq.user.username, req.query.name, req.query.isPublic, req.query.tracks, req.query.tags).then((results) => res.send(results));
 });
 
 app.get('/deletePlaylist', (req, res) => {
