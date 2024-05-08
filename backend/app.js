@@ -42,81 +42,81 @@ app.post('/authToken', (req, res) => {
 });
 
 //Spotify
-app.get('/search', (req, res) => {
+app.post('/search', (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
-    return generic.search(req.query.q, req.query.filters).then((results) => res.send(results));
+    return generic.search(req.body.q, req.body.filters).then((results) => res.send(results));
 });
 
 
 // -------- Tracks --------
-app.get('/getTrack', (req, res) => {
+app.post('/getTrack', (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
-    return tracks.getTrack(req.query.id).then((results) => res.send(results));
+    return tracks.getTrack(req.body.id).then((results) => res.send(results));
 });
 
-app.get('/getTracks', (req, res) => {
+app.post('/getTracks', (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
-    return tracks.getTracks(req.query.ids).then((results) => res.send(results));
+    return tracks.getTracks(req.body.ids).then((results) => res.send(results));
 });
 
-app.get('/searchTracks', (req, res) => {
+app.post('/searchTracks', (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
-    return tracks.searchTracks(req.query.trackname).then((results) => res.send(results));
+    return tracks.searchTracks(req.body.trackname).then((results) => res.send(results));
 });
 
 
 // -------- Albums --------
-app.get('/getAlbum', (req, res) => {
+app.post('/getAlbum', (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
-    return albums.getAlbum(req.query.id).then((results) => res.send(results));
+    return albums.getAlbum(req.body.id).then((results) => res.send(results));
 });
 
 
 // -------- Artists --------
-app.get('/getArtist', (req, res) => {
+app.post('/getArtist', (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
-    return artists.getArtist(req.query.id).then((results) => res.send(results));
+    return artists.getArtist(req.body.id).then((results) => res.send(results));
 });
 
 // -------- Playlists --------
-app.get('/getPlaylist', (req, res) => {
+app.post('/getPlaylist', (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
-    return playlists.getPlaylist(req.query.id, authReq.user.username).then((results) => res.send(results)).catch((e) => {
+    return playlists.getPlaylist(req.body.id, authReq.user.username).then((results) => res.send(results)).catch((e) => {
         return res.status(403).send({error: e.message});
     });
 });
 
-app.get('/getAllPublicPlaylists', (req, res) => {
+app.post('/getAllPublicPlaylists', (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
     return playlists.getAllPublicPlaylists().then((results) => res.send(results));
 });
 
-app.get('/editPlaylist', (req, res) => {
+app.post('/editPlaylist', (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
-    return playlists.editPlaylist(req.query.id, authReq.user.username, req.query.name, req.query.isPublic, req.query.tracks, req.query.tags).then((results) => res.send(results)).catch((e) => {
+    return playlists.editPlaylist(req.body.id, authReq.user.username, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags).then((results) => res.send(results)).catch((e) => {
         return res.status(403).send({error: e.message});
     });
 });
 
-app.get('/createPlaylist', (req, res) => {
+app.post('/createPlaylist', (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
-    return playlists.createPlaylist(authReq.user.username, req.query.name, req.query.isPublic, req.query.tracks, req.query.tags).then((results) => res.send(results));
+    return playlists.createPlaylist(authReq.user.username, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags).then((results) => res.send(results));
 });
 
-app.get('/deletePlaylist', (req, res) => {
+app.post('/deletePlaylist', (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
-    return playlists.deletePlaylist(req.query.id, authReq.user.username).then((results) => res.send(results)).catch((e) => {
+    return playlists.deletePlaylist(req.body.id, authReq.user.username).then((results) => res.send(results)).catch((e) => {
         return res.status(403).send({error: e.message});
     });
 });
 
 // -------- Users --------
-app.get('/getUser', (req, res) => {
+app.post('/getUser', (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
-    return users.getUser(req.query.id).then((results) => res.send(results));
+    return users.getUser(req.body.id).then((results) => res.send(results));
 });
 
 app.listen(port, host, async () => {
