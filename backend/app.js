@@ -102,6 +102,15 @@ app.get('/createPlaylist', (req, res) => {
     if (!authReq.authenticated) return;
     return playlists.createPlaylist(authReq.user.username, req.query.name, req.query.isPublic, req.query.tracks).then((results) => res.send(results));
 });
+
+app.get('/deletePlaylist', (req, res) => {
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    return playlists.deletePlaylist(req.query.id, authReq.user.username).then((results) => res.send(results)).catch((e) => {
+        return res.status(403).send({error: e.message});
+    });
+});
+
 // -------- Users --------
 app.get('/getUser', (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;

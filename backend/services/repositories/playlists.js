@@ -78,4 +78,23 @@ async function createPlaylist(user, name, isPublic, tracks) {
     return res;
 }
 
-export default {getPlaylist, getAllPublicPlaylists, editPlaylist, createPlaylist};
+/**
+ *
+ * @param {string} id
+ * @param {string} user
+ * @returns {Promise<*>}
+ * @throws {Error} if the user is not the owner of the playlist
+ */
+async function deletePlaylist(id, user) {
+    let res;
+    let playlist = await getPlaylist(id);
+    if (playlist?.user !== user) {
+        throw new Error("You can't delete this playlist");
+    }
+    await dataAccess.executeQuery(async (db) => {
+        res = await db.collection('Playlists').deleteOne(db.Playlists.deleteOne({_id: new ObjectId(id)}));
+    });
+    return res;
+}
+
+export default {getPlaylist, getAllPublicPlaylists, editPlaylist, createPlaylist, deletePlaylist};
