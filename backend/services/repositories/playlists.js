@@ -1,18 +1,21 @@
 "use strict";
-import spotify from '../spotify.js';
 import dataAccess from '../dataAccess.js'
-import ObjectId from 'mongodb';
+import mongodb from 'mongodb';
 
 /**
  * Gets a playlist from the db
- * @param {string} id of the playlist
+ @param {string} id of the playlist
+ @param {string} user that is requesting the playlist
+ @throws {Error} if the user is not the owner of the playlist and the playlist is private
  */
-async function getPlaylist(id) {
-    //db.Playlists.findOne({_id: ObjectId("65182db9baff8944c190d742")})
+async function getPlaylist(id, user) {
     let res;
     await dataAccess.executeQuery(async (db) => {
-        res = await db.collection('Playlists').findOne({_id: new ObjectId(id)});
+        res = await db.collection('Playlists').findOne({_id: new mongodb.ObjectId(id)});
     });
+    if (!res?.isPublic && res?.user !== user) {
+        throw new Error("You can't see this playlist");
+    }
     return res;
 }
 
@@ -38,20 +41,22 @@ async function getAllPublicPlaylists() {
  @param {string} name
  @param {boolean} isPublic
  @param {string[]} tracks
+ @param {string[]} tags
  @throws {Error} if the user is not the owner of the playlist
  */
-async function editPlaylist(id, user, name, isPublic, tracks) {
+async function editPlaylist(id, user, name, isPublic, tracks, tags) {
     let res;
-    let playlist = await getPlaylist(id);
+    let playlist = await getPlaylist(id, user);
     if (playlist?.user !== user) {
         throw new Error("You can't edit this playlist");
     }
     await dataAccess.executeQuery(async (db) => {
-        res = await db.collection('Playlists').updateOne({_id: new ObjectId(id)}, {
+        res = await db.collection('Playlists').updateOne({_id: new mongodb.ObjectId(id)}, {
             $set: {
                 name: name,
                 public: isPublic,
-                tracks: tracks
+                tracks: tracks,
+                tags: tags
             }
         });
     });
@@ -64,18 +69,39 @@ async function editPlaylist(id, user, name, isPublic, tracks) {
  @param {string} name
  @param {boolean} isPublic
  @param {string[]} tracks
+ @param {string[]} tags
  */
-async function createPlaylist(user, name, isPublic, tracks) {
+async function createPlaylist(user, name, isPublic, tracks, tags) {
     let res;
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').insertOne({
             user: user,
             name: name,
             public: isPublic,
-            tracks: tracks
+            tracks: tracks,
+            tags: tags
         });
     });
     return res;
 }
 
-export default {getPlaylist, getAllPublicPlaylists, editPlaylist, createPlaylist};
+/**
+ *
+ * @param {string} id
+ * @param {string} user
+ * @returns {Promise<*>}
+ * @throws {Error} if the user is not the owner of the playlist
+ */
+async function deletePlaylist(id, user) {
+    let res;
+    let playlist = await getPlaylist(id);
+    if (playlist?.user !== user) {
+        throw new Error("You can't delete this playlist");
+    }
+    await dataAccess.executeQuery(async (db) => {
+        res = await db.collection('Playlists').deleteOne(db.Playlists.deleteOne({_id: new mongodb.ObjectId(id)}));
+    });
+    return res;
+}
+
+export default {getPlaylist, getAllPublicPlaylists, editPlaylist, createPlaylist, deletePlaylist};
