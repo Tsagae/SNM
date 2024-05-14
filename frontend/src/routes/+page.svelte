@@ -56,21 +56,7 @@
         </Form>
 
         Filters
-        {#if visible}
-            <img
-                    class="buttImgRev"
-                    src="/Green_Arrow_Down.png"
-                    on:click={toggleVisible}
-                    alt="showFilters"
-            />
-        {:else}
-            <img
-                    class="buttImg"
-                    src="/Green_Arrow_Down.png"
-                    on:click={toggleVisible}
-                    alt="showFilters"
-            />
-        {/if}
+        <button on:click={toggleVisible}>+</button>
 
         <br/>
         {#if visible}
@@ -94,7 +80,7 @@
             <div in:fly={{ delay: i * 250, y: 300, duration: 500 }}>
                 <Card class="card_style">
                     <CardHeader style="color:aliceblue; font-weight:800; font-size:40px">
-                        {name}
+                        <a href="/playlist/{name}">{name}</a>
                     </CardHeader>
                     <CardBody>
                         <img 
@@ -143,23 +129,6 @@
         width: 100%;
         max-width: 500px;
         max-height: 300px;
-    }
-
-    .buttImgRev {
-        width: 15px;
-        transform: rotate(180deg);
-    }
-
-    .buttImgRev:hover {
-        filter: drop-shadow(3px 3px 2px #758777);
-    }
-
-    .buttImg {
-        width: 15px;
-    }
-
-    .buttImg:hover {
-        filter: drop-shadow(3px 3px 2px #758777);
     }
 
     input[type="checkbox"]{

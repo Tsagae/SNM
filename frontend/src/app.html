@@ -5,6 +5,8 @@
 		<link rel="icon" href="%sveltekit.assets%/logo.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.1/dist/morph/bootstrap.min.css">		
+		%sveltekit.head%
+
 		<style>
 			body {background-color: rgb(83, 83, 83);}
 
@@ -28,8 +30,8 @@
 					background-color: #1db954;
 				}
 		</style>
-		%sveltekit.head%
 	</head>
+
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
