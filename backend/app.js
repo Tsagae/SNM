@@ -85,7 +85,6 @@ app.get('/getPlaylist', (req, res) => {
 });
 
 app.get('/getAllPublicPlaylists', (req, res) => {
-    if (!auth.authenticateRequest(req, res).authenticated) return;
     return playlists.getAllPublicPlaylists().then((results) => res.send(results));
 });
 

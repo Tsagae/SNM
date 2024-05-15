@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie';
 
-
 /**
  * @param {string} query
  * @param {string[]} filters
@@ -15,6 +14,18 @@ export async function search(query, filters) {
         headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + Cookies.get('authToken')
+        }
+    });
+
+    return await res.json();
+}
+
+export async function getPubPlaylist() {
+    let url = `http://localhost:3000/getAllPublicPlaylists`;
+    const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
         }
     });
 
