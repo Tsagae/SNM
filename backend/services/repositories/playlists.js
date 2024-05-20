@@ -104,4 +104,34 @@ async function deletePlaylist(id, user) {
     return res;
 }
 
-export default {getPlaylist, getAllPublicPlaylists, editPlaylist, createPlaylist, deletePlaylist};
+
+/**
+ * Searches in all public playlists
+ * @param {string} name
+ */
+async function searchPublicPlaylists(name) {
+    let res = [];
+    if (name.length === 0) {
+        return res;
+    }
+    await dataAccess.executeQuery(async (db) => {
+        let cursor = await db.collection('Playlists').find({
+            public: true,
+            name: {$regex: new RegExp(".*" + name + ".*", "i")}
+        });
+        for await (const doc of cursor) {
+            res.push(doc);
+        }
+    });
+    return res;
+}
+
+
+export default {
+    getPlaylist,
+    getAllPublicPlaylists,
+    editPlaylist,
+    createPlaylist,
+    deletePlaylist,
+    searchPublicPlaylists
+};

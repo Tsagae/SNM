@@ -91,6 +91,10 @@ app.post('/getAllPublicPlaylists', (req, res) => {
     return playlists.getAllPublicPlaylists().then((results) => res.send(results));
 });
 
+app.post('/searchPublicPlaylists', (req, res) => {
+    return playlists.searchPublicPlaylists(req.body.name).then((results) => res.send(results));
+});
+
 app.post('/editPlaylist', (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
