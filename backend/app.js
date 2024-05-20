@@ -41,12 +41,6 @@ app.post('/authToken', (req, res) => {
     res.send({result: "valid token"});
 });
 
-//Spotify
-app.post('/search', (req, res) => {
-    if (!auth.authenticateRequest(req, res).authenticated) return;
-    return generic.search(req.body.q, req.body.filters).then((results) => res.send(results));
-});
-
 
 // -------- Tracks --------
 app.post('/getTrack', (req, res) => {
@@ -121,6 +115,11 @@ app.post('/deletePlaylist', (req, res) => {
 app.post('/getUser', (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
     return users.getUser(req.body.id).then((results) => res.send(results));
+});
+
+// -------- Search --------
+app.post('/search', (req, res) => {
+    return generic.search(req.body.query, req.body.filters).then((results) => res.send(results));
 });
 
 app.listen(port, host, async () => {
