@@ -6,8 +6,8 @@
         Img
     } from 'flowbite-svelte';
     import {ChevronDownOutline, FilterOutline} from 'flowbite-svelte-icons';
-    import {search, getPubPlaylist} from '../backend.js';
-	import Playlist from '../components/playlist.svelte';
+    import {search, getPubPlaylist} from '$lib/backend.js';
+	import Playlist from '$lib/components/playlist.svelte';
 
     let keyword = '';
     let pubPlaylist = [];
