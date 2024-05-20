@@ -31,3 +31,19 @@ export async function getPubPlaylist() {
 
     return await res.json();
 }
+
+/**
+ * @param {ObjectId} query
+ */
+export async function getPlaylistInfo(query) {
+    let url = `http://localhost:3000/getPlaylist?id=${query}`;
+    const res = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + Cookies.get('authToken')
+        }
+    });
+
+    return await res.json();
+}
