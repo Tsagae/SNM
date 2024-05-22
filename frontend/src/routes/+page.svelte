@@ -1,33 +1,19 @@
 <script>
     import {
-        Container,
-        Card,
-        CardBody,
-        CardHeader,
-        CardSubtitle,
-        CardText,
-        Form
-    } from 'sveltestrap';
-    import {onMount} from 'svelte';
-    import {fly} from 'svelte/transition';
-    import {search} from '../backend.js';
-
-    let ready = false;
-    onMount(() => (ready = true));
+        Button,
+        Checkbox,
+        Dropdown, 
+        Img,
+        Spinner
+    } from 'flowbite-svelte';
+    import {ChevronDownOutline, FilterOutline} from 'flowbite-svelte-icons';
+    import {search, getPubPlaylist} from '$lib/backend.js';
+	import Playlist from '$lib/components/playlist.svelte';
 
     let keyword = '';
-    let visible = true;
+    let pubPlaylist = [];
 
-    function toggleVisible() {
-        visible = !visible;
-    }
-
-    // array di canzoni di prova, da sostituire con i risultati da spotify
-    let songs = [
-        {name: "playlist1", pub: false, tracks: ["7ouMYWpwJ422jRcDASZB7P", "4VqPOruhp5EdPBeR92t6lQ"], user: "test1"},
-        {name: "playlist2", pub: true, tracks: ["7ouMYWpwJ422jRcDASZB7P", "4VqPOruhp5EdPBeR92t6lQ"], user: "test2"},
-        {name: "playlist3", pub: true, tracks: ["7ouMYWpwJ422jRcDASZB7P", "4VqPOruhp5EdPBeR92t6lQ"], user: "test3"}
-    ];
+    pubPlaylist = getPubPlaylist();
 
     let results = {};
 
@@ -44,125 +30,48 @@
     }
 </script>
 
-<!-- <img class="demo-bg" src="/logo.png" alt="logoBG"> -->
+<Img src="/SNMlogo.png" alignment="mx-auto" alt="SNM" />
 
-<Container fluid>
-    <div class="center">
-
-        <img class="resize" src="/SNMlogo.png" alt="SNM"/>
-        <br><br>
-        <Form on:submit={searchForm}>
-            <input bind:value={keyword} placeholder="Search"/>
-        </Form>
-
-        Filters
-        {#if visible}
-            <img
-                    class="buttImgRev"
-                    src="/Green_Arrow_Down.png"
-                    on:click={toggleVisible}
-                    alt="showFilters"
-            />
-        {:else}
-            <img
-                    class="buttImg"
-                    src="/Green_Arrow_Down.png"
-                    on:click={toggleVisible}
-                    alt="showFilters"
-            />
-        {/if}
-
-        <br/>
-        {#if visible}
-            <div
-                    style="width: 100%; text-align:center;"
-                    in:fly={{ y: -50, duration: 1000 }}
-                    out:fly={{ y: -50, duration: 1000 }}
-            >
-                <input type="checkbox" name="filter" value="album" id="album" checked/><label for="album">Album</label>
-                <input type="checkbox" name="filter" value="artist" id="artist" checked/><label for="artist">Artist</label>
-                <input type="checkbox" name="filter" value="playlist" id="playlist" checked/><label for="playlist">Playlist</label>
-                <input type="checkbox" name="filter" value="track" id="track" checked/><label for="track">Track</label>
-            </div>
-        {/if}
+<form class="max-w-md mx-auto" on:submit={searchForm}>   
+    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input bind:value={keyword} type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500" placeholder="Keyword" required />
+        <button type="submit" color="primary" class="text-white absolute end-2.5 bottom-2.5 bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Search</button>
     </div>
-</Container>
+</form>
+<br>
 
-<Container fluid>
-    {#each songs as {name, pub, tracks, user}, i}
-        {#if ready && pub}
-            <div in:fly={{ delay: i * 250, y: 300, duration: 500 }}>
-                <Card class="card_style">
-                    <CardHeader style="color:aliceblue; font-weight:800; font-size:40px">
-                        {name}
-                    </CardHeader>
-                    <CardBody>
-                        <img 
-                            src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/rap-cd-album-mixtape-cover-design-template-8e67148b45c3625087dc1cb15f1de8a8_screen.jpg" 
-                            width="200" 
-                            style="float:left; margin-right: 20px;" 
-                            alt="cover preview"
-                        >
-                        <CardSubtitle>Qui ci andranno i tag ed eventuali descrizioni della playlist</CardSubtitle>
-                        <br>
-                        <CardText>
-                            <p><b>Tracks:</b> {tracks}</p>
-                            <p style="text-align:right;"><i>By {user}</i></p>
-                        </CardText>
-                    </CardBody>
-                </Card>
-            </div>
-        {/if}
+<div class="flex flex-col items-center">
+    <Button color="primary" pill><FilterOutline class="w-6 h-6 mr-2 text-white dark:text-white"/>Filters<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+    <Dropdown class="overflow-y-auto px-3 pb-3 text-sm h-40">
+        <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+            <Checkbox name="filter" value="album" id="album" checked>Album</Checkbox>
+        </li>
+        <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+            <Checkbox name="filter" value="artist" id="artist" checked>Artist</Checkbox>
+        </li>
+        <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+            <Checkbox name="filter" value="playlist" id="playlist" checked>Playlist</Checkbox>
+        </li>
+        <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+            <Checkbox name="filter" value="track" id="track" checked>Track</Checkbox>
+        </li>
+    </Dropdown>
+</div>
+<br><br>
+
+{#await pubPlaylist}
+    <div class="text-center"><Spinner size={8} color="green" /></div>
+{:then playlist}
+    {#each playlist as { _id, name, user, tracks, tags}, i}
+        <Playlist id={_id} name={name} user={user} tracks={tracks} tags={tags} i={i}/>
+        <br><br>
     {/each}
-</Container>
+{/await}
 
-<style>
-    .center {
-        margin: 20px auto 20px auto;
-        width: 50%;
-        padding: 10px;
-        text-align: center;
-    }
 
-    :global(.card_style) {
-        margin: 2rem;
-        background-color: transparent;
-        border-left: 5px solid #1db954;
-    }
-
-    :global(.demo-bg) {
-        opacity: 0.2;
-        position: fixed;
-        left: 5rem;
-        top: 8rem;
-        width: 30%;
-        z-index: -1;
-    }
-
-    .resize {
-        width: 100%;
-        max-width: 500px;
-        max-height: 300px;
-    }
-
-    .buttImgRev {
-        width: 15px;
-        transform: rotate(180deg);
-    }
-
-    .buttImgRev:hover {
-        filter: drop-shadow(3px 3px 2px #758777);
-    }
-
-    .buttImg {
-        width: 15px;
-    }
-
-    .buttImg:hover {
-        filter: drop-shadow(3px 3px 2px #758777);
-    }
-
-    input[type="checkbox"]{
-        margin: 5px;
-    }
-</style>

@@ -1,60 +1,98 @@
 <script lang="ts">
+	import '../app.css';
+	import { page } from '$app/stores';
 	import {
-	  Collapse,
-	  Navbar,
-	  NavbarToggler,
-	  NavbarBrand,
-	  Nav,
-	  NavItem,
-	  NavLink
-	} from 'sveltestrap';  
-	import { fly } from 'svelte/transition';
+		DarkMode,
+		Navbar,
+		NavBrand,
+		NavLi,
+		NavUl,
+		NavHamburger,
+		Sidebar,
+		SidebarGroup,
+		SidebarItem,
+		SidebarWrapper,
+		Footer,
+		FooterBrand,
+		FooterCopyright,
+		FooterLink,
+		FooterLinkGroup,
+		Button,
+		Img
+	} from 'flowbite-svelte';
 	import { onMount } from 'svelte';
+	import { twMerge } from 'tailwind-merge';
+	import {ArrowLeftToBracketOutline, UserSolid, ArrowRightToBracketOutline, EditOutline } from 'flowbite-svelte-icons';
 
 	let src = '/logo.png';
-  
 	let ready = false;
-	onMount(() => ready = true);
+
+ 	let aClass = 'flex items-center mb-5';
+  	let spanClass = 'self-center text-xl font-semibold whitespace-nowrap dark:text-white';
+	
+	onMount(() => {
+		ready = true;
+	});
+
+	$: activeUrl = $page.url.pathname;
 	  
-	let isOpen = false;
-
 </script>
-  
-<Navbar class="NavStyle" expand="md">
-	{#if ready}
-	<NavbarBrand href="/"><img src={src} in:fly={{ x: 200, duration: 1500 }} alt="logo" height="50px"></NavbarBrand>
-	{/if}
-    <NavbarToggler on:click={() => (isOpen = !isOpen)} />
-    <Collapse {isOpen} navbar expand="md">
-		<Nav class="ms-auto" navbar>
-			<NavItem>
-				<NavLink href="/registration">Registration</NavLink>
-			</NavItem>
-			<NavItem>
-				<NavLink href="/hello-world">Hello World!</NavLink>
-			</NavItem>
-			<NavItem>
-				<NavLink href="/login">Login</NavLink>
-			</NavItem>
-			<NavItem>
-				<NavLink>Logout</NavLink>
-			</NavItem>
-		</Nav>
-    </Collapse>
-</Navbar>
 
-<div class="page-content">
+<div class="flex flex-row flex-wrap">
+	<aside class="w-full sm:w-1/3 md:w-1/6 bg-gray-100 dark:bg-zinc-900">
+		<div class="sticky top-2 w-full p-0">
+			<ul class="flex flex-col overflow-hidden">
+				<Sidebar {activeUrl} class="w-full">
+					<SidebarWrapper class="bg-gray-100 dark:bg-zinc-900 p-0">
+					<SidebarGroup>
 
-<slot />
+						<a {...$$restProps} href="/" class={twMerge(aClass, $$props.class)}>
+							<Img src="/logo.png" class="w-1/2 p-5" alt="SNM"/>
+							<span class={spanClass}>SNM</span>
+						</a>
+						
+						<SidebarItem label="hello-world" href="/hello-world">
+						<svelte:fragment slot="icon">
+							<UserSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+						</svelte:fragment>
+						</SidebarItem>
 
+						<DarkMode />
+
+					</SidebarGroup>
+					</SidebarWrapper>
+				</Sidebar>
+			</ul>
+		</div>
+	</aside>
+	<main class="w-full sm:w-2/3 md:w-5/6">
+		<Navbar class="flex-none w-full bg-gray-100 dark:bg-zinc-900" style="border-bottom: 1px solid #1db954;">
+			<NavBrand href="/" >
+				
+			</NavBrand>
+			<NavHamburger/>
+			<NavUl>
+				<NavLi href="/registration"><Button color="primary" outline pill><EditOutline class="w-4 h-4" color="primary" />Registration</Button></NavLi>
+				<NavLi href="/login"><Button color="primary" outline pill><ArrowLeftToBracketOutline class="w-4 h-4" color="primary" />Login</Button></NavLi>
+				<NavLi href="/logout"><Button color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Logout</Button></NavLi>	 
+			</NavUl>
+		</Navbar>
+
+		<slot />
+
+		<Footer footerType="logo" class="bg-white dark:bg-zinc-800 mt-auto">
+			<div class="sm:flex sm:items-center sm:justify-between">
+				<FooterBrand href="/" src={src} alt="SNM Logo" name="SNM" />
+				<FooterLinkGroup ulClass="flex flex-wrap items-center mb-6 text-sm text-gray-500 sm:mb-0 dark:text-gray-400">
+				<FooterLink href="/">About</FooterLink>
+				<FooterLink href="/">Privacy Policy</FooterLink>
+				<FooterLink href="/">Licensing</FooterLink>
+				<FooterLink href="/">Contact</FooterLink>
+				</FooterLinkGroup>
+			</div>
+			<hr class="my-6 border-emerald-200 sm:mx-auto dark:border-emerald-700 lg:my-8" />
+			<FooterCopyright href="/" by="Z&P" />
+		</Footer>
+	</main>
 </div>
 
-<style>	
-    .page-content {
-        padding: 20px;
-    }
-	:global(.NavStyle){
-		background-color: #373737;
-		border-bottom: 1px solid #1db954;
-	}
-</style>
