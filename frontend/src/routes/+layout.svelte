@@ -10,7 +10,6 @@
 		NavHamburger,
 		Sidebar,
 		SidebarGroup,
-		SidebarBrand,
 		SidebarItem,
 		SidebarWrapper,
 		Footer,
@@ -22,17 +21,11 @@
 		Img
 	} from 'flowbite-svelte';
 	import { onMount } from 'svelte';
-	import { fly } from 'svelte/transition';
 	import { twMerge } from 'tailwind-merge';
 	import {ArrowLeftToBracketOutline, UserSolid, ArrowRightToBracketOutline, EditOutline } from 'flowbite-svelte-icons';
 
-	let src = '/logo.png';  
+	let src = '/logo.png';
 	let ready = false;
-	let site = {
-		name: 'SNM',
-		href: '/',
-		img: '/logo.png'
-	};
 
  	let aClass = 'flex items-center mb-5';
   	let spanClass = 'self-center text-xl font-semibold whitespace-nowrap dark:text-white';
@@ -52,8 +45,6 @@
 				<Sidebar {activeUrl} class="w-full">
 					<SidebarWrapper class="bg-gray-100 dark:bg-zinc-900 p-0">
 					<SidebarGroup>
-
-						<!-- <SidebarBrand {site} class="h-24 w-24"/> -->
 
 						<a {...$$restProps} href="/" class={twMerge(aClass, $$props.class)}>
 							<Img src="/logo.png" class="w-1/2 p-5" alt="SNM"/>

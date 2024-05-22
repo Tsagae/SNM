@@ -1,7 +1,6 @@
 "use strict";
-import spotify from '../spotify.js';
 import dataAccess from '../dataAccess.js'
-import ObjectId from 'mongodb';
+import mongodb from 'mongodb';
 
 /**
  * Gets a playlist from the db
@@ -11,7 +10,7 @@ async function getPlaylist(id) {
     //db.Playlists.findOne({_id: ObjectId("65182db9baff8944c190d742")})
     let res;
     await dataAccess.executeQuery(async (db) => {
-        res = await db.collection('Playlists').findOne({_id: new ObjectId(id)});
+        res = await db.collection('Playlists').findOne({_id: new mongodb.ObjectId(id)});
     });
     return res;
 }

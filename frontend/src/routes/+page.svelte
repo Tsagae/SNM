@@ -3,7 +3,8 @@
         Button,
         Checkbox,
         Dropdown, 
-        Img
+        Img,
+        Spinner
     } from 'flowbite-svelte';
     import {ChevronDownOutline, FilterOutline} from 'flowbite-svelte-icons';
     import {search, getPubPlaylist} from '$lib/backend.js';
@@ -38,14 +39,14 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
             </svg>
         </div>
-        <input bind:value={keyword} type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Keyword" required />
-        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+        <input bind:value={keyword} type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500" placeholder="Keyword" required />
+        <button type="submit" color="primary" class="text-white absolute end-2.5 bottom-2.5 bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Search</button>
     </div>
 </form>
 <br>
 
 <div class="flex flex-col items-center">
-    <Button color="alternative" pill><FilterOutline class="w-6 h-6 mr-2 text-white dark:text-white"/>Filters<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+    <Button color="primary" pill><FilterOutline class="w-6 h-6 mr-2 text-white dark:text-white"/>Filters<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
     <Dropdown class="overflow-y-auto px-3 pb-3 text-sm h-40">
         <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
             <Checkbox name="filter" value="album" id="album" checked>Album</Checkbox>
@@ -63,15 +64,13 @@
 </div>
 <br><br>
 
-<!-- <Form on:submit={searchForm}>
-    <input bind:value={keyword} placeholder="Search"/>
-</Form> -->
-
 {#await pubPlaylist}
-    <p> waiting </p>
+    <div class="text-center"><Spinner size={8} color="green" /></div>
 {:then playlist}
     {#each playlist as { _id, name, user, tracks, tags}, i}
         <Playlist id={_id} name={name} user={user} tracks={tracks} tags={tags} i={i}/>
         <br><br>
     {/each}
 {/await}
+
+
