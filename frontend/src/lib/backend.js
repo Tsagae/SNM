@@ -23,7 +23,7 @@ export async function search(query, filters) {
 export async function getPubPlaylist() {
     let url = `http://localhost:3000/getAllPublicPlaylists`;
     const res = await fetch(url, {
-        method: 'GET',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         }
