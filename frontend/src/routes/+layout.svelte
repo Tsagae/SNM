@@ -20,20 +20,12 @@
 		Button,
 		Img
 	} from 'flowbite-svelte';
-	import { onMount } from 'svelte';
 	import { twMerge } from 'tailwind-merge';
 	import {ArrowLeftToBracketOutline, UserSolid, ArrowRightToBracketOutline, EditOutline } from 'flowbite-svelte-icons';
 
 	let src = '/logo.png';
-	let ready = false;
-
  	let aClass = 'flex items-center mb-5';
   	let spanClass = 'self-center text-xl font-semibold whitespace-nowrap dark:text-white';
-	
-	onMount(() => {
-		ready = true;
-	});
-
 	$: activeUrl = $page.url.pathname;
 	  
 </script>
@@ -72,9 +64,9 @@
 			</NavBrand>
 			<NavHamburger/>
 			<NavUl>
-				<NavLi href="/registration"><Button color="primary" outline pill><EditOutline class="w-4 h-4" color="primary" />Registration</Button></NavLi>
-				<NavLi href="/login"><Button color="primary" outline pill><ArrowLeftToBracketOutline class="w-4 h-4" color="primary" />Login</Button></NavLi>
-				<NavLi href="/logout"><Button color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Logout</Button></NavLi>	 
+				<NavLi href="/registration"><Button color="primary" outline pill><EditOutline class="w-4 h-4" color="primary" />Registrati</Button></NavLi>
+				<NavLi href="/login"><Button color="primary" outline pill><ArrowLeftToBracketOutline class="w-4 h-4" color="primary" />Accedi</Button></NavLi>
+				<NavLi href="/logout"><Button color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Esci</Button></NavLi>	 
 			</NavUl>
 		</Navbar>
 
@@ -84,10 +76,9 @@
 			<div class="sm:flex sm:items-center sm:justify-between">
 				<FooterBrand href="/" src={src} alt="SNM Logo" name="SNM" />
 				<FooterLinkGroup ulClass="flex flex-wrap items-center mb-6 text-sm text-gray-500 sm:mb-0 dark:text-gray-400">
-				<FooterLink href="/">About</FooterLink>
+				<FooterLink href="/">Info</FooterLink>
 				<FooterLink href="/">Privacy Policy</FooterLink>
-				<FooterLink href="/">Licensing</FooterLink>
-				<FooterLink href="/">Contact</FooterLink>
+				<FooterLink href="/">Contatti</FooterLink>
 				</FooterLinkGroup>
 			</div>
 			<hr class="my-6 border-emerald-200 sm:mx-auto dark:border-emerald-700 lg:my-8" />
