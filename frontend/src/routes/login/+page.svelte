@@ -2,8 +2,16 @@
     import {
         useForm
     } from 'svelte-use-form';
-    import { Section, Register } from "flowbite-svelte-blocks";
-    import { Label, Input } from "flowbite-svelte";
+    import { 
+        Section, 
+        Register 
+    } from "flowbite-svelte-blocks";
+    import { 
+        Label, 
+        Input,
+        Alert
+    } from "flowbite-svelte";
+    import { InfoCircleSolid } from 'flowbite-svelte-icons';
     import Cookies from 'js-cookie';
 
     const form = useForm();
@@ -45,12 +53,12 @@
 <main>
 
     <Section name="login">
-        <Register href="/">
+        <Register>
         <svelte:fragment slot="top">
             <img class="w-8 h-8 mr-2" src="./logo.png" alt="logo" />
             Social Network for Music
         </svelte:fragment>
-        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8 bg-gray-100 dark:bg-zinc-900">
 
             <form class="flex flex-col space-y-6" use:form method="post">
             <Label class="space-y-2">
@@ -62,7 +70,7 @@
                 <Input type="password" name="password" placeholder="•••••" required />
             </Label>
             <div class="flex items-start">
-                <a href="/" class="mr-auto text-sm text-blue-700 hover:underline dark:text-blue-500">Password dimenticata?</a>
+                <a href="/" class="mr-auto text-sm text-primary-600 hover:underline dark:text-primary-500">Password dimenticata?</a>
             </div>
             <button class="text-center font-medium focus-within:ring-4 focus-within:outline-none inline-flex items-center justify-center px-5 py-2.5 text-sm text-white bg-primary-700 hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700 focus-within:ring-primary-300 dark:focus-within:ring-primary-800 rounded-lg w-full1" type="submit" disabled={!$form.valid} on:click|preventDefault={onSubmit}>Accedi</button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
@@ -75,7 +83,14 @@
     </Section>
 
     {#if hasRes}
-        <h1>{resOk ? 'Login successful' : 'Login failed'}</h1>
+        {#if resOk}            
+            <h1>Login successful</h1>
+        {:else}
+            <Alert color="red" class="bg-white dark:bg-zinc-800">
+                <InfoCircleSolid slot="icon" class="w-5 h-5" />
+                ATTENZIONE: nome o password sono scorretti.
+            </Alert>
+        {/if}
     {/if}
 
 </main>
