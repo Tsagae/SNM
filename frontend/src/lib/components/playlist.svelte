@@ -13,7 +13,7 @@
     export let i;
 </script>
 
-<div in:fly={{ delay: i * 250, y: 300, duration: 500 }}>
+<div in:fly|global={{ delay: i * 250, y: 300, duration: 500 }}>
     <div class="space-y-4">
         <Card img="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/rap-cd-album-mixtape-cover-design-template-8e67148b45c3625087dc1cb15f1de8a8_screen.jpg" horizontal size="lg" href="/playlist/{id}" class="mx-auto bg-gray-100 dark:bg-zinc-700">
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><Span class="uppercase">{name}</Span></h5>
