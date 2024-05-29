@@ -30,7 +30,8 @@
 	  
 </script>
 
-<div class="flex flex-row flex-wrap">
+<div class="h-full flex flex-row flex-wrap">
+
 	<aside class="w-full sm:w-1/3 md:w-1/6 bg-gray-100 dark:bg-zinc-900">
 		<div class="sticky top-2 w-full p-0">
 			<ul class="flex flex-col overflow-hidden">
@@ -57,8 +58,9 @@
 			</ul>
 		</div>
 	</aside>
-	<main class="w-full sm:w-2/3 md:w-5/6">
-		<Navbar class="flex-none w-full bg-gray-100 dark:bg-zinc-900" style="border-bottom: 1px solid #1db954;">
+
+	<main class="w-full sm:w-2/3 md:w-5/6 flex flex-col">
+		<Navbar class="w-full bg-gray-100 dark:bg-zinc-900" style="border-bottom: 1px solid #1db954;">
 			<NavBrand href="/" >
 				
 			</NavBrand>
