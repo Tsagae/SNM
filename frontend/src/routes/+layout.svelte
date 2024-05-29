@@ -87,3 +87,10 @@
 	</main>
 </div>
 
+<style>
+	:global(.touched:invalid) {
+		border-color: red;
+		outline-color: red;
+		background-color: rgb(241, 142, 142);
+	}
+</style>
