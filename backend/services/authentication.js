@@ -62,6 +62,18 @@ async function registerUser(req, res) {
     if (!errors.isEmpty()) {
         return res.status(422).json({errors: errors.array()});
     } else {
+        let cursor;
+        await dataAccess.executeQuery(async (db) => {
+            cursor = await db.collection('Users').find({
+                username: username,
+            });
+            for await (const doc of cursor) {
+                queryResult.push(doc);
+            }
+        });
+        if (queryResult.length >= 1) {
+            return res.status(422).json({error: "User already present in database"});
+        }
         const data = matchedData(req);
         const username = data.username;
         const email = data.email;
