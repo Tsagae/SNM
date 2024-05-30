@@ -25,7 +25,7 @@
             username: $form.username.value,
             password: $form.password.value
         };
-        console.log('data: ', JSON.stringify(data));
+        // console.log('data: ', JSON.stringify(data));
         await login(data);
     }
 
@@ -46,6 +46,7 @@
 
         if (resOk) {
             Cookies.set('authToken', json.accessToken);
+            window.location.replace("/");
         }
     }
 </script>
@@ -53,7 +54,7 @@
 <Section name="login">
     <Register>
     <svelte:fragment slot="top">
-        <img class="w-8 h-8 mr-2" src="./logo.png" alt="logo" />
+        <img class="w-8 h-8 mr-2" src="../logo.png" alt="logo" />
         Social Network for Music
     </svelte:fragment>
     <div class="p-6 space-y-4 md:space-y-6 sm:p-8 bg-gray-100 dark:bg-zinc-900">
@@ -81,9 +82,7 @@
 </Section>
 
 {#if hasRes}
-    {#if resOk}            
-        <h1>Login successful</h1>
-    {:else}
+    {#if !resOk}            
         <Alert color="red" class="bg-white dark:bg-zinc-800">
             <InfoCircleSolid slot="icon" class="w-5 h-5" />
             ATTENZIONE: nome o password sono scorretti.

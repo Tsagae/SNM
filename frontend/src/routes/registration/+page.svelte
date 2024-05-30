@@ -34,7 +34,7 @@
 			username: $form.username.value,
 			password: $form.password.value
 		};
-		console.log('data: ', JSON.stringify(data));
+		// console.log('data: ', JSON.stringify(data));
 		await registerUser(data);
 	}
 
@@ -53,6 +53,10 @@
 
 		hasRes = true;
 		resOk = res.ok;
+
+		if (resOk) {
+            window.location.replace("/login");
+        }
 	}
 </script>
 
@@ -98,7 +102,7 @@
 			</HintGroup>
 			<Label class="space-y-2">
 			<span>Password</span>
-			<input class="block w-full disabled:cursor-not-allowed disabled:opacity-50 rtl:text-right p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 text-sm rounded-lg" placeholder="•••••" type="password" name="password" use:validators={[required, minLength(5), containNumbers(2), hasUppercase()]} required />
+			<input class="block w-full disabled:cursor-not-allowed disabled:opacity-50 rtl:text-right p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-50 text-gray-900 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 text-sm rounded-lg" placeholder="•••••" type="password" name="password" use:validators={[required, minLength(8), containNumbers(2), hasUppercase()]} required />
 			</Label>
 			<HintGroup for="password">
 			<Hint on="required">
@@ -107,7 +111,7 @@
 					{requiredMessage}
 				</Alert>
 			</Hint>
-			<Hint on="minLength" hideWhenRequired let:value>
+			<Hint on="minLength" let:value>
 				<Alert color="red" class="bg-white dark:bg-zinc-800">
 					<InfoCircleSolid slot="icon" class="w-5 h-5" />
 					Questo campo deve avere almeno {value} caratteri.
@@ -158,12 +162,7 @@
 </Section>
 
 {#if hasRes}
-	{#if resOk}
-		<Alert color="green" class="bg-white dark:bg-zinc-800">
-			<InfoCircleSolid slot="icon" class="w-5 h-5" />
-			Registration successful
-		</Alert>         
-	{:else}
+	{#if !resOk}
 		<Alert color="red" class="bg-white dark:bg-zinc-800">
 			<InfoCircleSolid slot="icon" class="w-5 h-5" />
 			Registration failed

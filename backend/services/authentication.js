@@ -63,6 +63,11 @@ async function registerUser(req, res) {
         return res.status(422).json({errors: errors.array()});
     } else {
         let cursor;
+        const data = matchedData(req);
+        const username = data.username;
+        const email = data.email;
+        const password = data.password;
+        let queryResult = [];
         await dataAccess.executeQuery(async (db) => {
             cursor = await db.collection('Users').find({
                 username: username,
@@ -74,10 +79,6 @@ async function registerUser(req, res) {
         if (queryResult.length >= 1) {
             return res.status(422).json({error: "User already present in database"});
         }
-        const data = matchedData(req);
-        const username = data.username;
-        const email = data.email;
-        const password = data.password;
         await dataAccess.executeQuery(async (db) => {
             await db.collection('Users').insertOne({
                 username: username,
