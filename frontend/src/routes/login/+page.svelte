@@ -1,19 +1,20 @@
 <script>
     import {
-        useForm,
-        Hint,
-        HintGroup,
-        validators,
-        required,
-        minLength,
-        email
+        useForm
     } from 'svelte-use-form';
-    import {passwordMatch, containNumbers} from './customValidators';
+    import { 
+        Section, 
+        Register 
+    } from "flowbite-svelte-blocks";
+    import { 
+        Label, 
+        Input,
+        Alert
+    } from "flowbite-svelte";
+    import { InfoCircleSolid } from 'flowbite-svelte-icons';
     import Cookies from 'js-cookie';
 
     const form = useForm();
-
-    const requiredMessage = 'This field is required';
 
     let hasRes = false;
     let resOk;
@@ -24,7 +25,7 @@
             username: $form.username.value,
             password: $form.password.value
         };
-        console.log('data: ', JSON.stringify(data));
+        // console.log('data: ', JSON.stringify(data));
         await login(data);
     }
 
@@ -38,100 +39,53 @@
         });
 
         const json = await res.json();
-        let result = JSON.stringify(json);
-        //console.log(result);
+        // let result = JSON.stringify(json);
 
         hasRes = true;
         resOk = res.ok;
 
         if (resOk) {
             Cookies.set('authToken', json.accessToken);
+            window.location.replace("/");
         }
-    }
-
-    async function testToken() {
-        const res = await fetch('http://localhost:3000/authToken', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + Cookies.get('authToken')
-            }
-        });
-
-        const json = await res.json();
-        console.log(json);
     }
 </script>
 
-<main>
-    <form use:form method="post">
-        <h1>Login</h1>
+<Section name="login">
+    <Register>
+    <svelte:fragment slot="top">
+        <img class="w-8 h-8 mr-2" src="../logo.png" alt="logo" />
+        Social Network for Music
+    </svelte:fragment>
+    <div class="p-6 space-y-4 md:space-y-6 sm:p-8 bg-gray-100 dark:bg-zinc-900">
 
-        <input type="text" name="username"/>
-        <label for="Username">Username</label>
+        <form class="flex flex-col space-y-6" use:form method="post">
+        <Label class="space-y-2">
+            <span>Nome Account</span>
+            <Input type="text" name="username" placeholder="nome" required />
+        </Label>
+        <Label for="password" class="space-y-2">
+            <span>Password</span>
+            <Input type="password" name="password" placeholder="•••••" required />
+        </Label>
+        <div class="flex items-start">
+            <a href="/" class="mr-auto text-sm text-primary-600 hover:underline dark:text-primary-500">Password dimenticata?</a>
+        </div>
+        <button class="text-center font-medium focus-within:ring-4 focus-within:outline-none inline-flex items-center justify-center px-5 py-2.5 text-sm text-white bg-primary-700 hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700 focus-within:ring-primary-300 dark:focus-within:ring-primary-800 rounded-lg w-full1" type="submit" disabled={!$form.valid} on:click|preventDefault={onSubmit}>Accedi</button>
+        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+            Non hai ancora un account? <a href="/registration" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Registrati</a>
+        </p>
+        </form>
 
-        <input
-                type="password"
-                name="password"
-                use:validators={[required, minLength(5), containNumbers(2)]}
-        />
-        <label for="password">Password</label>
-        <HintGroup for="password">
-            <Hint on="required">{requiredMessage}</Hint>
-            <Hint on="minLength" hideWhenRequired let:value
-            >This field must have at least {value} characters.
-            </Hint
-            >
-            <Hint on="containNumbers" hideWhen="minLength" let:value>
-                This field must contain at least {value} numbers.
-            </Hint>
-        </HintGroup>
-        <br><br>
+    </div>
+    </Register>
+</Section>
 
-        <button disabled={!$form.valid} on:click|preventDefault={onSubmit}> Login</button>
-    </form>
-
-    {#if hasRes}
-        <p>{resOk ? 'Login successful' : 'Login failed'}</p>
+{#if hasRes}
+    {#if !resOk}            
+        <Alert color="red" class="bg-white dark:bg-zinc-800">
+            <InfoCircleSolid slot="icon" class="w-5 h-5" />
+            ATTENZIONE: nome o password sono scorretti.
+        </Alert>
     {/if}
-
-    <button on:click={testToken}>TestAuth</button>
-
-    <pre>
-		{JSON.stringify($form, null, 1)}
-	</pre>
-</main>
-
-<style>
-    :global(.touched:invalid) {
-        border-color: red;
-        outline-color: red;
-    }
-
-    h1 {
-        font-size: 50px;
-        font-weight: 600;
-        font-family: var(--font-family, CircularSp, CircularSp-Arab, CircularSp-Hebr, CircularSp-Cyrl, CircularSp-Grek, CircularSp-Deva, var(--fallback-fonts, sans-serif));
-        color: #1db954;
-        text-shadow: 0px 0px 5px #363636, 0px 0px 10px #363636, 0px 0px 10px #363636, 0px 0px 20px #363636;
-    }
-
-    input {
-        border: none;
-        border-bottom: 1px ridge #1db954;
-        background-color: transparent;
-        padding: 8px;
-        display: block;
-    }
-
-    main {
-        display: flex;
-        justify-content: space-around;
-    }
-
-    pre {
-        height: 80vh;
-        overflow: auto;
-        font-size: 12px;
-    }
-</style>
+{/if}
