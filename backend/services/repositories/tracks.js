@@ -10,12 +10,14 @@ async function getTrack(id) {
 }
 
 /**
+ *
  * https://developer.spotify.com/documentation/web-api/reference/get-several-tracks
  * @param {string[]} trackIds of the tracks max 50
+ * @returns {Promise<any|{error: string, statusCode: number}>}
  */
 async function getTracks(trackIds) {
     if(trackIds.length > 50){
-        throw new Error("Max 50 tracks");
+         return {error: "Max 50 tracks", statusCode: 400};
     }
     let url = "https://api.spotify.com/v1/tracks?ids=";
     trackIds.forEach((id) => url += id + ",");

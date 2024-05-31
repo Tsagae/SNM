@@ -108,7 +108,7 @@ function authenticateRequest(req, res) {
         return {authenticated: false, user: null};
     }
     if (tokenValidation.err != null) {
-        res.status(403).send({result: "invalid token"});
+        res.status(403).send({error: "invalid token"});
         return {authenticated: false, user: null};
     }
     //return res.send({user: tokenValidation.user});
