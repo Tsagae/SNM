@@ -20,12 +20,14 @@ async function search(query, filters) {
     //filters: ["album", "artist", "track"]
     for (const val of filters) {
         if (val === "playlist") {
-            res.playlists = await playlists.searchPublicPlaylists(query.name)
+            res.playlists = await playlists.searchPublicPlaylists(query.name);
         } else if (val === "track") {
-            res.tracks = await tracks.searchTracks(query.name)
+            res.tracks = await tracks.searchTracks(query.name);
+        } else {
+            return {error: "filter not recognized", statusCode: 400};
         }
     }
-    return res
+    return res;
 }
 
 export default {search};
