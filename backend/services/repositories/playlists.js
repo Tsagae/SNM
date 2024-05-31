@@ -3,10 +3,11 @@ import dataAccess from '../dataAccess.js'
 import mongodb from 'mongodb';
 
 /**
- * Gets a playlist from the db
- @param {string} id of the playlist
- @param {string} user that is requesting the playlist
- @throws {Error} if the user is not the owner of the playlist and the playlist is private
+ *
+ Gets a playlist from the db
+ * @param {string} id of the playlist
+ * @param {string} user that is requesting the playlist* @param id
+ * @returns {Promise<{error: string, statusCode: number}|{public}|*>} error if the user is not the owner of the playlist and the playlist is private
  */
 async function getPlaylist(id, user) {
     let res;
@@ -14,7 +15,7 @@ async function getPlaylist(id, user) {
         res = await db.collection('Playlists').findOne({_id: new mongodb.ObjectId(id)});
     });
     if (!res?.public && res?.user !== user) {
-        throw new Error("You can't see this playlist");
+        return {error: "You can't see this playlist", statusCode: 403};
     }
     return res;
 }
@@ -42,13 +43,13 @@ async function getAllPublicPlaylists() {
  @param {boolean} isPublic
  @param {string[]} tracks
  @param {string[]} tags
- @throws {Error} if the user is not the owner of the playlist
+ @returns {Promise<{error: string, statusCode: number}|*>} error if the user is not the owner of the playlist
  */
 async function editPlaylist(id, user, name, isPublic, tracks, tags) {
     let res;
     let playlist = await getPlaylist(id, user);
     if (playlist?.user !== user) {
-        throw new Error("You can't edit this playlist");
+        return {error: "You can't edit this playlist", statusCode: 403};
     }
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').updateOne({_id: new mongodb.ObjectId(id)}, {
@@ -90,13 +91,13 @@ async function createPlaylist(user, name, isPublic, tracks, tags) {
  * @param {string} id
  * @param {string} user
  * @returns {Promise<*>}
- * @throws {Error} if the user is not the owner of the playlist
+ * @returns {Promise<*|{error: string, statusCode: number}>} error if the user is not the owner of the playlist
  */
 async function deletePlaylist(id, user) {
     let res;
     let playlist = await getPlaylist(id);
     if (playlist?.user !== user) {
-        throw new Error("You can't delete this playlist");
+        return {error: "You can't delete this playlist", statusCode: 403};
     }
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').deleteOne(db.Playlists.deleteOne({_id: new mongodb.ObjectId(id)}));

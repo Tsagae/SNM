@@ -7,7 +7,7 @@ import tracks from "./tracks.js";
  * Generic search in database
  * @param {object} query
  * @param {string[]} filters
- * @returns {Promise<{playlists: *[], tracks: *[]}>}
+ * @returns {Promise<{error: string, statusCode: number}|{playlists: *[], tracks: *[]}>} error if filters are empty
  */
 async function search(query, filters) {
     let res = {
@@ -15,7 +15,7 @@ async function search(query, filters) {
         playlists: [],
     }
     if (filters.length === 0) {
-        throw new Error("filters can't be empty");
+        return {error: "filters can't be empty", statusCode: 400};
     }
     //filters: ["album", "artist", "track"]
     for (const val of filters) {
