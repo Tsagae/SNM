@@ -1,5 +1,3 @@
-import Cookies from 'js-cookie';
-
 /**
  * @param {string} query
  * @param {string[]} filters
@@ -13,7 +11,7 @@ export async function search(query, filters) {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + Cookies.get('authToken')
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
         }
     });
 
@@ -41,7 +39,7 @@ export async function getPlaylistInfo(query) {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + Cookies.get('authToken')
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
         }
     });
 

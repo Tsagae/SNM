@@ -12,7 +12,6 @@
         Alert
     } from "flowbite-svelte";
     import { InfoCircleSolid } from 'flowbite-svelte-icons';
-    import Cookies from 'js-cookie';
 
     const form = useForm();
 
@@ -45,7 +44,7 @@
         resOk = res.ok;
 
         if (resOk) {
-            Cookies.set('authToken', json.accessToken);
+            localStorage.setItem('authToken', json.accessToken);
             window.location.replace("/");
         }
     }
