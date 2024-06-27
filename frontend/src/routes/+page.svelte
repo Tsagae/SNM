@@ -13,12 +13,6 @@
     let keyword = '';
     let pubPlaylist = [];
 
-    if(localStorage.getItem('authToken')){
-        console.log('LOGGED')
-    } else {
-        console.log('NOT LOGGED')
-    }
-
     pubPlaylist = getPubPlaylist();
 
     let results = {};

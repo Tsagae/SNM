@@ -27,7 +27,15 @@
  	let aClass = 'flex items-center mb-5';
   	let spanClass = 'self-center text-xl font-semibold whitespace-nowrap dark:text-white';
 	$: activeUrl = $page.url.pathname;
-	  
+
+	let logged;
+
+	if(localStorage.getItem('authToken')){
+		logged = true;
+	} else {
+		logged = false;
+	}
+		
 </script>
 
 <div class="h-full flex flex-row flex-wrap">
@@ -43,12 +51,22 @@
 							<Img src="/logo.png" class="w-1/2 p-5" alt="SNM"/>
 							<span class={spanClass}>SNM</span>
 						</a>
-						
-						<SidebarItem label="hello-world" href="/hello-world">
-						<svelte:fragment slot="icon">
-							<UserSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-						</svelte:fragment>
-						</SidebarItem>
+
+						{#if logged}
+							<p class="text-gray-500 dark:text-gray-400">LOGGED MENU</p>
+							<SidebarItem label="hello-world" href="/hello-world">
+								<svelte:fragment slot="icon">
+									<UserSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+								</svelte:fragment>
+							</SidebarItem>
+						{:else}
+							<p class="text-gray-500 dark:text-gray-400">NOT LOGGED MENU</p>
+							<SidebarItem label="hello-world" href="/hello-world">
+								<svelte:fragment slot="icon">
+									<UserSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+								</svelte:fragment>
+							</SidebarItem>
+						{/if}
 
 						<DarkMode />
 
@@ -66,9 +84,12 @@
 			</NavBrand>
 			<NavHamburger/>
 			<NavUl>
-				<NavLi href="/registration"><Button color="primary" outline pill><EditOutline class="w-4 h-4" color="primary" />Registrati</Button></NavLi>
-				<NavLi href="/login"><Button color="primary" outline pill><ArrowLeftToBracketOutline class="w-4 h-4" color="primary" />Accedi</Button></NavLi>
-				<NavLi href="/logout"><Button color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Esci</Button></NavLi>	 
+				{#if logged}
+					<NavLi href="/logout"><Button color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Esci</Button></NavLi>	 
+				{:else}
+					<NavLi href="/registration"><Button color="primary" outline pill><EditOutline class="w-4 h-4" color="primary" />Registrati</Button></NavLi>
+					<NavLi href="/login"><Button color="primary" outline pill><ArrowLeftToBracketOutline class="w-4 h-4" color="primary" />Accedi</Button></NavLi>
+				{/if}
 			</NavUl>
 		</Navbar>
 
