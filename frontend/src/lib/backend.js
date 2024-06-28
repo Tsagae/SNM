@@ -1,5 +1,9 @@
 export async function isValidToken() {
     let url = `http://localhost:3000/authToken`;
+
+    if(localStorage.getItem('authToken') === null){
+        return false;
+    }
     const res = await fetch(url, {
         method: 'POST',
         headers: {
@@ -48,12 +52,18 @@ export async function getPubPlaylist() {
  */
 export async function getPlaylistInfo(query) {
     let url = `http://localhost:3000/getPlaylist?id=${query}`;
+
+    if(localStorage.getItem('authToken') === null){
+        return false;
+    }
+
     const res = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + localStorage.getItem('authToken')
-        }
+        },
+        body : JSON.stringify({id : query})
     });
 
     return await res.json();

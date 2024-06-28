@@ -41,8 +41,13 @@
 	};
 
 	checkToken().then((res) => {
-		if (!res.error){
-			logged = true;
+		if (res != false) {
+			if (!res.error){
+				logged = true;
+			} else{
+				//localStorage.removeItem('authToken');
+				logout;
+			}
 		}
 	});
 		
