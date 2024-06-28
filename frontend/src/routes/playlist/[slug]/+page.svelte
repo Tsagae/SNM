@@ -11,17 +11,23 @@
         TableHeadCell
     } from 'flowbite-svelte';
     import {getPlaylistInfo} from '$lib/backend.js';
+	import { error } from '@sveltejs/kit';
 
     let pageInfo = window.location.pathname;
     let id = pageInfo.replace("/playlist/", "");
 
+    console.log(id)
+
     const playlistInfo = getPlaylistInfo(id);
+
+    console.log(playlistInfo)
 
 </script>
 
     {#await playlistInfo}
-        <div class="text-center"><Spinner size={8} color="green" /></div>
+        <div class="text-center mt-16"><Spinner size={8} color="green" /></div>
     {:then playlist}
+        <!-- if error... -->
         <div>
             <Card class="max-w-7xl m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{playlist.name}</h5>
