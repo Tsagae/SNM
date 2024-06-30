@@ -14,8 +14,11 @@ async function getPlaylist(id, user) {
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').findOne({_id: new mongodb.ObjectId(id)});
     });
+    if(res == null){
+        return {error: "Playlist non trovata", statusCode: 404};
+    }
     if (!res?.public && res?.user !== user) {
-        return {error: "You can't see this playlist", statusCode: 403};
+        return {error: "Non hai i permessi per visualizzare la playlist", statusCode: 403};
     }
     return res;
 }

@@ -40,26 +40,26 @@
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
             </svg>
         </div>
-        <input bind:value={keyword} type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500" placeholder="Keyword" required />
+        <input bind:value={keyword} type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500" placeholder="Parola chiave..." required />
         <button type="submit" color="primary" class="text-white absolute end-2.5 bottom-2.5 bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">Search</button>
     </div>
 </form>
 <br>
 
 <div class="flex flex-col items-center">
-    <Button color="primary" pill><FilterOutline class="w-6 h-6 mr-2 text-white dark:text-white"/>Filters<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
+    <Button color="primary" pill><FilterOutline class="w-6 h-6 mr-2 text-white dark:text-white"/>Filtri<ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white" /></Button>
     <Dropdown class="overflow-y-auto px-3 pb-3 text-sm h-40">
         <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
             <Checkbox name="filter" value="album" id="album" checked>Album</Checkbox>
         </li>
         <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
-            <Checkbox name="filter" value="artist" id="artist" checked>Artist</Checkbox>
+            <Checkbox name="filter" value="artist" id="artist" checked>Artista</Checkbox>
         </li>
         <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
             <Checkbox name="filter" value="playlist" id="playlist" checked>Playlist</Checkbox>
         </li>
         <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
-            <Checkbox name="filter" value="track" id="track" checked>Track</Checkbox>
+            <Checkbox name="filter" value="track" id="track" checked>Traccia</Checkbox>
         </li>
     </Dropdown>
 </div>

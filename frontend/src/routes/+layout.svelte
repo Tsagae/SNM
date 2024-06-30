@@ -22,19 +22,35 @@
 	} from 'flowbite-svelte';
 	import { twMerge } from 'tailwind-merge';
 	import {ArrowLeftToBracketOutline, UserSolid, ArrowRightToBracketOutline, EditOutline } from 'flowbite-svelte-icons';
+	import {isValidToken} from '$lib/backend.js';
 
 	let src = '/logo.png';
  	let aClass = 'flex items-center mb-5';
   	let spanClass = 'self-center text-xl font-semibold whitespace-nowrap dark:text-white';
 	$: activeUrl = $page.url.pathname;
+	let logged = false;
 
-	let logged;
+	const logout = () => {
+		localStorage.removeItem('authToken');
+		// window.location.replace("/");
+	};
 
-	if(localStorage.getItem('authToken')){
-		logged = true;
-	} else {
-		logged = false;
-	}
+	async function checkToken() {
+		let res = await isValidToken();
+		return await res;
+	};
+
+	checkToken().then((res) => {
+		console.log("RES: ", res)
+		if (res != false) {
+			if (!res.error){
+				logged = true;
+			} else{
+				//localStorage.removeItem('authToken');
+				logout();
+			}
+		}
+	});
 		
 </script>
 
@@ -85,7 +101,7 @@
 			<NavHamburger/>
 			<NavUl>
 				{#if logged}
-					<NavLi href="/logout"><Button color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Esci</Button></NavLi>	 
+					<NavLi><Button on:click={logout} color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Esci</Button></NavLi>	 
 				{:else}
 					<NavLi href="/registration"><Button color="primary" outline pill><EditOutline class="w-4 h-4" color="primary" />Registrati</Button></NavLi>
 					<NavLi href="/login"><Button color="primary" outline pill><ArrowLeftToBracketOutline class="w-4 h-4" color="primary" />Accedi</Button></NavLi>

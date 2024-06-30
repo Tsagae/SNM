@@ -17,7 +17,7 @@
     <div class="space-y-4">
         <Card img="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/rap-cd-album-mixtape-cover-design-template-8e67148b45c3625087dc1cb15f1de8a8_screen.jpg" horizontal size="lg" href="/playlist/{id}" class="mx-auto bg-gray-100 dark:bg-zinc-700">
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><Span class="uppercase">{name}</Span></h5>
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight"><b> {tracks.length} tracks</b> </p>
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight"><b> {tracks.length} canzoni</b> </p>
             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">TAGS:
                 {#each tags as tag}
                     #{tag}&nbsp;
