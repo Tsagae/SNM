@@ -32,7 +32,7 @@
 
 	const logout = () => {
 		localStorage.removeItem('authToken');
-		window.location.replace("/");
+		// window.location.replace("/");
 	};
 
 	async function checkToken() {
@@ -41,12 +41,13 @@
 	};
 
 	checkToken().then((res) => {
+		console.log("RES: ", res)
 		if (res != false) {
 			if (!res.error){
 				logged = true;
 			} else{
 				//localStorage.removeItem('authToken');
-				logout;
+				logout();
 			}
 		}
 	});

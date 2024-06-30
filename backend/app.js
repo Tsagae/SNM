@@ -50,7 +50,7 @@ app.post('/authToken', (req, res) => {
 
 // -------- Tracks --------
 app.post('/getTrack', async (req, res) => {
-    if (!auth.authenticateRequest(req, res).authenticated) return;
+    // if (!auth.authenticateRequest(req, res).authenticated) return;
     try {
         let results = await tracks.getTrack(req.body.id);
         return await handleRequest(results, res);

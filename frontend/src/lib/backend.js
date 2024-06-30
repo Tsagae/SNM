@@ -68,3 +68,21 @@ export async function getPlaylistInfo(query) {
 
     return await res.json();
 }
+
+/**
+ * @param {ObjectId} query
+ */
+export async function getTrackInfo(query) {
+    let url = `http://localhost:3000/getTrack`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body : JSON.stringify({id : query})
+    });
+
+    return await res.json();
+}

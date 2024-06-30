@@ -1,22 +1,21 @@
 <script>
     import { 
-        Alert,
-        Button,
-        Spinner,
-        Card,
-        Badge, 
-        Table, 
-        TableBody, 
-        TableBodyCell, 
-        TableBodyRow, 
-        TableHead, 
-        TableHeadCell
+    Alert,
+    Button,
+    Spinner,
+    Card,
+    Badge, 
+    Table, 
+    TableBody, 
+    TableBodyCell, 
+    TableBodyRow, 
+    TableHead, 
+    TableHeadCell
     } from 'flowbite-svelte';
-    import { InfoCircleSolid } from 'flowbite-svelte-icons';
-    import {getPlaylistInfo} from '$lib/backend.js';
-	import { error } from '@sveltejs/kit';
-	import Playlist from '$lib/components/playlist.svelte';
-
+    import { InfoCircleSolid, PlayOutline } from 'flowbite-svelte-icons';
+    import {getPlaylistInfo, getTrackInfo} from '$lib/backend.js';
+    import { error } from '@sveltejs/kit';
+    
     let pageInfo = window.location.pathname;
     let id = pageInfo.replace("/playlist/", "");
     id = id.replace("/", "");
@@ -24,7 +23,7 @@
     const playlistInfo = getPlaylistInfo(id);
 
 </script>
-
+    
     {#await playlistInfo}
         <div class="text-center mt-16"><Spinner size={8} color="green" /></div>
     {:then playlist}
@@ -46,28 +45,38 @@
                     <p class="font-normal text-gray-700 dark:text-gray-400 leading-tight place-self-end">by {playlist.user}</p> <br>
                 </Card>
                 {#each playlist.tags as tag}
-                    <Badge rounded color="green" class="mx-2">#{tag}</Badge>                   
+                    <Badge rounded color="green" class="mx-2">#{tag}</Badge> 
                 {/each}
                 <br><br>
             </div>
             <div>
-                <!-- Possiamo mettere un filtro di ricerca già fatto qua -->
+            <!-- Possiamo mettere un filtro di ricerca già fatto qua -->
                 <Table shadow hoverable>
                     <TableHead class="bg-gray-100 dark:bg-zinc-700">
-                    <TableHeadCell>Canzone</TableHeadCell>
-                    <TableHeadCell>Artista</TableHeadCell>
-                    <TableHeadCell>Album</TableHeadCell>
-                    <TableHeadCell>Altro...</TableHeadCell>
+                        <TableHeadCell>Canzone</TableHeadCell>
+                        <TableHeadCell>Artista</TableHeadCell>
+                        <TableHeadCell>Album</TableHeadCell>
+                        <TableHeadCell>Altro?</TableHeadCell>
                     </TableHead>
-                    <TableBody tableBodyClass="divide-y">
-                        {#each playlist.tracks as track}
+                <TableBody tableBodyClass="divide-y">
+                    {#each playlist.tracks as track}
+                        {#await getTrackInfo(track)}
+                        <p>...waiting</p>
+                        {:then track}
                         <TableBodyRow class="bg-white dark:bg-zinc-800">
-                            <TableBodyCell>{track}</TableBodyCell>
-                            <TableBodyCell>1</TableBodyCell>
-                            <TableBodyCell>2</TableBodyCell>
-                            <TableBodyCell>3</TableBodyCell>
+                        <TableBodyCell>{track.name}</TableBodyCell>
+                        <TableBodyCell>
+                            {#each track.artists as artist}
+                                {artist.name}
+                            {/each}
+                        </TableBodyCell>
+                        <TableBodyCell>{track.album.name}</TableBodyCell>
+                        <TableBodyCell>?</TableBodyCell>
                         </TableBodyRow>
-                        {/each}
+                        {:catch error}
+                        <p style="color: red">{error.message}</p>
+                        {/await}
+                    {/each}
                     </TableBody>
                 </Table>
             </div>
