@@ -21,7 +21,7 @@
 		Img
 	} from 'flowbite-svelte';
 	import { twMerge } from 'tailwind-merge';
-	import {ArrowLeftToBracketOutline, UserSolid, ArrowRightToBracketOutline, EditOutline } from 'flowbite-svelte-icons';
+	import {ArrowLeftToBracketOutline, UserSolid, ArrowRightToBracketOutline, EditOutline, CaretRightSolid, UsersGroupSolid } from 'flowbite-svelte-icons';
 	import {isValidToken} from '$lib/backend.js';
 
 	let src = '/logo.png';
@@ -32,7 +32,8 @@
 
 	const logout = () => {
 		localStorage.removeItem('authToken');
-		// window.location.replace("/");
+		alert("Token scaduto!");
+		window.location.reload();
 	};
 
 	async function checkToken() {
@@ -46,7 +47,6 @@
 			if (!res.error){
 				logged = true;
 			} else{
-				//localStorage.removeItem('authToken');
 				logout();
 			}
 		}
@@ -67,19 +67,26 @@
 							<Img src="/logo.png" class="w-1/2 p-5" alt="SNM"/>
 							<span class={spanClass}>SNM</span>
 						</a>
-
+						
+						<SidebarItem label="Something" href="/">
+							<svelte:fragment slot="icon">
+								<UserSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+							</svelte:fragment>
+						</SidebarItem>
 						{#if logged}
-							<p class="text-gray-500 dark:text-gray-400">LOGGED MENU</p>
-							<SidebarItem label="hello-world" href="/hello-world">
+							<SidebarItem label="Profilo" href="/profilo">
 								<svelte:fragment slot="icon">
 									<UserSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
 								</svelte:fragment>
 							</SidebarItem>
-						{:else}
-							<p class="text-gray-500 dark:text-gray-400">NOT LOGGED MENU</p>
-							<SidebarItem label="hello-world" href="/hello-world">
+							<SidebarItem label="Playlist" href="/">
 								<svelte:fragment slot="icon">
-									<UserSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+									<CaretRightSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+								</svelte:fragment>
+							</SidebarItem>
+							<SidebarItem label="Community" href="/">
+								<svelte:fragment slot="icon">
+									<UsersGroupSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
 								</svelte:fragment>
 							</SidebarItem>
 						{/if}
