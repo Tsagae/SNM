@@ -112,15 +112,10 @@ function authenticateRequest(req, res) {
     const token = authHeader && authHeader.split(' ')[1];
     let tokenValidation;
     tokenValidation = authenticateToken(token);
-    // if (tokenValidation == null) {
-    //     res.sendStatus(401);
-    //     return {authenticated: false, user: null};
-    // }
     if (tokenValidation.err != null) {
         res.status(403).send({error: "Token invalido"});
         return {authenticated: false, user: null};
     }
-    //return res.send({user: tokenValidation.user});
     return {authenticated: true, user: tokenValidation.user};
 }
 
@@ -130,7 +125,6 @@ function authenticateRequest(req, res) {
  * @returns {{user: { username: string, iat: number, exp: number } | null, err: *} }
  */
 function authenticateToken(token) {
-    // if (token == null) return null;
     let tokenUser = {user: null, err: null};
     jwt.verify(token, authSecret, (err, user) => {
 
