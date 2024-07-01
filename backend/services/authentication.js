@@ -125,7 +125,6 @@ function authenticateRequest(req, res) {
  * @returns {{user: { username: string, iat: number, exp: number } | null, err: *} }
  */
 function authenticateToken(token) {
-    // if (token == null) return null;
     let tokenUser = {user: null, err: null};
     jwt.verify(token, authSecret, (err, user) => {
 
