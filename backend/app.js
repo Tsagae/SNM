@@ -105,6 +105,7 @@ app.post('/getArtist', async (req, res) => {
 
 // -------- Playlists --------
 app.post('/getPlaylist', async (req, res) => {
+    if (!auth.authenticateRequest(req, res).authenticated) return;
     let authReq = auth.authenticateRequest(req, res);
     try {
         let results = await playlists.getPlaylist(req.body.id, authReq.user.username);

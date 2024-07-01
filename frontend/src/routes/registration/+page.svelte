@@ -34,9 +34,28 @@
 			username: $form.username.value,
 			password: $form.password.value
 		};
-		// console.log('data: ', JSON.stringify(data));
 		await registerUser(data);
 	}
+
+	async function login(user) {
+        const res = await fetch('http://localhost:3000/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        });
+
+        const json = await res.json();
+
+        hasRes = true;
+        resOk = res.ok;
+
+        if (resOk) {
+            localStorage.setItem('authToken', json.accessToken);
+            window.location.replace("/");
+        }
+    }
 
 	async function registerUser(user) {
 		const res = await fetch('http://localhost:3000/register', {
@@ -48,14 +67,18 @@
 		});
 
 		const json = await res.json();
-		// let result = JSON.stringify(json);
-		// console.log(result);
 
 		hasRes = true;
 		resOk = res.ok;
 
 		if (resOk) {
-            window.location.replace("/login");
+			const loginData = {
+				username: user.username,
+				password: user.password
+			};
+			await login(loginData);
+
+            window.location.replace("/preferences");
         }
 	}
 </script>
