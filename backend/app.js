@@ -167,9 +167,10 @@ app.post('/deletePlaylist', async (req, res) => {
 
 // -------- Users --------
 app.post('/getUser', async (req, res) => {
-    if (!auth.authenticateRequest(req, res).authenticated) return;
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
     try {
-        let results = await users.getUser(req.body.id);
+        let results = await users.getUser(req.body.username, authReq.user.username);
         return await handleRequest(results, res);
     } catch (e) {
         return res.sendStatus(500);
