@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { page } from '$app/stores';
 	import {
+		Avatar,
 		DarkMode,
 		Navbar,
 		NavBrand,
@@ -29,6 +30,7 @@
   	let spanClass = 'self-center text-xl font-semibold whitespace-nowrap dark:text-white';
 	$: activeUrl = $page.url.pathname;
 	let logged = false;
+	let imgAvatar = '';
 
 	const logout = () => {
 		localStorage.removeItem('authToken');
@@ -50,6 +52,7 @@
 				logout();
 			}
 		}
+		// gete user profile Picture...
 	});
 		
 </script>
@@ -74,11 +77,6 @@
 							</svelte:fragment>
 						</SidebarItem>
 						{#if logged}
-							<SidebarItem label="Profilo" href="/profilo">
-								<svelte:fragment slot="icon">
-									<UserSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-								</svelte:fragment>
-							</SidebarItem>
 							<SidebarItem label="Playlist" href="/">
 								<svelte:fragment slot="icon">
 									<CaretRightSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
@@ -108,6 +106,7 @@
 			<NavHamburger/>
 			<NavUl>
 				{#if logged}
+					<Avatar src="{imgAvatar}" href="/profilo"/>
 					<NavLi><Button on:click={logout} color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Esci</Button></NavLi>	 
 				{:else}
 					<NavLi href="/registration"><Button color="primary" outline pill><EditOutline class="w-4 h-4" color="primary" />Registrati</Button></NavLi>

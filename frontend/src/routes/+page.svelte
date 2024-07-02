@@ -68,8 +68,8 @@
 {#await pubPlaylist}
     <div class="text-center"><Spinner size={8} color="green" /></div>
 {:then playlist}
-    {#each playlist as { _id, name, user, tracks, tags}, i}
-        <Playlist id={_id} name={name} user={user} tracks={tracks} tags={tags} i={i}/>
+    {#each playlist as { _id, name, user, tracks, tags, thumbnail}, i}
+        <Playlist id={_id} name={name} user={user} tracks={tracks} tags={tags} thumbnail={thumbnail} i={i}/>
         <br><br>
     {/each}
 {/await}
