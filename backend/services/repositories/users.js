@@ -2,6 +2,7 @@
 
 import dataAccess from "../dataAccess.js";
 import genresRepository from "./genres.js";
+import artistsRepository from "./artists.js";
 import mongodb from 'mongodb';
 
 
@@ -74,13 +75,23 @@ async function editUser(userid, username, email, artists, genres) {
         dataToChange.email = email;
     }
 
-    //TODO: validate artists
+    if (artists != null) {
+        let artistsFromSpotify = (await artistsRepository.getArtists(artists)).artists
+        let i = 0;
+        for (let item of artistsFromSpotify) {
+            if (item === null) {
+                return {error: `L'artista ${artists[i]} non esiste`, statusCode: 404};
+            }
+            i++;
+        }
+        dataToChange.artists = artists;
+    }
 
     if (genres != null) {
         let validGenres = (await genresRepository.getGenres()).genres;
         for (let item of genres) {
             if (!validGenres.includes(item)) {
-                return {error: `Il genere ${item} non esiste`, statusCode: 403};
+                return {error: `Il genere ${item} non esiste`, statusCode: 404};
             }
         }
         dataToChange.genres = genres;
