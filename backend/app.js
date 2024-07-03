@@ -61,7 +61,6 @@ app.post('/getTrack', async (req, res) => {
 });
 
 app.post('/getTracks', async (req, res) => {
-    if (!auth.authenticateRequest(req, res).authenticated) return;
     try {
         let results = await tracks.getTracks(req.body.ids);
         return await handleRequest(results, res);
@@ -98,6 +97,15 @@ app.post('/getArtist', async (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
     try {
         let results = await artists.getArtist(req.body.id);
+        return await handleRequest(results, res);
+    } catch (e) {
+        return res.sendStatus(500);
+    }
+});
+
+app.post('/getArtists', async (req, res) => {
+    try {
+        let results = await artists.getArtists(req.body.ids);
         return await handleRequest(results, res);
     } catch (e) {
         return res.sendStatus(500);
