@@ -43,10 +43,15 @@ async function login(req, res) {
         if (queryResult.length === 1 && password != null) {
             successfulLogin = await compareHashed(password, queryResult[0].password);
         } else if (queryResult.length > 1) {
-            console.log("more than one user with the same name");
+            console.log("PANIC: more than one user with the same name");
         }
         if (successfulLogin) {
-            return res.send({accessToken: generateAccessToken({username: username})});
+            return res.send({
+                accessToken: generateAccessToken({
+                    _id: queryResult[0]._id.toString(),
+                    username: username
+                })
+            });
         }
         return res.status(401).send({result: "invalid login"});
     }

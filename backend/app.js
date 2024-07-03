@@ -179,6 +179,17 @@ app.post('/getUser', async (req, res) => {
     }
 });
 
+app.post('/editUser', async (req, res) => {
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await users.editUser(authReq.user._id, req.body.username, req.body.email, req.body.artists, req.body.genres);
+        return await handleRequest(results, res);
+    } catch (e) {
+        return res.sendStatus(500);
+    }
+});
+
 // -------- Search --------
 app.post('/search', async (req, res) => {
     try {
