@@ -12,6 +12,7 @@ import generic from './services/repositories/generic.js';
 import playlists from './services/repositories/playlists.js';
 import tracks from './services/repositories/tracks.js';
 import users from './services/repositories/users.js';
+import genres from './services/repositories/genres.js';
 import spotify from "./services/spotify.js";
 
 const app = express();
@@ -182,6 +183,16 @@ app.post('/getUser', async (req, res) => {
 app.post('/search', async (req, res) => {
     try {
         let results = await generic.search(req.body.query, req.body.filters);
+        return await handleRequest(results, res);
+    } catch (e) {
+        return res.sendStatus(500);
+    }
+});
+
+// -------- Search --------
+app.post('/getGenres', async (req, res) => {
+    try {
+        let results = await genres.getGenres();
         return await handleRequest(results, res);
     } catch (e) {
         return res.sendStatus(500);
