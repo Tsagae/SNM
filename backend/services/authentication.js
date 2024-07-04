@@ -91,7 +91,7 @@ async function registerUser(req, res) {
  * @param {int} expiringTime in seconds
  * @returns a signed jwt token
  */
-function generateAccessToken(user, expiringTime = 1800) {
+function generateAccessToken(user, expiringTime = 3600) {
     //console.log("expiration: ", expiringTime + 's');
     return jwt.sign(user, authSecret, {expiresIn: expiringTime + 's'});
 }
