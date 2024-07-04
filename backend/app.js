@@ -216,5 +216,6 @@ app.post('/getGenres', async (req, res) => {
 app.listen(port, host, async () => {
     console.log(`Server is running on ${host}:${port}`);
     await dataAccess.testConnection();
+    await dataAccess.connect();
     await spotify.getApiTokenFromDB();
 });

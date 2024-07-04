@@ -11,19 +11,21 @@ const client = new MongoClient(uri, {
     }
 });
 
+/**
+ * Connects to the database
+ * @returns {Promise<void>}
+ */
+async function connect(){
+    await client.connect();
+}
 
 /**
  * Executes a query or a series of queries. Remember to use await before every db operation inside the query function or a MongoExpiredSessionError could be thrown
  * @param {Function} query function that takes as input a database
  */
 async function executeQuery(query) {
-    try {
-        await client.connect();
-        const db = client.db('snm_db');
-        await query(db);
-    } finally {
-        await client.close();
-    }
+    const db = await client.db('snm_db');
+    await query(db);
 }
 
 /**
@@ -53,4 +55,4 @@ async function listDatabases(client) {
     databasesList.databases.forEach(db => console.log(` - ${db.name}`));
 }
 
-export default {executeQuery, testConnection};
+export default {executeQuery, testConnection, connect};
