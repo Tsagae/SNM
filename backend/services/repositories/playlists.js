@@ -18,7 +18,7 @@ async function getPlaylist(id, user) {
         return {error: "Playlist non trovata", statusCode: 404};
     }
     if (!res?.public && res?.user !== user) {
-        return {error: "Non hai i permessi per visualizzare la playlist", statusCode: 403};
+        return {error: "Non puoi visualizzare questa playlist", statusCode: 403};
     }
     return res;
 }
