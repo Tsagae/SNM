@@ -39,15 +39,8 @@
         return previews;
     }
 
-    //get all user information wit async func...
-
-    //get artist informations...
-
 </script>
 
-<div class="space-y-4">
-
-</div>
 {#await userInfoPromise}
     <div class="text-center mt-16">
         <Spinner size={8} color="green"/>
@@ -60,36 +53,36 @@
 
         <p class="text-2xl dark:text-white">Preferenze</p>
 
-        <div class="mt-4">
+        <div class="mt-2">
             {#each userInfo.genres as genre}
-                <Badge rounded color="green" class="mx-2">#{genre}</Badge>
+                <Badge rounded color="green" class="mx-1">#{genre}</Badge>
             {/each}
         </div>
 
-        {#await getArtists(userInfo.artists)}
-            <div class="text-center mt-16">
-                <Spinner size={8} color="green"/>
-            </div>
-        {:then artistsRes}
-            {#if artistsRes.error !== undefined}
-                <p>{artistsRes.error}</p>
-            {:else}
-                <!--use artist image and other information-->
-                <ul class="flex flex-wrap items-center justify-center mt-4 text-gray-900 dark:text-white">
-                    {#each artistsRes.artists as artist}
-                        <li class="mx-2">
-                            <div class="flex items-center space-x-2 rtl:space-x-reverse">
-                                <Avatar src="" href="" rounded/>
-                                <div class="space-y-1 font-medium dark:text-white">
-                                    <div>{artist.name}</div>
-                                    <div class="text-sm text-gray-500 dark:text-gray-400">Altre info artista?</div>
+        {#if userInfo.artists.length > 0}
+            {#await getArtists(userInfo.artists)}
+                <div class="text-center mt-16">
+                    <Spinner size={8} color="green"/>
+                </div>
+            {:then artistsRes}
+                {#if artistsRes.error !== undefined}
+                    <p>{artistsRes.error}</p>
+                {:else}
+                    <ul class="flex flex-wrap items-center justify-center mt-4 text-gray-900 dark:text-white">
+                        {#each artistsRes.artists as artist}
+                            <li class="mx-2">
+                                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                    <Avatar src="{artist.images[0].url}" rounded/>
+                                    <div class="space-y-1 font-medium dark:text-white">
+                                        <div>{artist.name}</div>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    {/each}
-                </ul>
-            {/if}
-        {/await}
+                            </li>
+                        {/each}
+                    </ul>
+                {/if}
+            {/await}
+        {/if}
     </Card>
 {/await}
 
