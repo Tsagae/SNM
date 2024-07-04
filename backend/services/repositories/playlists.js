@@ -68,6 +68,23 @@ async function editPlaylist(id, user, name, isPublic, tracks, tags) {
 }
 
 /**
+ * Adds a track to a playlist. Does nothing if the track is already in the playlist
+ * @param userId the user making the request
+ * @param playlistId of the playlist to add the track to
+ * @param trackId of the track to add
+ * @returns {Promise<{error: string, statusCode: number}|*>}
+ */
+async function addTrackToPlaylist(userId, playlistId, trackId) {
+    let res;
+    let playlist = await getPlaylist(playlistId, userId);
+    let newTracks = playlist.tracks;
+    if (!newTracks.includes(trackId)) {
+        newTracks.push(trackId);
+    }
+    return await editPlaylist(playlistId, userId, playlist.name, playlist.public, newTracks, playlist.tags);
+}
+
+/**
  * Creates a playlist
  @param {string} userId
  @param {string} name
@@ -156,5 +173,6 @@ export default {
     createPlaylist,
     deletePlaylist,
     searchPublicPlaylists,
-    getAllUserPlaylists
+    getAllUserPlaylists,
+    addTrackToPlaylist
 };

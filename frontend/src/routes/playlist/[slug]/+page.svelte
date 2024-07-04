@@ -16,7 +16,7 @@
     import {getPlaylistInfo, getTrackInfo} from '$lib/backend.js';
     import { goto } from '$app/navigation'
     import { error } from '@sveltejs/kit';
-    
+
     let pageInfo = window.location.pathname;
     let id = pageInfo.replace("/playlist/", "");
     id = id.replace("/", "");
@@ -26,7 +26,9 @@
 </script>
     
     {#await playlistInfo}
-        <div class="text-center mt-16"><Spinner size={8} color="green" /></div>
+        <div class="text-center mt-16">
+            <Spinner size={8} color="green"/>
+        </div>
     {:then playlist}
         {#if playlist == false}
             <Alert color="red" class="bg-gray-100 dark:bg-zinc-700">
