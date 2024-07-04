@@ -85,3 +85,5 @@ export async function getTrackInfo(query) {
 
     return await res.json();
 }
+
+//getUserInfo

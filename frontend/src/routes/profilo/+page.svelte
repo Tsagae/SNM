@@ -2,19 +2,24 @@
     import {
         Avatar,
         Badge, 
+        Button,
         Card,
         Carousel,
+        Dropdown,
+        DropdownItem,
         Spinner
     } from 'flowbite-svelte';
-    import Playlist from '$lib/components/playlist.svelte';
+    import { DotsHorizontalOutline} from 'flowbite-svelte-icons';
+    import Playlist from '$lib/components/playlist.svelte';    
 
-    import {getPubPlaylist} from '$lib/backend.js'; //temporary
+    import {getPubPlaylist, getUserInfo} from '$lib/backend.js'; //temporary
 
 
     let imgAvatar = '';
     let index = 0;
     let image;
 
+    let userInfo = getUserInfo();
     let userPlaylists = getUserPlaylists();
 
     async function getUserPlaylists() {
@@ -38,59 +43,64 @@
     
     //get artist informations...
 
-    //get user's playlist...the follow is temporary
-
-
 </script>
 
-<div class="space-y-4">
+{#await userInfo}
+    <div class="text-center mt-16"><Spinner size={8} color="green" /></div>
+{:then info}
+    
+    <Card img="{info.avatar}" class="max-w-full m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" horizontal>
 
-</div>
+        <div class="flex">
+            <h2 class="mb-1 text-3xl font-medium text-gray-900 dark:text-white">Bonnie Green</h2 >
+            <DotsHorizontalOutline class="ml-auto mr-0"/>
+            <Dropdown class="w-28">
+                <DropdownItem href="/preferences">Modifica</DropdownItem>
+                <DropdownItem>Cancella</DropdownItem>
+            </Dropdown>
+        </div>
 
-<Card img="https://ionicframework.com/docs/img/demos/avatar.svg" class="max-w-full m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" horizontal>
+        <p class="text-2xl dark:text-white">Preferenze</p>
 
-    <h2 class="mb-1 text-3xl font-medium text-gray-900 dark:text-white">Bonnie Green</h2 >
+        <div class="mt-4">
+            <Badge rounded color="green" class="mx-1">#rock</Badge> 
+            <Badge rounded color="green" class="mx-1">#pop</Badge> 
+            <Badge rounded color="green" class="mx-1">#classical</Badge> 
+        </div>
 
-    <p class="text-2xl dark:text-white">Preferenze</p>
-
-    <div class="mt-4">
-        <Badge rounded color="green" class="mx-2">#rock</Badge> 
-        <Badge rounded color="green" class="mx-2">#pop</Badge> 
-        <Badge rounded color="green" class="mx-2">#classical</Badge> 
-    </div>
-
-    <!--use artist image and other information-->
-    <ul class="flex flex-wrap items-center justify-center mt-4 text-gray-900 dark:text-white">
-        <li class="mx-2">
-            <div class="flex items-center space-x-2 rtl:space-x-reverse">
-                <Avatar src="" href="" rounded /> 
-                <div class="space-y-1 font-medium dark:text-white">
-                    <div>Nome Artista</div>
-                    <div class="text-sm text-gray-500 dark:text-gray-400">Altre info artista?</div>
+        <!--use artist image and other information-->
+        <ul class="flex flex-wrap items-center justify-center mt-4 text-gray-900 dark:text-white">
+            <li class="mx-2">
+                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                    <Avatar src="" href="" rounded /> 
+                    <div class="space-y-1 font-medium dark:text-white">
+                        <div>Nome Artista</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">Altre info artista?</div>
+                    </div>
                 </div>
-            </div>
-        </li>
-        <li class="mx-2">
-            <div class="flex items-center space-x-2 rtl:space-x-reverse">
-                <Avatar src="" href="" rounded /> 
-                <div class="space-y-1 font-medium dark:text-white">
-                    <div>Nome Artista</div>
-                    <div class="text-sm text-gray-500 dark:text-gray-400">Altre info artista?</div>
+            </li>
+            <li class="mx-2">
+                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                    <Avatar src="" href="" rounded /> 
+                    <div class="space-y-1 font-medium dark:text-white">
+                        <div>Nome Artista</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">Altre info artista?</div>
+                    </div>
                 </div>
-            </div>
-        </li>
-        <li class="mx-2">
-            <div class="flex items-center space-x-2 rtl:space-x-reverse">
-                <Avatar src="" href="" rounded /> 
-                <div class="space-y-1 font-medium dark:text-white">
-                    <div>Nome Artista</div>
-                    <div class="text-sm text-gray-500 dark:text-gray-400">Altre info artista?</div>
+            </li>
+            <li class="mx-2">
+                <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                    <Avatar src="" href="" rounded /> 
+                    <div class="space-y-1 font-medium dark:text-white">
+                        <div>Nome Artista</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">Altre info artista?</div>
+                    </div>
                 </div>
-            </div>
-        </li>
-    </ul>
-</Card>
+            </li>
+        </ul>
+    </Card>
 
+{/await}
 
 {#await userPlaylists}
     <div class="text-center mt-16"><Spinner size={8} color="green" /></div>
