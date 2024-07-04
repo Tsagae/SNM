@@ -51,7 +51,6 @@ app.post('/authToken', (req, res) => {
 
 // -------- Tracks --------
 app.post('/getTrack', async (req, res) => {
-    // if (!auth.authenticateRequest(req, res).authenticated) return;
     try {
         let results = await tracks.getTrack(req.body.id);
         return await handleRequest(results, res);
@@ -70,7 +69,6 @@ app.post('/getTracks', async (req, res) => {
 });
 
 app.post('/searchTracks', async (req, res) => {
-    if (!auth.authenticateRequest(req, res).authenticated) return;
     try {
         let results = await tracks.searchTracks(req.body.trackname);
         return await handleRequest(results, res);
@@ -82,7 +80,6 @@ app.post('/searchTracks', async (req, res) => {
 
 // -------- Albums --------
 app.post('/getAlbum', async (req, res) => {
-    if (!auth.authenticateRequest(req, res).authenticated) return;
     try {
         let results = await albums.getAlbum(req.body.id);
         return await handleRequest(results, res);
