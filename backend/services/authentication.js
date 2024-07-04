@@ -29,31 +29,25 @@ async function login(req, res) {
         const data = matchedData(req);
         const username = data.username;
         const password = data.password;
-        let queryResult = [];
-        let cursor;
+        let userFromDb;
         let successfulLogin = false;
         await dataAccess.executeQuery(async (db) => {
-            cursor = await db.collection('Users').find({
+            userFromDb = await db.collection('Users').findOne({
                 username: username,
             });
-            for await (const doc of cursor) {
-                queryResult.push(doc);
-            }
         });
-        if (queryResult.length === 1 && password != null) {
-            successfulLogin = await compareHashed(password, queryResult[0].password);
-        } else if (queryResult.length > 1) {
-            console.log("PANIC: more than one user with the same name");
+        if (userFromDb !== null && password !== null) {
+            successfulLogin = await compareHashed(password, userFromDb.password);
         }
         if (successfulLogin) {
             return res.send({
                 accessToken: generateAccessToken({
-                    _id: queryResult[0]._id.toString(),
+                    _id: userFromDb._id.toString(),
                     username: username
                 })
             });
         }
-        return res.status(401).send({result: "invalid login"});
+        return res.status(401).send({result: "Login non valido"});
     }
 }
 
