@@ -14,7 +14,7 @@ async function getPlaylist(id, user) {
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').findOne({_id: new mongodb.ObjectId(id)});
     });
-    if(res == null){
+    if (res == null) {
         return {error: "Playlist non trovata", statusCode: 404};
     }
     if (!res?.public && res?.user !== user) {
@@ -52,7 +52,7 @@ async function editPlaylist(id, user, name, isPublic, tracks, tags) {
     let res;
     let playlist = await getPlaylist(id, user);
     if (playlist?.user !== user) {
-        return {error: "You can't edit this playlist", statusCode: 403};
+        return {error: "Non puoi modificare questa playlist", statusCode: 403};
     }
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').updateOne({_id: new mongodb.ObjectId(id)}, {
