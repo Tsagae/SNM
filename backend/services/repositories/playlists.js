@@ -130,6 +130,24 @@ async function searchPublicPlaylists(name) {
     return res;
 }
 
+/**
+ * Returns all playlists of a user
+ * @param userId
+ * @returns {Promise<*[]>}
+ */
+async function getAllUserPlaylists(userId) {
+    let res = [];
+    await dataAccess.executeQuery(async (db) => {
+        let cursor = await db.collection('Playlists').find({
+            user: userId
+        });
+        for await (const doc of cursor) {
+            res.push(doc);
+        }
+    });
+    return res;
+}
+
 
 export default {
     getPlaylist,
@@ -137,5 +155,6 @@ export default {
     editPlaylist,
     createPlaylist,
     deletePlaylist,
-    searchPublicPlaylists
+    searchPublicPlaylists,
+    getAllUserPlaylists
 };
