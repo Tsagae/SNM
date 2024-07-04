@@ -86,4 +86,45 @@ export async function getTrackInfo(query) {
     return await res.json();
 }
 
-//getUserInfo
+/**
+ *
+ * @param username
+ * @returns {Promise<any|boolean>}
+ */
+export async function getUser(username) {
+    let url = `http://localhost:3000/getUser`;
+
+    if(localStorage.getItem('authToken') === null){
+        return false;
+    }
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body : JSON.stringify({"username" : username})
+    });
+
+    return await res.json();
+}
+
+/**
+ *
+ * @param {string[]} ids
+ * @returns {Promise<any>}
+ */
+export async function getArtists(ids) {
+    let url = `http://localhost:3000/getArtists`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body : JSON.stringify({"ids" : ids})
+    });
+
+    return await res.json();
+}

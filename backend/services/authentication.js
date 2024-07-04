@@ -29,31 +29,25 @@ async function login(req, res) {
         const data = matchedData(req);
         const username = data.username;
         const password = data.password;
-        let queryResult = [];
-        let cursor;
+        let userFromDb;
         let successfulLogin = false;
         await dataAccess.executeQuery(async (db) => {
-            cursor = await db.collection('Users').find({
+            userFromDb = await db.collection('Users').findOne({
                 username: username,
             });
-            for await (const doc of cursor) {
-                queryResult.push(doc);
-            }
         });
-        if (queryResult.length === 1 && password != null) {
-            successfulLogin = await compareHashed(password, queryResult[0].password);
-        } else if (queryResult.length > 1) {
-            console.log("PANIC: more than one user with the same name");
+        if (userFromDb !== null && password !== null) {
+            successfulLogin = await compareHashed(password, userFromDb.password);
         }
         if (successfulLogin) {
             return res.send({
                 accessToken: generateAccessToken({
-                    _id: queryResult[0]._id.toString(),
+                    _id: userFromDb._id.toString(),
                     username: username
                 })
             });
         }
-        return res.status(401).send({result: "invalid login"});
+        return res.status(401).send({result: "Login non valido"});
     }
 }
 
@@ -67,7 +61,7 @@ async function registerUser(req, res) {
     if (!errors.isEmpty()) {
         return res.status(422).json({errors: errors.array()});
     } else {
-        let cursor;
+        let userFromDb;
         const data = matchedData(req);
         const username = data.username;
         const email = data.email;
@@ -75,15 +69,12 @@ async function registerUser(req, res) {
         const profileImg = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
         let queryResult = [];
         await dataAccess.executeQuery(async (db) => {
-            cursor = await db.collection('Users').find({
+            userFromDb = await db.collection('Users').findOne({
                 username: username,
             });
-            for await (const doc of cursor) {
-                queryResult.push(doc);
-            }
         });
-        if (queryResult.length >= 1) {
-            return res.status(422).json({error: "User already present in database"});
+        if (userFromDb !== null) {
+            return res.status(422).json({error: "Esiste già un utente con lo stesso nome"});
         }
         await dataAccess.executeQuery(async (db) => {
             await db.collection('Users').insertOne({
@@ -93,7 +84,7 @@ async function registerUser(req, res) {
                 avatar: profileImg,
             });
         });
-        return res.send({result: `registered successfully! ${username}`});
+        return res.send({result: `Registrazione avvenuta con successo! ${username}`});
     }
 }
 
@@ -103,7 +94,7 @@ async function registerUser(req, res) {
  * @param {int} expiringTime in seconds
  * @returns a signed jwt token
  */
-function generateAccessToken(user, expiringTime = 1800) {
+function generateAccessToken(user, expiringTime = 3600) {
     //console.log("expiration: ", expiringTime + 's');
     return jwt.sign(user, authSecret, {expiresIn: expiringTime + 's'});
 }

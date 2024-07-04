@@ -13,28 +13,24 @@ import mongodb from 'mongodb';
  * @returns {Promise<{error: string, statusCode: number}|*>}
  */
 async function getUser(username, userRequesting) {
-    let res = [];
+    let userFromDb = [];
     if (username.length === 0) {
-        return {error: "User not found", statusCode: 404};
+        return {error: "Utente non trovato", statusCode: 404};
     }
     await dataAccess.executeQuery(async (db) => {
-        let cursor = await db.collection('Users').find({
+        userFromDb = await db.collection('Users').findOne({
             username: username
         });
-        for await (const doc of cursor) {
-            res.push(doc);
-        }
     });
-    if (res.length === 0) {
-        return {error: "User not found", statusCode: 404};
+    if (userFromDb === null) {
+        return {error: "Utente non trovato", statusCode: 404};
     }
-    let userToRet = res[0]
-    delete userToRet._id;
-    delete userToRet.password;
+    delete userFromDb._id;
+    delete userFromDb.password;
     if (username !== userRequesting) {
-        delete userToRet.email;
+        delete userFromDb.email;
     }
-    return userToRet;
+    return userFromDb;
 }
 
 /**
