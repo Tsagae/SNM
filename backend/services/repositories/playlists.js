@@ -100,7 +100,7 @@ async function deletePlaylist(id, user) {
     let res;
     let playlist = await getPlaylist(id);
     if (playlist?.user !== user) {
-        return {error: "You can't delete this playlist", statusCode: 403};
+        return {error: "Non puoi cancellare questa playlist", statusCode: 403};
     }
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').deleteOne(db.Playlists.deleteOne({_id: new mongodb.ObjectId(id)}));
