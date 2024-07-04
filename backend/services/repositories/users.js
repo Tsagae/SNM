@@ -25,13 +25,12 @@ async function getUser(username, userRequesting) {
     if (userFromDb === null) {
         return {error: "Utente non trovato", statusCode: 404};
     }
-    let userToRet = userFromDb[0]
-    delete userToRet._id;
-    delete userToRet.password;
+    delete userFromDb._id;
+    delete userFromDb.password;
     if (username !== userRequesting) {
-        delete userToRet.email;
+        delete userFromDb.email;
     }
-    return userToRet;
+    return userFromDb;
 }
 
 /**
