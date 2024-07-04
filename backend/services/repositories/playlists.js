@@ -69,17 +69,17 @@ async function editPlaylist(id, user, name, isPublic, tracks, tags) {
 
 /**
  * Creates a playlist
- @param {string} user
+ @param {string} userId
  @param {string} name
  @param {boolean} isPublic
  @param {string[]} tracks
  @param {string[]} tags
  */
-async function createPlaylist(user, name, isPublic, tracks, tags) {
+async function createPlaylist(userId, name, isPublic, tracks, tags) {
     let res;
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').insertOne({
-            user: user,
+            user: userId,
             name: name,
             public: isPublic,
             tracks: tracks,

@@ -153,7 +153,7 @@ app.post('/createPlaylist', async (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
     try {
-        let results = await playlists.createPlaylist(authReq.user.username, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags);
+        let results = await playlists.createPlaylist(authReq.user._id, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags);
         return await handleRequest(results, res);
     } catch (e) {
         return res.sendStatus(500);
