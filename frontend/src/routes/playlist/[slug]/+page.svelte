@@ -14,6 +14,7 @@
     } from 'flowbite-svelte';
     import { InfoCircleSolid, PlayOutline } from 'flowbite-svelte-icons';
     import {getPlaylistInfo, getTrackInfo} from '$lib/backend.js';
+    import { goto } from '$app/navigation'
     import { error } from '@sveltejs/kit';
     
     let pageInfo = window.location.pathname;
@@ -63,7 +64,7 @@
                         {#await getTrackInfo(track)}
                         <p>...waiting</p>
                         {:then track}
-                        <TableBodyRow class="bg-white dark:bg-zinc-800">
+                        <TableBodyRow class="bg-white dark:bg-zinc-800" on:click={() => goto(`/track/${track.id}`)}>
                         <TableBodyCell>{track.name}</TableBodyCell>
                         <TableBodyCell>
                             {#each track.artists as artist}
