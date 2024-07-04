@@ -15,7 +15,7 @@ async function search(query, filters) {
         playlists: [],
     }
     if (filters.length === 0) {
-        return {error: "filters can't be empty", statusCode: 400};
+        return {error: "I filtri non possono essere vuoti", statusCode: 400};
     }
     //filters: ["album", "artist", "track"]
     for (const val of filters) {
@@ -24,7 +24,7 @@ async function search(query, filters) {
         } else if (val === "track") {
             res.tracks = await tracks.searchTracks(query.name);
         } else {
-            return {error: "filter not recognized", statusCode: 400};
+            return {error: "Filtro non riconosciuto", statusCode: 400};
         }
     }
     return res;
