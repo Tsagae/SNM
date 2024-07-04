@@ -91,7 +91,6 @@ app.post('/getAlbum', async (req, res) => {
 
 // -------- Artists --------
 app.post('/getArtist', async (req, res) => {
-    if (!auth.authenticateRequest(req, res).authenticated) return;
     try {
         let results = await artists.getArtist(req.body.id);
         return await handleRequest(results, res);
@@ -205,7 +204,6 @@ app.post('/search', async (req, res) => {
     }
 });
 
-// -------- Search --------
 app.post('/getGenres', async (req, res) => {
     try {
         let results = await genres.getGenres();
