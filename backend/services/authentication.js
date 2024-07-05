@@ -44,7 +44,9 @@ async function login(req, res) {
                 accessToken: generateAccessToken({
                     _id: userFromDb._id.toString(),
                     username: username
-                })
+                }),
+                name: username,
+                profilePic: userFromDb.avatar
             });
         }
         return res.status(401).send({result: "Login non valido"});
@@ -66,7 +68,7 @@ async function registerUser(req, res) {
         const username = data.username;
         const email = data.email;
         const password = data.password;
-        const profileImg = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
+        const profileImg = '';
         let queryResult = [];
         await dataAccess.executeQuery(async (db) => {
             userFromDb = await db.collection('Users').findOne({

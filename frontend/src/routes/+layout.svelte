@@ -31,6 +31,7 @@
 	$: activeUrl = $page.url.pathname;
 	let logged = false;
 	let imgAvatar = '';
+	let profileName = '';
 
 	const logout = () => {
 		localStorage.removeItem('authToken');
@@ -48,11 +49,12 @@
 		if (res != false) {
 			if (!res.error){
 				logged = true;
+				imgAvatar = localStorage.getItem('avatar');
+				profileName = localStorage.getItem('username');
 			} else{
 				logout();
 			}
 		}
-		// gete user profile Picture...
 	});
 		
 </script>
@@ -106,7 +108,7 @@
 			<NavHamburger/>
 			<NavUl>
 				{#if logged}
-					<Avatar src="{imgAvatar}" href="/profilo"/>
+					<Avatar src="{imgAvatar}" href="/profilo/{profileName}"/>
 					<NavLi><Button on:click={logout} color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Esci</Button></NavLi>	 
 				{:else}
 					<NavLi href="/registration"><Button color="primary" outline pill><EditOutline class="w-4 h-4" color="primary" />Registrati</Button></NavLi>

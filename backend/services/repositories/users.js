@@ -30,6 +30,7 @@ async function getUser(username, userRequesting) {
     if (username !== userRequesting) {
         delete userFromDb.email;
     }
+
     return userFromDb;
 }
 

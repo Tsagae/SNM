@@ -24,7 +24,6 @@
             username: $form.username.value,
             password: $form.password.value
         };
-        // console.log('data: ', JSON.stringify(data));
         await login(data);
     }
 
@@ -38,13 +37,14 @@
         });
 
         const json = await res.json();
-        // let result = JSON.stringify(json);
 
         hasRes = true;
         resOk = res.ok;
 
         if (resOk) {
             localStorage.setItem('authToken', json.accessToken);
+            localStorage.setItem('username', json.name);
+            localStorage.setItem('avatar', json.profilePic);
             window.location.replace("/");
         }
     }

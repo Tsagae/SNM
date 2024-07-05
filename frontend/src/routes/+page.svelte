@@ -37,7 +37,7 @@
 <Img src="/SNMlogo.png" alignment="mx-auto" alt="SNM"/>
 
 <form class="max-w-md mx-auto" on:submit={searchForm}>
-    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Cerca</label>
     <div class="relative">
         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +51,7 @@
                placeholder="Parola chiave..." required/>
         <button type="submit" color="primary"
                 class="text-white absolute end-2.5 bottom-2.5 bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">
-            Search
+            Cerca
         </button>
     </div>
 </form>
