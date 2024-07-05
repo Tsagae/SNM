@@ -39,7 +39,6 @@
                 </div>
             {:then playlists}
                 {#each playlists as playlist}
-                    <h1>{JSON.stringify(playlist)}</h1>
                     <Button on:click={() => addTrackToPlaylist(trackId, playlist._id)}>{playlist.name}</Button>
                 {/each}
             {/await}
