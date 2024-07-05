@@ -9,6 +9,7 @@
     import {ChevronDownOutline, FilterOutline} from 'flowbite-svelte-icons';
     import {search, getPubPlaylist} from '$lib/backend.js';
     import Playlist from '$lib/components/playlist.svelte';
+    import {goto} from "$app/navigation";
 
     let keyword = '';
 
@@ -99,14 +100,14 @@
         {#if filters.track}
             <h1>Tracks</h1>
             {#each results.tracks.items as track}
-                <b>{track.name}</b>
+                <Button on:click={() => goto(`/track/${track.id}`)}>{track.name}</Button>
             {/each}
             <hr>
         {/if}
         {#if filters.playlist}
             <h1>Plylists</h1>
-            {#each results.playlists as track}
-                <b>{track.name}</b>
+            {#each results.playlists as playlist}
+                <Button on:click={() => goto(`/playlist/${playlist._id}`)}>{playlist.name}</Button>
             {/each}
             <hr>
         {/if}
