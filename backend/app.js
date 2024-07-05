@@ -55,6 +55,7 @@ app.post('/getTrack', async (req, res) => {
         let results = await tracks.getTrack(req.body.id);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -64,6 +65,7 @@ app.post('/getTracks', async (req, res) => {
         let results = await tracks.getTracks(req.body.ids);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -73,6 +75,7 @@ app.post('/searchTracks', async (req, res) => {
         let results = await tracks.searchTracks(req.body.trackname);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -84,6 +87,7 @@ app.post('/getAlbum', async (req, res) => {
         let results = await albums.getAlbum(req.body.id);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -95,6 +99,7 @@ app.post('/getArtist', async (req, res) => {
         let results = await artists.getArtist(req.body.id);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -104,6 +109,7 @@ app.post('/getArtists', async (req, res) => {
         let results = await artists.getArtists(req.body.ids);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -116,6 +122,7 @@ app.post('/getPlaylist', async (req, res) => {
         let results = await playlists.getPlaylist(req.body.id, authReq.user.username);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -125,6 +132,7 @@ app.post('/getAllPublicPlaylists', async (req, res) => {
         let results = await playlists.getAllPublicPlaylists();
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -134,6 +142,7 @@ app.post('/searchPublicPlaylists', async (req, res) => {
         let results = await playlists.searchPublicPlaylists(req.body.name);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -145,9 +154,24 @@ app.post('/editPlaylist', async (req, res) => {
         let results = await playlists.editPlaylist(req.body.id, authReq.user.username, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
+
+
+app.post('/addTrackToPlaylist', async (req, res) => {
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await playlists.addTrackToPlaylist(authReq.user._id, req.body.playlist, req.body.track);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
 
 app.post('/createPlaylist', async (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
@@ -156,6 +180,7 @@ app.post('/createPlaylist', async (req, res) => {
         let results = await playlists.createPlaylist(authReq.user._id, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -167,6 +192,7 @@ app.post('/deletePlaylist', async (req, res) => {
         let results = await playlists.deletePlaylist(req.body.id, authReq.user.username);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -178,6 +204,7 @@ app.post('/myPlaylists', async (req, res) => {
         let results = await playlists.getAllUserPlaylists(authReq.user._id);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -190,6 +217,7 @@ app.post('/getUser', async (req, res) => {
         let results = await users.getUser(req.body.username, authReq.user.username);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -201,6 +229,7 @@ app.post('/editUser', async (req, res) => {
         let results = await users.editUser(authReq.user._id, req.body.username, req.body.email, req.body.artists, req.body.genres);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -211,6 +240,7 @@ app.post('/search', async (req, res) => {
         let results = await generic.search(req.body.query, req.body.filters);
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });
@@ -220,6 +250,7 @@ app.post('/getGenres', async (req, res) => {
         let results = await genres.getGenres();
         return await handleRequest(results, res);
     } catch (e) {
+        console.log(e)
         return res.sendStatus(500);
     }
 });

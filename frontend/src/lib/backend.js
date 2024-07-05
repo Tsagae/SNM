@@ -1,7 +1,7 @@
 export async function isValidToken() {
     let url = `http://localhost:3000/authToken`;
 
-    if(localStorage.getItem('authToken') === null){
+    if (localStorage.getItem('authToken') === null) {
         return false;
     }
     const res = await fetch(url, {
@@ -27,7 +27,7 @@ export async function search(query, filters) {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + localStorage.getItem('authToken')
         },
-        body : JSON.stringify({"query": query, "filters": filters})
+        body: JSON.stringify({"query": query, "filters": filters})
     });
 
     return await res.json();
@@ -51,7 +51,7 @@ export async function getPubPlaylist() {
 export async function getPlaylistInfo(query) {
     let url = `http://localhost:3000/getPlaylist?id=${query}`;
 
-    if(localStorage.getItem('authToken') === null){
+    if (localStorage.getItem('authToken') === null) {
         return false;
     }
 
@@ -61,7 +61,7 @@ export async function getPlaylistInfo(query) {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + localStorage.getItem('authToken')
         },
-        body : JSON.stringify({id : query})
+        body: JSON.stringify({id: query})
     });
 
     return await res.json();
@@ -78,7 +78,7 @@ export async function getTrackInfo(query) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body : JSON.stringify({id : query})
+        body: JSON.stringify({id: query})
     });
 
     return await res.json();
@@ -92,7 +92,7 @@ export async function getTrackInfo(query) {
 export async function getUser(username) {
     let url = `http://localhost:3000/getUser`;
 
-    if(localStorage.getItem('authToken') === null){
+    if (localStorage.getItem('authToken') === null) {
         return false;
     }
 
@@ -102,7 +102,7 @@ export async function getUser(username) {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + localStorage.getItem('authToken')
         },
-        body : JSON.stringify({"username" : username})
+        body: JSON.stringify({"username": username})
     });
 
     return await res.json();
@@ -121,8 +121,43 @@ export async function getArtists(ids) {
         headers: {
             'Content-Type': 'application/json',
         },
-        body : JSON.stringify({"ids" : ids})
+        body: JSON.stringify({"ids": ids})
     });
 
     return await res.json();
 }
+
+
+export async function myPlaylists() {
+    let url = `http://localhost:3000/myPlaylists`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+    });
+
+    return await res.json();
+}
+
+
+export async function addTrackToPlaylist(trackId, playlistId) {
+    let url = `http://localhost:3000/addTrackToPlaylist`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            "playlist": playlistId,
+            "track": trackId
+        })
+    });
+
+    return await res.json();
+}
+
