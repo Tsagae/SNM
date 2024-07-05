@@ -172,6 +172,18 @@ app.post('/addTrackToPlaylist', async (req, res) => {
     }
 });
 
+app.post('/removeTrackFromPlaylist', async (req, res) => {
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await playlists.removeTrackFromPlaylist(authReq.user._id, req.body.playlist, req.body.track);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
 
 app.post('/createPlaylist', async (req, res) => {
     let authReq = auth.authenticateRequest(req, res);

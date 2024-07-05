@@ -46,7 +46,8 @@ async function login(req, res) {
                     username: username
                 }),
                 name: username,
-                profilePic: userFromDb.avatar
+                profilePic: userFromDb.avatar,
+                _id: userFromDb._id.toString()
             });
         }
         return res.status(401).send({result: "Login non valido"});

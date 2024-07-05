@@ -45,6 +45,7 @@
             localStorage.setItem('authToken', json.accessToken);
             localStorage.setItem('username', json.name);
             localStorage.setItem('avatar', json.profilePic);
+            localStorage.setItem('userId', json._id);
             window.location.replace("/");
         }
     }
