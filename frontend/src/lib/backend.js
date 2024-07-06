@@ -179,4 +179,29 @@ export async function removeTrackFromPlaylist(trackId, playlistId) {
     return await res.json();
 }
 
+export async function createPlaylist(name, isPublic, tracks, tags, description) {
+    let url = `http://localhost:3000/createPlaylist`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            "name": name,
+            "isPublic": isPublic,
+            "tracks": tracks,
+            "tags": tags,
+            "description": description
+        })
+    });
+    if (res.ok) {
+        return await res.json();
+    } else {
+        throw new Error("Errore nella creazione della playlist");
+    }
+}
+
+
 

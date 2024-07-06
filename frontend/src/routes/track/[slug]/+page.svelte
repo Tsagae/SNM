@@ -2,6 +2,7 @@
     import {addTrackToPlaylist, getTrackInfo, myPlaylists} from '$lib/backend.js';
     import {Dropdown, Spinner, Button} from "flowbite-svelte";
     import {ChevronDownOutline, PlusOutline} from "flowbite-svelte-icons";
+    import {goto} from "$app/navigation";
 
     let pageInfo = window.location.pathname;
     let trackId = pageInfo.replace("/track/", "");
@@ -39,8 +40,16 @@
                 </div>
             {:then playlists}
                 {#each playlists as playlist}
-                    <Button on:click={() => addTrackToPlaylist(trackId, playlist._id)}>{playlist.name}</Button>
+                    <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+                        <Button on:click={() => addTrackToPlaylist(trackId, playlist._id)}>{playlist.name}</Button>
+                    </li>
                 {/each}
+                <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <Button on:click={() => goto(`/playlist/new?from=${track.id}`)}>
+                        <PlusOutline class="w-6 h-6 mr-2 text-white dark:text-white"/>
+                        Nuova playlist
+                    </Button>
+                </li>
             {/await}
         </Dropdown>
     </div>
