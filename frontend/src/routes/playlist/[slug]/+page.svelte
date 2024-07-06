@@ -13,17 +13,17 @@
     TableHead, 
     TableHeadCell
     } from 'flowbite-svelte';
-    import { InfoCircleSolid, PlayOutline } from 'flowbite-svelte-icons';
-    import {getPlaylistInfo, getTrackInfo} from '$lib/backend.js';
-    import { goto } from '$app/navigation'
-    import { error } from '@sveltejs/kit';
+    import {InfoCircleSolid, PlayOutline} from 'flowbite-svelte-icons';
+    import {getPlaylistInfo, getTrackInfo, removeTrackFromPlaylist} from '$lib/backend.js';
+    import {goto} from '$app/navigation'
+    import {error} from '@sveltejs/kit';
 
     let pageInfo = window.location.pathname;
     let id = pageInfo.replace("/playlist/", "");
     id = id.replace("/", "");
 
     const playlistInfo = getPlaylistInfo(id);
-
+    const userId = localStorage.getItem("userId")
 </script>
     
     {#await playlistInfo}
@@ -67,24 +67,28 @@
                 <TableBody tableBodyClass="divide-y">
                     {#each playlist.tracks as track}
                         {#await getTrackInfo(track)}
-                        <p>...waiting</p>
+                            <p>...waiting</p>
                         {:then track}
-                        <TableBodyRow class="cursor-pointer bg-white dark:bg-zinc-800" on:click={() => goto(`/track/${track.id}`)}>
-                        <TableBodyCell>{track.name}</TableBodyCell>
-                        <TableBodyCell>
-                            {#each track.artists as artist}
-                                {artist.name}
-                            {/each}
-                        </TableBodyCell>
-                        <TableBodyCell>{track.album.name}</TableBodyCell>
-                        <TableBodyCell>?</TableBodyCell>
-                        </TableBodyRow>
+                            <TableBodyRow class="cursor-pointer bg-white dark:bg-zinc-800">
+                                <TableBodyCell><Button on:click={() => goto(`/track/${track.id}`)}>{track.name}</Button></TableBodyCell>
+                                <TableBodyCell>
+                                    {#each track.artists as artist}
+                                        {artist.name}
+                                    {/each}
+                                </TableBodyCell>
+                                <TableBodyCell>{track.album.name}</TableBodyCell>
+                                <TableBodyCell>
+                                    {#if userId === playlist.user}
+                                        <Button on:click={() => removeTrackFromPlaylist(track.id, playlist._id)}>Rimuovi</Button>
+                                    {/if}
+                                </TableBodyCell>
+                            </TableBodyRow>
                         {:catch error}
-                        <p style="color: red">{error.message}</p>
+                            <p style="color: red">{error.message}</p>
                         {/await}
                     {/each}
-                    </TableBody>
-                </Table>
-            </div>
-        {/if}
-    {/await}
+                </TableBody>
+            </Table>
+        </div>
+    {/if}
+{/await}

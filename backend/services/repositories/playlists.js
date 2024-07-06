@@ -85,6 +85,21 @@ async function addTrackToPlaylist(userId, playlistId, trackId) {
 }
 
 /**
+ * Removed a track from a playlist. Does nothing if the track is not in the playlist
+ * @param userId the user making the request
+ * @param playlistId of the playlist to remove the track from
+ * @param trackId of the track to remove
+ * @returns {Promise<{error: string, statusCode: number}|*>}
+ */
+async function removeTrackFromPlaylist(userId, playlistId, trackId) {
+    let res;
+    let playlist = await getPlaylist(playlistId, userId);
+    let newTracks = playlist.tracks;
+    newTracks = newTracks.filter((item) => item !== trackId)
+    return await editPlaylist(playlistId, userId, playlist.name, playlist.public, newTracks, playlist.tags);
+}
+
+/**
  * Creates a playlist
  @param {string} userId
  @param {string} name
@@ -174,5 +189,6 @@ export default {
     deletePlaylist,
     searchPublicPlaylists,
     getAllUserPlaylists,
-    addTrackToPlaylist
+    addTrackToPlaylist,
+    removeTrackFromPlaylist
 };
