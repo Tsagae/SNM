@@ -13,7 +13,7 @@
     TableHead, 
     TableHeadCell
     } from 'flowbite-svelte';
-    import {InfoCircleSolid, PlayOutline} from 'flowbite-svelte-icons';
+    import {InfoCircleSolid, PauseSolid, PlaySolid} from 'flowbite-svelte-icons';
     import {getPlaylistInfo, getTrackInfo, removeTrackFromPlaylist} from '$lib/backend.js';
     import {goto} from '$app/navigation'
     import {error} from '@sveltejs/kit';
@@ -23,7 +23,47 @@
     id = id.replace("/", "");
 
     const playlistInfo = getPlaylistInfo(id);
-    const userId = localStorage.getItem("userId")
+    const userId = localStorage.getItem("userId");
+
+    let playingState = 'paused'
+	let songPlaying = ''
+	let song = ''
+
+	function togglePlaying() {
+		playingState === 'paused'? play() : pause()
+	}
+	
+	function loadSong() {
+		song = new Audio(songPlaying)
+		song.volume = 0.2
+		song.play()		
+	}
+
+	function play() {
+		if (playingState === 'playing') {
+			pause()
+		}
+		
+		playingState = 'playing'
+		loadSong()
+	}
+	
+	function playSelectedSong(track) {	
+        console.log("PLAY ", songPlaying);	
+		
+		if (track == songPlaying) {
+			songPlaying = ''
+			return pause()
+		}
+		
+		songPlaying = track
+		play()
+	}
+
+	function pause() {
+		playingState = 'paused'
+		song.pause()
+	}
 </script>
     
     {#await playlistInfo}
@@ -62,21 +102,33 @@
                         <TableHeadCell>Canzone</TableHeadCell>
                         <TableHeadCell>Artista</TableHeadCell>
                         <TableHeadCell>Album</TableHeadCell>
-                        <TableHeadCell>Altro?</TableHeadCell>
+                        <TableHeadCell>Anteprima</TableHeadCell>
+                        {#if userId === playlist.user}
+                            <TableHeadCell>Modifiche</TableHeadCell>
+                        {/if}
                     </TableHead>
                 <TableBody tableBodyClass="divide-y">
                     {#each playlist.tracks as track}
                         {#await getTrackInfo(track)}
                             <p>...waiting</p>
                         {:then track}
-                            <TableBodyRow class="cursor-pointer bg-white dark:bg-zinc-800">
-                                <TableBodyCell><Button on:click={() => goto(`/track/${track.id}`)}>{track.name}</Button></TableBodyCell>
+                            <TableBodyRow class="bg-white dark:bg-zinc-800" >
+                                <TableBodyCell class="cursor-pointer" on:click={() => goto(`/track/${track.id}`)}>{track.name}</TableBodyCell>
                                 <TableBodyCell>
                                     {#each track.artists as artist}
                                         {artist.name}
                                     {/each}
                                 </TableBodyCell>
                                 <TableBodyCell>{track.album.name}</TableBodyCell>
+                                <TableBodyCell>
+                                    <Button on:click={() => playSelectedSong(track.preview_url)} pill shadow>
+                                        {#if playingState === 'playing' && track.preview_url === songPlaying}
+                                        <PauseSolid/>
+                                        {:else}
+                                        <PlaySolid/>
+                                        {/if}
+                                    </Button>
+                                </TableBodyCell>
                                 <TableBodyCell>
                                     {#if userId === playlist.user}
                                         <Button on:click={() => removeTrackFromPlaylist(track.id, playlist._id)}>Rimuovi</Button>
