@@ -27,7 +27,6 @@
 
 	let src = '/logo.png';
  	let aClass = 'flex items-center mb-5';
-  	let spanClass = 'self-center text-xl font-semibold whitespace-nowrap dark:text-white';
 	$: activeUrl = $page.url.pathname;
 	let logged = false;
 	let imgAvatar = '';
@@ -70,7 +69,7 @@
 
 						<a {...$$restProps} href="/" class={twMerge(aClass, $$props.class)}>
 							<Img src="/logo.png" class="w-1/2 p-5" alt="SNM"/>
-							<span class={spanClass}>SNM</span>
+							<span class="self-center text-3xl font-bold whitespace-nowrap dark:text-white">SNM</span>
 						</a>
 						
 						<SidebarItem label="Something" href="/">
