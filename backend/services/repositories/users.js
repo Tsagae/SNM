@@ -8,29 +8,21 @@ import mongodb from 'mongodb';
 
 /**
  * Gets a user from the db
- * @param {string} username of the user to return
- * @param {string} userRequesting username of the user making the request
+ * @param {string} userId of the user to return
  * @returns {Promise<{error: string, statusCode: number}|*>}
  */
-async function getUser(username, userRequesting) {
+async function getUser(userId) {
     let userFromDb = [];
-    if (username.length === 0) {
-        return {error: "Utente non trovato", statusCode: 404};
-    }
     await dataAccess.executeQuery(async (db) => {
         userFromDb = await db.collection('Users').findOne({
-            username: username
+            _id: new mongodb.ObjectId(userId)
         });
     });
     if (userFromDb === null) {
         return {error: "Utente non trovato", statusCode: 404};
     }
-    delete userFromDb._id;
+    delete userFromDb.email;
     delete userFromDb.password;
-    if (username !== userRequesting) {
-        delete userFromDb.email;
-    }
-
     return userFromDb;
 }
 

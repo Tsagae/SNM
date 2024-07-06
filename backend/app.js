@@ -223,10 +223,8 @@ app.post('/myPlaylists', async (req, res) => {
 
 // -------- Users --------
 app.post('/getUser', async (req, res) => {
-    let authReq = auth.authenticateRequest(req, res);
-    if (!authReq.authenticated) return;
     try {
-        let results = await users.getUser(req.body.username, authReq.user.username);
+        let results = await users.getUser(req.body._id);
         return await handleRequest(results, res);
     } catch (e) {
         console.log(e)
