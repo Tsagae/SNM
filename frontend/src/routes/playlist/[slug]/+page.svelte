@@ -87,8 +87,9 @@
                 <Card class="max-w-7xl w-11/12 m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" style="background-image: linear-gradient(to left, rgba(255,0,0,0), rgba(63,63,70,1)),url('{playlist.thumbnail}'); background-repeat: no-repeat; background-position: right top; background-size: 50%;">
                     <Heading tag="h1" customSize="text-6xl font-extrabold ">{playlist.name}</Heading>
                     <div class="mt-6">
+                        <p>{playlist.description}</p>
                         {#each playlist.tags as tag}
-                            <Badge rounded color="green" class="mx-1">#{tag}</Badge> 
+                            <Badge rounded color="green" class="mr-2">#{tag}</Badge> 
                         {/each}
                     </div>
                     <br>

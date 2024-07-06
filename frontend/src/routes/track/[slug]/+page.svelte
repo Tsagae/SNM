@@ -1,7 +1,13 @@
 <script>
+    import {
+        Avatar,
+        Button,
+        Card,
+        Dropdown,
+        Spinner
+    } from 'flowbite-svelte';
     import {addTrackToPlaylist, getTrackInfo, myPlaylists} from '$lib/backend.js';
-    import {Dropdown, Spinner, Button} from "flowbite-svelte";
-    import {ChevronDownOutline, PlusOutline} from "flowbite-svelte-icons";
+    import {ChevronDownOutline, PlusOutline, UserCircleSolid} from "flowbite-svelte-icons";
 
     let pageInfo = window.location.pathname;
     let trackId = pageInfo.replace("/track/", "");
@@ -10,14 +16,25 @@
     //TODO: aggiungere feedback al completamento di addTrackToPlaylist
 </script>
 
-
-<h1>Track</h1>
-
 {#await getTrackInfo(trackId)}
     <div class="text-center mt-16">
         <Spinner size={8} color="green"/>
     </div>
 {:then track}
+    <Card img={track.album.images[0].url} class="w-4/5 max-w-full m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" horizontal>
+        <p>Canzone</p>
+        <h2 class="mb-1 text-3xl font-medium text-gray-900 dark:text-white">{track.name}</h2>
+        <p>
+        {#each track.artists as artist}
+            <UserCircleSolid class="w-6 h-6 mr-2 flex"/> {artist.name}
+        {/each} -
+        <b>{track.album.name}</b>
+        </p>
+    </Card>
+
+
+
+
     <h1>{track.name}</h1>
     <div>
         <span>By</span>
