@@ -52,7 +52,7 @@ export async function getPlaylistInfo(query) {
     let url = `http://localhost:3000/getPlaylist?id=${query}`;
 
     if (localStorage.getItem('authToken') === null) {
-        return false;
+        return {error: "Esegui il login per vedere le playlist"};
     }
 
     const res = await fetch(url, {
@@ -63,8 +63,11 @@ export async function getPlaylistInfo(query) {
         },
         body: JSON.stringify({id: query})
     });
-
-    return await res.json();
+    if (res.ok) {
+        return await res.json();
+    } else {
+        return {error: "Non puoi vedere questa playlist: potrebbe essere privata o inesistente"};
+    }
 }
 
 /**
@@ -86,25 +89,19 @@ export async function getTrackInfo(query) {
 
 /**
  *
- * @param username
+ * @param userId
  * @returns {Promise<any|boolean>}
  */
-export async function getUser(username) {
+export async function getUser(userId) {
     let url = `http://localhost:3000/getUser`;
-
-    if (localStorage.getItem('authToken') === null) {
-        return false;
-    }
 
     const res = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('authToken')
         },
-        body: JSON.stringify({"username": username})
+        body: JSON.stringify({"_id": userId})
     });
-
     return await res.json();
 }
 
@@ -178,5 +175,30 @@ export async function removeTrackFromPlaylist(trackId, playlistId) {
 
     return await res.json();
 }
+
+export async function createPlaylist(name, isPublic, tracks, tags, description) {
+    let url = `http://localhost:3000/createPlaylist`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            "name": name,
+            "isPublic": isPublic,
+            "tracks": tracks,
+            "tags": tags,
+            "description": description
+        })
+    });
+    if (res.ok) {
+        return await res.json();
+    } else {
+        throw new Error("Errore nella creazione della playlist");
+    }
+}
+
 
 

@@ -119,7 +119,7 @@ app.post('/getPlaylist', async (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
     let authReq = auth.authenticateRequest(req, res);
     try {
-        let results = await playlists.getPlaylist(req.body.id, authReq.user.username);
+        let results = await playlists.getPlaylist(req.body.id, authReq.user._id);
         return await handleRequest(results, res);
     } catch (e) {
         console.log(e)
@@ -151,7 +151,7 @@ app.post('/editPlaylist', async (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
     try {
-        let results = await playlists.editPlaylist(req.body.id, authReq.user.username, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags);
+        let results = await playlists.editPlaylist(req.body.id, authReq.user._id, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags, req.body.description);
         return await handleRequest(results, res);
     } catch (e) {
         console.log(e)
@@ -189,7 +189,7 @@ app.post('/createPlaylist', async (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
     try {
-        let results = await playlists.createPlaylist(authReq.user._id, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags);
+        let results = await playlists.createPlaylist(authReq.user._id, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags, req.body.description);
         return await handleRequest(results, res);
     } catch (e) {
         console.log(e)
@@ -223,10 +223,8 @@ app.post('/myPlaylists', async (req, res) => {
 
 // -------- Users --------
 app.post('/getUser', async (req, res) => {
-    let authReq = auth.authenticateRequest(req, res);
-    if (!authReq.authenticated) return;
     try {
-        let results = await users.getUser(req.body.username, authReq.user.username);
+        let results = await users.getUser(req.body._id);
         return await handleRequest(results, res);
     } catch (e) {
         console.log(e)
