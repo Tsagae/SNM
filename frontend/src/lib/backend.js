@@ -52,7 +52,7 @@ export async function getPlaylistInfo(query) {
     let url = `http://localhost:3000/getPlaylist?id=${query}`;
 
     if (localStorage.getItem('authToken') === null) {
-        return false;
+        return {error: "Esegui il login per vedere le playlist"};
     }
 
     const res = await fetch(url, {
