@@ -151,7 +151,7 @@ app.post('/editPlaylist', async (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
     try {
-        let results = await playlists.editPlaylist(req.body.id, authReq.user.username, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags, req.body.description);
+        let results = await playlists.editPlaylist(req.body.id, authReq.user._id, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags, req.body.description);
         return await handleRequest(results, res);
     } catch (e) {
         console.log(e)
