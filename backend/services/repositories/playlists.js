@@ -17,7 +17,13 @@ async function getPlaylist(id, user) {
     if (res == null) {
         return {error: "Playlist non trovata", statusCode: 404};
     }
-    if (!res?.public && res?.user !== user) {
+    let isPublic = false;
+    if(typeof res?.public == "boolean"){
+        isPublic = res?.public;
+    } else {
+        isPublic = res?.public === "true";
+    }
+    if (!isPublic && res?.user !== user) {
         return {error: "Non puoi visualizzare questa playlist", statusCode: 403};
     }
     return res;
@@ -46,9 +52,10 @@ async function getAllPublicPlaylists() {
  @param {boolean} isPublic
  @param {string[]} tracks
  @param {string[]} tags
+ @param {string} description
  @returns {Promise<{error: string, statusCode: number}|*>} error if the user is not the owner of the playlist
  */
-async function editPlaylist(id, user, name, isPublic, tracks, tags) {
+async function editPlaylist(id, user, name, isPublic, tracks, tags, description) {
     let res;
     let playlist = await getPlaylist(id, user);
     if (playlist?.user !== user) {
@@ -60,7 +67,8 @@ async function editPlaylist(id, user, name, isPublic, tracks, tags) {
                 name: name,
                 public: isPublic,
                 tracks: tracks,
-                tags: tags
+                tags: tags,
+                description: description
             }
         });
     });
@@ -81,7 +89,7 @@ async function addTrackToPlaylist(userId, playlistId, trackId) {
     if (!newTracks.includes(trackId)) {
         newTracks.push(trackId);
     }
-    return await editPlaylist(playlistId, userId, playlist.name, playlist.public, newTracks, playlist.tags);
+    return await editPlaylist(playlistId, userId, playlist.name, playlist.public, newTracks, playlist.tags, playlist.description);
 }
 
 /**
@@ -96,7 +104,7 @@ async function removeTrackFromPlaylist(userId, playlistId, trackId) {
     let playlist = await getPlaylist(playlistId, userId);
     let newTracks = playlist.tracks;
     newTracks = newTracks.filter((item) => item !== trackId)
-    return await editPlaylist(playlistId, userId, playlist.name, playlist.public, newTracks, playlist.tags);
+    return await editPlaylist(playlistId, userId, playlist.name, playlist.public, newTracks, playlist.tags, playlist.description);
 }
 
 /**
@@ -106,8 +114,9 @@ async function removeTrackFromPlaylist(userId, playlistId, trackId) {
  @param {boolean} isPublic
  @param {string[]} tracks
  @param {string[]} tags
+ @param {string} description
  */
-async function createPlaylist(userId, name, isPublic, tracks, tags) {
+async function createPlaylist(userId, name, isPublic, tracks, tags, description) {
     let res;
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').insertOne({
@@ -115,7 +124,8 @@ async function createPlaylist(userId, name, isPublic, tracks, tags) {
             name: name,
             public: isPublic,
             tracks: tracks,
-            tags: tags
+            tags: tags,
+            description: description
         });
     });
     return res;
