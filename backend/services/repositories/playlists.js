@@ -17,7 +17,13 @@ async function getPlaylist(id, user) {
     if (res == null) {
         return {error: "Playlist non trovata", statusCode: 404};
     }
-    if (!res?.public && res?.user !== user) {
+    let isPublic = false;
+    if(typeof res?.public == "boolean"){
+        isPublic = res?.public;
+    } else {
+        isPublic = res?.public === "true";
+    }
+    if (!isPublic && res?.user !== user) {
         return {error: "Non puoi visualizzare questa playlist", statusCode: 403};
     }
     return res;

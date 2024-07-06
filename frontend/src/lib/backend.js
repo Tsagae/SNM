@@ -63,8 +63,11 @@ export async function getPlaylistInfo(query) {
         },
         body: JSON.stringify({id: query})
     });
-
-    return await res.json();
+    if (res.ok) {
+        return await res.json();
+    } else {
+        return {error: "Non puoi vedere questa playlist: potrebbe essere privata o inesistente"};
+    }
 }
 
 /**
