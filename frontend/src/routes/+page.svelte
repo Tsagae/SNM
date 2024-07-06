@@ -7,7 +7,7 @@
         Spinner
     } from 'flowbite-svelte';
     import {ChevronDownOutline, FilterOutline} from 'flowbite-svelte-icons';
-    import {search, getPubPlaylist} from '$lib/backend.js';
+    import {search, getPubPlaylist, getUser} from '$lib/backend.js';
     import Playlist from '$lib/components/playlist.svelte';
     import {goto} from "$app/navigation";
 
@@ -87,7 +87,14 @@
         </div>
     {:then playlist}
         {#each playlist as {_id, name, user, tracks, tags, thumbnail}, i}
-            <Playlist id={_id} name={name} user={user} tracks={tracks} tags={tags} thumbnail={thumbnail} i={i}/>
+            {#await getUser(user)}
+                <div class="text-center">
+                    <Spinner size={8} color="green"/>
+                </div>
+            {:then userFromBackend}
+                <Playlist id={_id} name={name} user={userFromBackend.username} tracks={tracks} tags={tags}
+                          thumbnail={thumbnail} i={i}/>
+            {/await}
             <br><br>
         {/each}
     {/await}

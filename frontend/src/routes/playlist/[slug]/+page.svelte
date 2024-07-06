@@ -14,7 +14,7 @@
         TableHeadCell
     } from 'flowbite-svelte';
     import {InfoCircleSolid, PauseSolid, PlaySolid} from 'flowbite-svelte-icons';
-    import {getPlaylistInfo, getTrackInfo, removeTrackFromPlaylist} from '$lib/backend.js';
+    import {getPlaylistInfo, getTrackInfo, removeTrackFromPlaylist, getUser} from '$lib/backend.js';
     import {goto} from '$app/navigation'
     import {error} from '@sveltejs/kit';
 
@@ -93,7 +93,13 @@
                     {/each}
                 </div>
                 <br>
-                <p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">by {playlist.user}</p> <br>
+                {#await getUser(playlist.user)}
+                    <div class="text-center mt-16">
+                        <Spinner size={8} color="green"/>
+                    </div>
+                {:then user}
+                    <p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">by {user.username}</p> <br>
+                {/await}
             </Card>
             <br>
         </div>

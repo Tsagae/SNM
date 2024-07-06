@@ -89,25 +89,19 @@ export async function getTrackInfo(query) {
 
 /**
  *
- * @param username
+ * @param userId
  * @returns {Promise<any|boolean>}
  */
-export async function getUser(username) {
+export async function getUser(userId) {
     let url = `http://localhost:3000/getUser`;
-
-    if (localStorage.getItem('authToken') === null) {
-        return false;
-    }
 
     const res = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('authToken')
         },
-        body: JSON.stringify({"username": username})
+        body: JSON.stringify({"_id": userId})
     });
-
     return await res.json();
 }
 
