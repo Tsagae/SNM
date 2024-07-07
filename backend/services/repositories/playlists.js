@@ -18,7 +18,7 @@ async function getPlaylist(id, user) {
         return {error: "Playlist non trovata", statusCode: 404};
     }
     let isPublic = false;
-    if(typeof res?.public == "boolean"){
+    if (typeof res?.public == "boolean") {
         isPublic = res?.public;
     } else {
         isPublic = res?.public === "true";
@@ -61,15 +61,25 @@ async function editPlaylist(id, user, name, isPublic, tracks, tags, description)
     if (playlist?.user !== user) {
         return {error: "Non puoi modificare questa playlist", statusCode: 403};
     }
+    let dataToChange = {}
+    if (name !== null) {
+        dataToChange.name = name;
+    }
+    if (isPublic !== null) {
+        dataToChange.public = isPublic;
+    }
+    if (tracks !== null) {
+        dataToChange.tracks = tracks;
+    }
+    if (tags !== null) {
+        dataToChange.tags = tags;
+    }
+    if (description !== null) {
+        dataToChange.description = description;
+    }
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').updateOne({_id: new mongodb.ObjectId(id)}, {
-            $set: {
-                name: name,
-                public: isPublic,
-                tracks: tracks,
-                tags: tags,
-                description: description
-            }
+            $set: dataToChange
         });
     });
     return res;
@@ -145,7 +155,7 @@ async function deletePlaylist(id, user) {
         return {error: "Non puoi cancellare questa playlist", statusCode: 403};
     }
     await dataAccess.executeQuery(async (db) => {
-        res = await db.collection('Playlists').deleteOne(db.Playlists.deleteOne({_id: new mongodb.ObjectId(id)}));
+        res = await db.collection('Playlists').deleteOne({_id: new mongodb.ObjectId(id)});
     });
     return res;
 }
@@ -162,8 +172,13 @@ async function searchPublicPlaylists(name) {
     }
     await dataAccess.executeQuery(async (db) => {
         let cursor = await db.collection('Playlists').find({
-            public: true,
-            name: {$regex: new RegExp(".*" + name + ".*", "i")}
+            $or: [{
+                public: true,
+                name: {$regex: new RegExp(".*" + name + ".*", "i")}
+            }, {
+                public: true,
+                tags: {$regex: new RegExp(".*" + name + ".*", "i")}
+            }]
         });
         for await (const doc of cursor) {
             res.push(doc);

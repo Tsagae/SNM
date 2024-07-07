@@ -247,6 +247,42 @@ export async function getMyInfo() {
     return await res.json();
 }
 
+export async function deletePlaylist(playlistId) {
+    let url = `http://localhost:3000/deletePlaylist`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            "id": playlistId
+        })
+    });
+
+    return await res.json();
+}
 
 
+export async function editPlaylist(id, name, isPublic, tracks, tags, description) {
+    let url = `http://localhost:3000/editPlaylist`;
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            "id": id,
+            "name": name,
+            "isPublic": isPublic,
+            "tracks": tracks,
+            "tags": tags,
+            "description": description,
+        })
+    });
+
+    return await res.json();
+}
 

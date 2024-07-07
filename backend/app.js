@@ -212,7 +212,7 @@ app.post('/deletePlaylist', async (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
     try {
-        let results = await playlists.deletePlaylist(req.body.id, authReq.user.username);
+        let results = await playlists.deletePlaylist(req.body.id, authReq.user._id);
         return await handleRequest(results, res);
     } catch (e) {
         console.log(e)
