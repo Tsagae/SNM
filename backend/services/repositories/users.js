@@ -94,4 +94,26 @@ async function editUser(userid, username, email, artists, genres) {
     return res;
 }
 
-export default {getUser, editUser};
+/**
+ * Deletes a user from the db and all the content associated with him
+ * @param {string} userId of the user to delete
+ * @returns {Promise<*[]>}
+ */
+async function deleteUser(userId) {
+    let res = [];
+    await dataAccess.executeQuery(async (db) => {
+        res = await db.collection('Playlists').deleteMany({
+            "user": userId
+        });
+    });
+    await dataAccess.executeQuery(async (db) => {
+        res = await db.collection('Users').deleteOne({
+            _id: new mongodb.ObjectId(userId)
+        });
+    });
+
+    return res;
+}
+
+
+export default {getUser, editUser, deleteUser};
