@@ -240,14 +240,20 @@ async function getSavedPlaylists(userId) {
  */
 async function savePlaylist(userId, playlistId) {
     let res;
-    let playlists = await getSavedPlaylists(userId);
-    if (!playlists.includes(playlistId)) {
-        playlists.push(playlistId);
+    let playlistIds = [];
+    await dataAccess.executeQuery(async (db) => {
+        playlistIds = (await db.collection('Users').findOne({
+            _id: new mongodb.ObjectId(userId)
+        })).savedPlaylists;
+    });
+
+    if (!playlistIds.includes(playlistId)) {
+        playlistIds.push(playlistId);
     }
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Users').updateOne({_id: new mongodb.ObjectId(userId)}, {
             $set: {
-                "savedPlaylists": playlists
+                "savedPlaylists": playlistIds
             }
         });
     });
@@ -262,12 +268,18 @@ async function savePlaylist(userId, playlistId) {
  */
 async function removeSavedPlaylist(userId, playlistId) {
     let res;
-    let playlists = await getSavedPlaylists(userId);
-    playlists = playlists.filter((item) => item !== playlistId)
+    let playlistIds = [];
+    await dataAccess.executeQuery(async (db) => {
+        playlistIds = (await db.collection('Users').findOne({
+            _id: new mongodb.ObjectId(userId)
+        })).savedPlaylists;
+    });
+
+    playlistIds = playlistIds.filter((item) => item !== playlistId)
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Users').updateOne({_id: new mongodb.ObjectId(userId)}, {
             $set: {
-                "savedPlaylists": playlists
+                "savedPlaylists": playlistIds
             }
         });
     });

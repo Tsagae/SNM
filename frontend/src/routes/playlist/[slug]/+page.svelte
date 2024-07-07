@@ -79,6 +79,15 @@
         await editPlaylist(_id, null, !isPublic, null, null, null);
         window.location.reload();
     }
+
+    function containsPlaylistId(playlists, playlistId){
+        for(let playlist of playlists){
+            if(playlist._id === playlistId){
+                return true;
+            }
+        }
+        return false;
+    }
 </script>
 
 {#await playlistInfo}
@@ -131,9 +140,9 @@
                 <Spinner size={8} color="green"/>
             </div>
         {:then savedPlaylists}
-            <Toggle checked={savedPlaylists.includes(playlist._id)}
+            <Toggle checked={containsPlaylistId(savedPlaylists, playlist._id)}
                     on:click={async () => {
-                        if(savedPlaylists.includes(playlist._id)){
+                        if(containsPlaylistId(savedPlaylists, playlist._id)){
                            await removeSavedPlaylist(playlist._id);
                         } else {
                            await savePlaylist(playlist._id);
