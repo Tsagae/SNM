@@ -10,9 +10,9 @@
         Heading,
         Spinner
     } from 'flowbite-svelte';
-    import {DotsHorizontalOutline} from 'flowbite-svelte-icons';
+    import { DotsHorizontalOutline} from 'flowbite-svelte-icons';
     import Playlist from '$lib/components/playlist.svelte';
-    import {myPlaylists, getUser, getArtists, getMySavedPlaylists} from '$lib/backend.js'; //temporary
+    import {myPlaylists, getUser, getArtists} from '$lib/backend.js'; //temporary
 
     let pageInfo = window.location.pathname;
     let idUser = pageInfo.replace("/profilo/", "");
@@ -21,11 +21,6 @@
     let imgAvatar = '';
     let index = 0;
     let image;
-
-    let isMyProfile = false;
-    if (localStorage.getItem('authToken') !== null) {
-        isMyProfile = idUser === localStorage.getItem('userId')
-    }
 
     let userInfoPromise = getUser(idUser);
     let userPlaylists = getUserPlaylists();
@@ -54,15 +49,15 @@
         <Spinner size={8} color="green"/>
     </div>
 {:then userInfo}
+
     {#if userInfo.avatar}
         <Card img={userInfo.avatar} class="w-4/5 max-w-full m-auto mt-2 mb-6 bg-gray-100 dark:bg-zinc-700" horizontal>
             <div class="flex">
-                <DotsHorizontalOutline class="dots-menu place-self-end dark:text-white"/>
+                <DotsHorizontalOutline class="dots-menu place-self-end dark:text-white" />
                 <Dropdown triggeredBy=".dots-menu">
                     <DropdownItem href="/profilo/edit">Modifica</DropdownItem>
                 </Dropdown>
-                <Heading tag="h1" class="mb-4"
-                         customSize="text-2xl font-extrabold md:text-5xl lg:text-6xl">{userInfo.username}</Heading>
+                <Heading tag="h1" class="mb-4" customSize="text-2xl font-extrabold md:text-5xl lg:text-6xl">{userInfo.username}</Heading>
             </div>
             <p class="text-2xl dark:text-white">Preferenze</p>
             <div class="mt-2">
@@ -100,9 +95,8 @@
     {:else}
         <Card class="w-4/5 max-w-full m-auto mt-2 mb-6 bg-gray-100 dark:bg-zinc-700">
             <div class="flex">
-                <Heading tag="h1" class="mb-4 flex"
-                         customSize="text-2xl font-extrabold md:text-5xl lg:text-6xl">{userInfo.username}</Heading>
-                <DotsHorizontalOutline class="dots-menu dark:text-white"/>
+                <Heading tag="h1" class="mb-4 flex" customSize="text-2xl font-extrabold md:text-5xl lg:text-6xl">{userInfo.username}</Heading>
+                <DotsHorizontalOutline class="dots-menu dark:text-white" />
                 <Dropdown triggeredBy=".dots-menu" class="bg-gray-200 dark:bg-zinc-600">
                     <DropdownItem href="/profilo/edit">Modifica</DropdownItem>
                 </Dropdown>
@@ -142,51 +136,27 @@
         </Card>
     {/if}
 {/await}
-{#if isMyProfile}
-    <h1>Playlist salvate</h1>
-    {#await getMySavedPlaylists()}
-        <div class="text-center mt-16">
-            <Spinner size={8} color="green"/>
+
+{#await userPlaylists}
+    <div class="text-center mt-16">
+        <Spinner size={8} color="green"/>
+    </div>
+{:then images}
+
+    <div class="w-4/5 space-y-4 place-self-center">
+
+        <h2 class="mb-6 text-3xl font-medium text-gray-900 dark:text-white text-center">Playlist pubbliche</h2>
+        <Carousel {images} let:Indicators let:Controls on:change={({ detail }) => (image = detail)}>
+            <Controls/>
+            <Indicators/>
+        </Carousel>
+
+        <div class="rounded h-10 bg-gray-300 dark:bg-zinc-700 dark:text-white p-2 my-2 text-center">
+            <a href="/playlist/{image?.title}">{image?.alt}</a>
         </div>
-    {:then savedPlaylists}
-        {#each savedPlaylists as playlist}
-            <li>{JSON.stringify(playlist)}</li>
-        {/each}
-    {/await}
+    </div>
 
-    <h1>Le mie playlist</h1>
-    {#await myPlaylists()}
-        <div class="text-center mt-16">
-            <Spinner size={8} color="green"/>
-        </div>
-    {:then savedPlaylists}
-        {#each savedPlaylists as playlist}
-            <li>{JSON.stringify(playlist)}</li>
-        {/each}
-    {/await}
-{:else}
-    {#await userPlaylists}
-        <div class="text-center mt-16">
-            <Spinner size={8} color="green"/>
-        </div>
-    {:then images}
-
-        <div class="w-4/5 space-y-4 place-self-center">
-
-            <h2 class="mb-6 text-3xl font-medium text-gray-900 dark:text-white text-center">Playlist pubbliche</h2>
-            <Carousel {images} let:Indicators let:Controls on:change={({ detail }) => (image = detail)}>
-                <Controls/>
-                <Indicators/>
-            </Carousel>
-
-            <div class="rounded h-10 bg-gray-300 dark:bg-zinc-700 dark:text-white p-2 my-2 text-center">
-                <a href="/playlist/{image?.title}">{image?.alt}</a>
-            </div>
-        </div>
-
-    {/await}
-{/if}
-
+{/await}
 
 
 
