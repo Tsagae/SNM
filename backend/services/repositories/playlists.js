@@ -62,19 +62,19 @@ async function editPlaylist(id, user, name, isPublic, tracks, tags, description)
         return {error: "Non puoi modificare questa playlist", statusCode: 403};
     }
     let dataToChange = {}
-    if(name !== null){
+    if (name !== null) {
         dataToChange.name = name;
     }
-    if(isPublic !== null){
+    if (isPublic !== null) {
         dataToChange.public = isPublic;
     }
-    if(tracks !== null){
+    if (tracks !== null) {
         dataToChange.tracks = tracks;
     }
-    if(tags !== null){
+    if (tags !== null) {
         dataToChange.tags = tags;
     }
-    if(description !== null){
+    if (description !== null) {
         dataToChange.description = description;
     }
     await dataAccess.executeQuery(async (db) => {
@@ -172,8 +172,13 @@ async function searchPublicPlaylists(name) {
     }
     await dataAccess.executeQuery(async (db) => {
         let cursor = await db.collection('Playlists').find({
-            public: true,
-            name: {$regex: new RegExp(".*" + name + ".*", "i")}
+            $or: [{
+                public: true,
+                name: {$regex: new RegExp(".*" + name + ".*", "i")}
+            }, {
+                public: true,
+                tags: {$regex: new RegExp(".*" + name + ".*", "i")}
+            }]
         });
         for await (const doc of cursor) {
             res.push(doc);
