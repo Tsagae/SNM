@@ -118,9 +118,11 @@
             </Card>
             <br>
         </div>
-        <Toggle checked={playlist.public}
-                on:click={() => togglePublic(playlist._id, playlist.public)}>Pubblica
-        </Toggle>
+        {#if userId === playlist.user}
+            <Toggle checked={playlist.public}
+                    on:click={() => togglePublic(playlist._id, playlist.public)}>Pubblica
+            </Toggle>
+        {/if}
         <div>
             <Table class="max-w-7xl w-11/12 m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" shadow hoverable>
                 <TableHead class="bg-gray-100 dark:bg-zinc-700">
