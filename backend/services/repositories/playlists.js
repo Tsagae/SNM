@@ -18,7 +18,7 @@ async function getPlaylist(id, user) {
         return {error: "Playlist non trovata", statusCode: 404};
     }
     let isPublic = false;
-    if(typeof res?.public == "boolean"){
+    if (typeof res?.public == "boolean") {
         isPublic = res?.public;
     } else {
         isPublic = res?.public === "true";
@@ -145,7 +145,7 @@ async function deletePlaylist(id, user) {
         return {error: "Non puoi cancellare questa playlist", statusCode: 403};
     }
     await dataAccess.executeQuery(async (db) => {
-        res = await db.collection('Playlists').deleteOne(db.Playlists.deleteOne({_id: new mongodb.ObjectId(id)}));
+        res = await db.collection('Playlists').deleteOne({_id: new mongodb.ObjectId(id)});
     });
     return res;
 }

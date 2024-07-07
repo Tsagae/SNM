@@ -16,7 +16,7 @@
         TableHeadCell
     } from 'flowbite-svelte';
     import {InfoCircleSolid, PauseSolid, PlaySolid} from 'flowbite-svelte-icons';
-    import {getPlaylistInfo, getTrackInfo, removeTrackFromPlaylist, getUser} from '$lib/backend.js';
+    import {getPlaylistInfo, getTrackInfo, removeTrackFromPlaylist, getUser, deletePlaylist} from '$lib/backend.js';
     import {goto} from '$app/navigation'
     import {error} from '@sveltejs/kit';
 
@@ -157,5 +157,10 @@
                 </TableBody>
             </Table>
         </div>
+    {/if}
+    {#if userId === playlist.user}
+        <Button on:click={() => {deletePlaylist(playlist._id); goto("/")}}>
+            Elimina playlist
+        </Button>
     {/if}
 {/await}
