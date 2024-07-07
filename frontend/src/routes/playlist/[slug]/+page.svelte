@@ -49,8 +49,6 @@
     }
 
     function playSelectedSong(track) {
-        console.log("PLAY ", songPlaying);
-
         if (track == songPlaying) {
             songPlaying = ''
             return pause()
@@ -88,7 +86,7 @@
                   style="background-image: linear-gradient(to left, rgba(255,0,0,0), rgba(63,63,70,1)),url('{playlist.thumbnail}'); background-repeat: no-repeat; background-position: right top; background-size: 50%;">
                 <Heading tag="h1" customSize="text-6xl font-extrabold ">{playlist.name}</Heading>
                 <div class="mt-6">
-                        <p>{playlist.description}</p>
+                    <p>{playlist.description}</p>
                     {#each playlist.tags as tag}
                         <Badge rounded color="green" class="mr-2">#{tag}</Badge>
                     {/each}
@@ -122,8 +120,9 @@
                             <p>...waiting</p>
                         {:then track}
                             <TableBodyRow class="bg-white dark:bg-zinc-800">
-                                <TableBodyCell class="cursor-pointer"
-                                               on:click={() => goto(`/track/${track.id}`)}>{track.name}</TableBodyCell>
+                                <TableBodyCell>
+                                    <a href="/track/{track.id}">{track.name}</a>
+                                </TableBodyCell>
                                 <TableBodyCell>
                                     {#each track.artists as artist}
                                         {artist.name}
