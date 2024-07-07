@@ -136,7 +136,7 @@
                     <TableBody tableBodyClass="divide-y">
                         <TableBodyRow class="bg-white dark:bg-zinc-800">
                             <TableBodyCell>
-                                <a href="/track/{playlist._id}">{playlist.name}</a>
+                                <a href="/playlist/{playlist._id}">{playlist.name}</a>
                             </TableBodyCell>
                         </TableBodyRow>
                     </TableBody>
