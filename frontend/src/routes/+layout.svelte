@@ -31,6 +31,7 @@
 	let logged = false;
 	let imgAvatar = '';
 	let profileName = '';
+	let idUtente = '';
 
 	const logout = () => {
 		localStorage.removeItem('authToken');
@@ -50,6 +51,7 @@
 				logged = true;
 				imgAvatar = localStorage.getItem('avatar');
 				profileName = localStorage.getItem('username');
+				idUtente = localStorage.getItem('userId');
 			} else{
 				logout();
 			}
@@ -78,7 +80,7 @@
 							</svelte:fragment>
 						</SidebarItem>
 						{#if logged}
-							<SidebarItem label="Playlist" href="/">
+							<SidebarItem label="Playlist" href="/personal">
 								<svelte:fragment slot="icon">
 									<CaretRightSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
 								</svelte:fragment>
@@ -107,7 +109,7 @@
 			<NavHamburger/>
 			<NavUl>
 				{#if logged}
-					<Avatar src="{imgAvatar}" href="/profilo/{profileName}"/>
+					<Avatar src="{imgAvatar}" href="/profilo/{idUtente}"/>
 					<NavLi><Button on:click={logout} color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Esci</Button></NavLi>	 
 				{:else}
 					<NavLi href="/registration"><Button color="primary" outline pill><EditOutline class="w-4 h-4" color="primary" />Registrati</Button></NavLi>
