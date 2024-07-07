@@ -27,6 +27,26 @@ async function getUser(userId) {
 }
 
 /**
+ * Gets all data of a user from the db
+ * @param userId of the user to return
+ * @returns {Promise<{error: string, statusCode: number}|*[]>}
+ */
+async function getAllUserInfo(userId) {
+    let userFromDb = [];
+    await dataAccess.executeQuery(async (db) => {
+        userFromDb = await db.collection('Users').findOne({
+            _id: new mongodb.ObjectId(userId)
+        });
+    });
+    if (userFromDb === null) {
+        return {error: "Utente non trovato", statusCode: 404};
+    }
+    delete userFromDb.password;
+    return userFromDb;
+}
+
+
+/**
  * Edits a user
  * @param {string} userid of the user to edit
  * @param {string} username
@@ -45,7 +65,7 @@ async function editUser(userid, username, email, artists, genres) {
                 username: username
             });
         });
-        if (userInDb != null) {
+        if (userInDb != null && userInDb.username !== username) {
             return {error: "Un utente con questo nome è già presente", statusCode: 403};
         }
         dataToChange.username = username;
@@ -94,4 +114,26 @@ async function editUser(userid, username, email, artists, genres) {
     return res;
 }
 
-export default {getUser, editUser};
+/**
+ * Deletes a user from the db and all the content associated with him
+ * @param {string} userId of the user to delete
+ * @returns {Promise<*[]>}
+ */
+async function deleteUser(userId) {
+    let res = [];
+    await dataAccess.executeQuery(async (db) => {
+        res = await db.collection('Playlists').deleteMany({
+            "user": userId
+        });
+    });
+    await dataAccess.executeQuery(async (db) => {
+        res = await db.collection('Users').deleteOne({
+            _id: new mongodb.ObjectId(userId)
+        });
+    });
+
+    return res;
+}
+
+
+export default {getUser, editUser, deleteUser, getAllUserInfo};

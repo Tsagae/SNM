@@ -200,5 +200,53 @@ export async function createPlaylist(name, isPublic, tracks, tags, description) 
     }
 }
 
+export async function deleteUser() {
+    let url = `http://localhost:3000/deleteUser`;
+
+    await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+    });
+}
+
+
+export async function editUser(username, email, artists, genres) {
+    let url = `http://localhost:3000/editUser`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            "username": username,
+            "email": email,
+            "artists": artists,
+            "genres": genres,
+        })
+    });
+
+    return await res.json();
+}
+
+export async function getMyInfo() {
+    let url = `http://localhost:3000/getMyInfo`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        }
+    });
+
+    return await res.json();
+}
+
+
 
 
