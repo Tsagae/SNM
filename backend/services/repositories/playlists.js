@@ -205,6 +205,63 @@ async function getAllUserPlaylists(userId) {
     return res;
 }
 
+/**
+ *
+ * @param userId
+ * @returns {Promise<*>}
+ */
+async function getSavedPlaylists(userId) {
+    let res;
+    await dataAccess.executeQuery(async (db) => {
+        res = await db.collection('Users').findOne({
+            _id: new mongodb.ObjectId(userId)
+        });
+    });
+    return res.savedPlaylists;
+}
+
+/**
+ *
+ * @param userId
+ * @param playlistId
+ * @returns {Promise<*>}
+ */
+async function savePlaylist(userId, playlistId) {
+    let res;
+    let playlists = await getSavedPlaylists(userId);
+    if (!playlists.includes(playlistId)) {
+        playlists.push(playlistId);
+    }
+    await dataAccess.executeQuery(async (db) => {
+        res = await db.collection('Users').updateOne({_id: new mongodb.ObjectId(userId)}, {
+            $set: {
+                "savedPlaylists": playlists
+            }
+        });
+    });
+    return res;
+}
+
+/**
+ *
+ * @param userId
+ * @param playlistId
+ * @returns {Promise<*>}
+ */
+async function removeSavedPlaylist(userId, playlistId) {
+    let res;
+    let playlists = await getSavedPlaylists(userId);
+    playlists = playlists.filter((item) => item !== playlistId)
+    await dataAccess.executeQuery(async (db) => {
+        res = await db.collection('Users').updateOne({_id: new mongodb.ObjectId(userId)}, {
+            $set: {
+                "savedPlaylists": playlists
+            }
+        });
+    });
+    return res;
+}
+
 
 export default {
     getPlaylist,
@@ -215,5 +272,8 @@ export default {
     searchPublicPlaylists,
     getAllUserPlaylists,
     addTrackToPlaylist,
-    removeTrackFromPlaylist
+    removeTrackFromPlaylist,
+    getSavedPlaylists,
+    savePlaylist,
+    removeSavedPlaylist
 };

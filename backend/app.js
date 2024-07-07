@@ -221,6 +221,42 @@ app.post('/myPlaylists', async (req, res) => {
     }
 });
 
+app.post('/getMySavedPlaylists', async (req, res) => {
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await playlists.getSavedPlaylists(authReq.user._id);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
+app.post('/savePlaylist', async (req, res) => {
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await playlists.savePlaylist(authReq.user._id, req.body._id);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
+app.post('/removeSavedPlaylist', async (req, res) => {
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await playlists.removeSavedPlaylist(authReq.user._id, req.body._id);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
 // -------- Users --------
 app.post('/getUser', async (req, res) => {
     try {
