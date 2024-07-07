@@ -1,10 +1,16 @@
 <script>
     import {
+        Badge,
         Button,
         Checkbox,
         Dropdown,
+        Heading,
         Img,
-        Spinner
+        Spinner,
+        Table,
+        TableBody,
+        TableBodyRow,
+        TableBodyCell
     } from 'flowbite-svelte';
     import {ChevronDownOutline, FilterOutline} from 'flowbite-svelte-icons';
     import {search, getPubPlaylist, getUser} from '$lib/backend.js';
@@ -105,16 +111,36 @@
         </div>
     {:then results}
         {#if filters.track}
-            <h1>Tracks</h1>
+            <Heading tag="h1" class="flex items-center" size="text-5xl">
+                Risultati <Badge class="text-2xl font-semibold ms-2">Canzoni</Badge>
+            </Heading>
             {#each results.tracks.items as track}
-                <Button on:click={() => goto(`/track/${track.id}`)}>{track.name}</Button>
+                <Table class="max-w-7xl w-11/12 m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" shadow hoverable>
+                    <TableBody tableBodyClass="divide-y">
+                        <TableBodyRow class="bg-white dark:bg-zinc-800">
+                            <TableBodyCell>
+                                <a href="/track/{track.id}">{track.name}</a>
+                            </TableBodyCell>
+                        </TableBodyRow>
+                    </TableBody>
+                </Table>
             {/each}
             <hr>
         {/if}
         {#if filters.playlist}
-            <h1>Plylists</h1>
+            <Heading tag="h1" class="flex items-center mt-4" size="text-5xl">
+                Risultati <Badge class="text-2xl font-semibold ms-2">Plylists</Badge>
+            </Heading>
             {#each results.playlists as playlist}
-                <Button on:click={() => goto(`/playlist/${playlist._id}`)}>{playlist.name}</Button>
+                <Table class="max-w-7xl w-11/12 m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" shadow hoverable>
+                    <TableBody tableBodyClass="divide-y">
+                        <TableBodyRow class="bg-white dark:bg-zinc-800">
+                            <TableBodyCell>
+                                <a href="/track/{playlist._id}">{playlist.name}</a>
+                            </TableBodyCell>
+                        </TableBodyRow>
+                    </TableBody>
+                </Table>
             {/each}
             <hr>
         {/if}

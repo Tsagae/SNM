@@ -5,7 +5,9 @@
         Spinner,
         Card,
         Badge,
+        Blockquote,
         Heading,
+        P,
         Table,
         TableBody,
         TableBodyCell,
@@ -86,7 +88,9 @@
                   style="background-image: linear-gradient(to left, rgba(255,0,0,0), rgba(63,63,70,1)),url('{playlist.thumbnail}'); background-repeat: no-repeat; background-position: right top; background-size: 50%;">
                 <Heading tag="h1" customSize="text-6xl font-extrabold ">{playlist.name}</Heading>
                 <div class="mt-6">
-                    <p>{playlist.description}</p>
+                    <Blockquote border bg class=" w-1/2 p-4 my-4 bg-gray-100 dark:bg-zinc-700">
+                        <P size="xl" height="relaxed">{playlist.description}</P>
+                    </Blockquote>
                     {#each playlist.tags as tag}
                         <Badge rounded color="green" class="mr-2">#{tag}</Badge>
                     {/each}
