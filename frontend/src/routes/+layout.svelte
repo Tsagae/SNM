@@ -31,6 +31,7 @@
 	let logged = false;
 	let imgAvatar = '';
 	let profileName = '';
+	let idUtente = '';
 
 	const logout = () => {
 		localStorage.removeItem('authToken');
@@ -50,6 +51,7 @@
 				logged = true;
 				imgAvatar = localStorage.getItem('avatar');
 				profileName = localStorage.getItem('username');
+				idUtente = localStorage.getItem('userId');
 			} else{
 				logout();
 			}
@@ -107,7 +109,7 @@
 			<NavHamburger/>
 			<NavUl>
 				{#if logged}
-					<Avatar src="{imgAvatar}" href="/profilo/{profileName}"/>
+					<Avatar src="{imgAvatar}" href="/profilo/{idUtente}"/>
 					<NavLi><Button on:click={logout} color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Esci</Button></NavLi>	 
 				{:else}
 					<NavLi href="/registration"><Button color="primary" outline pill><EditOutline class="w-4 h-4" color="primary" />Registrati</Button></NavLi>

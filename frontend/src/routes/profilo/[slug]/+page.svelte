@@ -7,25 +7,26 @@
         Carousel,
         Dropdown,
         DropdownItem,
+        Heading,
         Spinner
     } from 'flowbite-svelte';
     import { DotsHorizontalOutline} from 'flowbite-svelte-icons';
     import Playlist from '$lib/components/playlist.svelte';
-    import {getPubPlaylist, getUser, getArtists} from '$lib/backend.js'; //temporary
+    import {myPlaylists, getUser, getArtists} from '$lib/backend.js'; //temporary
 
     let pageInfo = window.location.pathname;
-    let username = pageInfo.replace("/profilo/", "");
-    username = username.replace("/", "");
+    let idUser = pageInfo.replace("/profilo/", "");
+    idUser = idUser.replace("/", "");
 
     let imgAvatar = '';
     let index = 0;
     let image;
 
-    let userInfoPromise = getUser(username); 
+    let userInfoPromise = getUser(idUser); 
     let userPlaylists = getUserPlaylists();
 
     async function getUserPlaylists() {
-        const res = await getPubPlaylist();
+        const res = await myPlaylists();
         let previews = [];
 
         for (var i = 0; i < res.length; i++) {
@@ -50,8 +51,14 @@
 {:then userInfo}
 
     {#if userInfo.avatar}
-        <Card img={userInfo.avatar} class="w-4/5 max-w-full m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" horizontal>
-            <h2 class="mb-1 text-3xl font-medium text-gray-900 dark:text-white">{userInfo.username}</h2>
+        <Card img={userInfo.avatar} class="w-4/5 max-w-full m-auto mt-2 mb-6 bg-gray-100 dark:bg-zinc-700" horizontal>
+            <div class="flex">
+                <DotsHorizontalOutline class="dots-menu place-self-end dark:text-white" />
+                <Dropdown triggeredBy=".dots-menu">
+                    <DropdownItem href="/profilo/edit">Modifica</DropdownItem>
+                </Dropdown>
+                <Heading tag="h1" class="mb-4" customSize="text-2xl font-extrabold md:text-5xl lg:text-6xl">{userInfo.username}</Heading>
+            </div>
             <p class="text-2xl dark:text-white">Preferenze</p>
             <div class="mt-2">
             {#if userInfo.genres}
@@ -86,8 +93,14 @@
             {/if}
         </Card>
     {:else}
-        <Card class="w-4/5 max-w-full m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700">
-            <h2 class="mb-1 text-3xl font-medium text-gray-900 dark:text-white">{userInfo.username}</h2>
+        <Card class="w-4/5 max-w-full m-auto mt-2 mb-6 bg-gray-100 dark:bg-zinc-700">
+            <div class="flex">
+                <Heading tag="h1" class="mb-4 flex" customSize="text-2xl font-extrabold md:text-5xl lg:text-6xl">{userInfo.username}</Heading>
+                <DotsHorizontalOutline class="dots-menu dark:text-white" />
+                <Dropdown triggeredBy=".dots-menu" class="bg-gray-200 dark:bg-zinc-600">
+                    <DropdownItem href="/profilo/edit">Modifica</DropdownItem>
+                </Dropdown>
+            </div>
             <p class="text-2xl dark:text-white">Preferenze</p>
             <div class="mt-2">
             {#if userInfo.genres}
@@ -132,7 +145,7 @@
 
     <div class="w-4/5 space-y-4 place-self-center">
 
-        <h2 class="mb-1 text-3xl font-medium text-gray-900 dark:text-white text-center">Playlist pubbliche</h2>
+        <h2 class="mb-6 text-3xl font-medium text-gray-900 dark:text-white text-center">Playlist pubbliche</h2>
         <Carousel {images} let:Indicators let:Controls on:change={({ detail }) => (image = detail)}>
             <Controls/>
             <Indicators/>

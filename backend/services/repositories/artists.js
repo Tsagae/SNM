@@ -25,4 +25,13 @@ async function getArtists(artistsIds) {
     return spotify.get(url);
 }
 
-export default {getArtist, getArtists};
+/**
+ * https://developer.spotify.com/documentation/web-api/reference/search
+ * @param artistName name of the artist
+ * @returns {Promise<any>}
+ */
+async function searchArtist(artistName) {
+    return spotify.get("https://api.spotify.com/v1/search?q=" + artistName + "&type=artist");
+}
+
+export default {getArtist, getArtists, searchArtist};

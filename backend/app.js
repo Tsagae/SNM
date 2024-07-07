@@ -114,6 +114,17 @@ app.post('/getArtists', async (req, res) => {
     }
 });
 
+app.post('/searchArtist', async (req, res) => {
+    console.log("******** ", req.body.artistname)
+    try {
+        let results = await artists.searchArtist(req.body.artistname);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
 // -------- Playlists --------
 app.post('/getPlaylist', async (req, res) => {
     if (!auth.authenticateRequest(req, res).authenticated) return;
