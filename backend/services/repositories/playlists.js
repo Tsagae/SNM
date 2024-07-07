@@ -211,13 +211,21 @@ async function getAllUserPlaylists(userId) {
  * @returns {Promise<*>}
  */
 async function getSavedPlaylists(userId) {
-    let res;
+    let user;
     await dataAccess.executeQuery(async (db) => {
-        res = await db.collection('Users').findOne({
+        user = await db.collection('Users').findOne({
             _id: new mongodb.ObjectId(userId)
         });
     });
-    return res.savedPlaylists;
+
+    let res = [];
+    for (let playlist of user.savedPlaylists) {
+        let playlistData = await getPlaylist(playlist, userId)
+        if (playlistData.error === undefined) {
+            res.push(playlistData);
+        }
+    }
+    return res;
 }
 
 /**
