@@ -22,7 +22,10 @@
         removeTrackFromPlaylist,
         getUser,
         deletePlaylist,
-        editPlaylist
+        editPlaylist,
+        getMySavedPlaylists,
+        removeSavedPlaylist,
+        savePlaylist
     } from '$lib/backend.js';
     import {goto} from '$app/navigation'
     import {error} from '@sveltejs/kit';
@@ -123,6 +126,22 @@
                     on:click={() => togglePublic(playlist._id, playlist.public)}>Pubblica
             </Toggle>
         {/if}
+        {#await getMySavedPlaylists()}
+            <div class="text-center mt-16">
+                <Spinner size={8} color="green"/>
+            </div>
+        {:then savedPlaylists}
+            <Toggle checked={savedPlaylists.includes(playlist._id)}
+                    on:click={async () => {
+                        if(savedPlaylists.includes(playlist._id)){
+                           await removeSavedPlaylist(playlist._id);
+                        } else {
+                           await savePlaylist(playlist._id);
+                        }
+                        window.location.reload();
+                    }}>Preferiti
+            </Toggle>
+        {/await}
         <div>
             <Table class="max-w-7xl w-11/12 m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" shadow hoverable>
                 <TableHead class="bg-gray-100 dark:bg-zinc-700">

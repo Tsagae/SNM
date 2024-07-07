@@ -286,3 +286,43 @@ export async function editPlaylist(id, name, isPublic, tracks, tags, description
     return await res.json();
 }
 
+export async function getMySavedPlaylists() {
+    let url = `http://localhost:3000/getMySavedPlaylists`;
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        }
+    });
+
+    return await res.json();
+}
+
+export async function savePlaylist(playlistId) {
+    let url = `http://localhost:3000/savePlaylist`;
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({_id: playlistId})
+    });
+
+    return await res.json();
+}
+
+export async function removeSavedPlaylist(playlistId) {
+    let url = `http://localhost:3000/removeSavedPlaylist`;
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({_id: playlistId})
+    });
+
+    return await res.json();
+}
