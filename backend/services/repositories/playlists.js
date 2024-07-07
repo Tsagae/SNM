@@ -220,9 +220,13 @@ async function getSavedPlaylists(userId) {
 
     let res = [];
     for (let playlist of user.savedPlaylists) {
-        let playlistData = await getPlaylist(playlist, userId)
-        if (playlistData.error === undefined) {
-            res.push(playlistData);
+        try {
+            let playlistData = await getPlaylist(playlist, userId)
+            if (playlistData.error === undefined) {
+                res.push(playlistData);
+            }
+        } catch (e) {
+            console.log("found invalid playlist in getSavedPlaylists", e);
         }
     }
     return res;

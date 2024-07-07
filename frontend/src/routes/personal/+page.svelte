@@ -5,7 +5,7 @@
         Span
     } from 'flowbite-svelte';
     import {ChevronDownOutline, FilterOutline} from 'flowbite-svelte-icons';
-    import {myPlaylists} from '$lib/backend.js';
+    import {myPlaylists, getMySavedPlaylists} from '$lib/backend.js';
     import Playlist from '$lib/components/playlist.svelte';
     import {goto} from "$app/navigation";
 
@@ -34,7 +34,7 @@
         <Span gradient>Playlist</Span> Salvate
     </Heading>
 
-    {#await myPlaylists()}
+    {#await getMySavedPlaylists()}
         <div class="text-center">
             <Spinner size={8} color="green"/>
         </div>
