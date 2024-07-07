@@ -13,10 +13,17 @@
         TableBodyCell,
         TableBodyRow,
         TableHead,
-        TableHeadCell
+        TableHeadCell, Toggle
     } from 'flowbite-svelte';
     import {InfoCircleSolid, PauseSolid, PlaySolid} from 'flowbite-svelte-icons';
-    import {getPlaylistInfo, getTrackInfo, removeTrackFromPlaylist, getUser, deletePlaylist} from '$lib/backend.js';
+    import {
+        getPlaylistInfo,
+        getTrackInfo,
+        removeTrackFromPlaylist,
+        getUser,
+        deletePlaylist,
+        editPlaylist
+    } from '$lib/backend.js';
     import {goto} from '$app/navigation'
     import {error} from '@sveltejs/kit';
 
@@ -64,6 +71,11 @@
         playingState = 'paused'
         song.pause()
     }
+
+    async function togglePublic(_id, isPublic) {
+        await editPlaylist(_id, null, !isPublic, null, null, null);
+        window.location.reload();
+    }
 </script>
 
 {#await playlistInfo}
@@ -106,6 +118,9 @@
             </Card>
             <br>
         </div>
+        <Toggle checked={playlist.public}
+                on:click={() => togglePublic(playlist._id, playlist.public)}>Pubblica
+        </Toggle>
         <div>
             <Table class="max-w-7xl w-11/12 m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" shadow hoverable>
                 <TableHead class="bg-gray-100 dark:bg-zinc-700">

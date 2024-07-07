@@ -61,15 +61,25 @@ async function editPlaylist(id, user, name, isPublic, tracks, tags, description)
     if (playlist?.user !== user) {
         return {error: "Non puoi modificare questa playlist", statusCode: 403};
     }
+    let dataToChange = {}
+    if(name !== null){
+        dataToChange.name = name;
+    }
+    if(isPublic !== null){
+        dataToChange.public = isPublic;
+    }
+    if(tracks !== null){
+        dataToChange.tracks = tracks;
+    }
+    if(tags !== null){
+        dataToChange.tags = tags;
+    }
+    if(description !== null){
+        dataToChange.description = description;
+    }
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').updateOne({_id: new mongodb.ObjectId(id)}, {
-            $set: {
-                name: name,
-                public: isPublic,
-                tracks: tracks,
-                tags: tags,
-                description: description
-            }
+            $set: dataToChange
         });
     });
     return res;
