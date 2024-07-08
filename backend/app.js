@@ -369,8 +369,8 @@ app.post('/createCommunity', async (req, res) => {
 
 app.post('/getCommunity', async (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
-    console.log(authReq.user._id)
     if (!authReq.authenticated) return;
+    console.log(authReq.authenticated)
     try {
         let results = await communities.getCommunity(authReq.user._id, req.body.id);
         return await handleRequest(results, res);

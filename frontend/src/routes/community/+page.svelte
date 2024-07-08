@@ -9,7 +9,8 @@
         const res = await fetch('http://localhost:3000/getCommunity', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + localStorage.getItem('authToken')
 			},
 			body : JSON.stringify({id : localStorage.getItem("userId")})
 		});
