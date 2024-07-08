@@ -362,3 +362,17 @@ export async function changePassword(newPassword) {
     return await res.json();
 }
 
+
+export async function getMyCommunities() {
+    let url = `http://localhost:3000/getMyCommunities`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        }
+    });
+
+    return await res.json();
+}
