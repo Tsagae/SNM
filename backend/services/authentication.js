@@ -4,6 +4,7 @@ import config from 'config';
 import {matchedData, validationResult} from 'express-validator';
 import dataAccess from './dataAccess.js';
 import bcrypt from "bcrypt";
+import mongodb from 'mongodb';
 
 const authSecret = config.get('auth.secret');
 
@@ -143,4 +144,23 @@ function generateSecret() {
     return require('crypto').randomBytes(64).toString('hex')
 }
 
-export default {login, registerUser, authenticateRequest};
+/**
+ *
+ * @param userid
+ * @param password
+ * @returns {Promise<*>}
+ */
+async function changePassword(userid, password) {
+    let res;
+    if (password !== null) {
+        await dataAccess.executeQuery(async (db) => {
+            res = await db.collection('Users').updateOne({_id: new mongodb.ObjectId(userid)}, {
+                $set: {password: await hash(password)}
+            });
+        });
+    }
+    return res;
+}
+
+
+export default {login, registerUser, authenticateRequest, changePassword};

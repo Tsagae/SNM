@@ -164,7 +164,7 @@
                 </TableHead>
                 <TableBody tableBodyClass="divide-y">
                     {#each playlist.tracks as track}
-                        {#await getTrackInfo(track)}
+                        {#await getTrackInfo(track.id)}
                             <!-- TODO: cambiare questo con getTracks per prenderle tutte in una volta sola (fare attenzione al max di 50) -->
                             <p>...waiting</p>
                         {:then track}

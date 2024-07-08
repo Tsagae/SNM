@@ -1,5 +1,6 @@
 "use strict";
-import dataAccess from '../dataAccess.js'
+import dataAccess from '../dataAccess.js';
+import trackRepository from './tracks.js';
 import mongodb from 'mongodb';
 
 /**
@@ -93,11 +94,18 @@ async function editPlaylist(id, user, name, isPublic, tracks, tags, description)
  * @returns {Promise<{error: string, statusCode: number}|*>}
  */
 async function addTrackToPlaylist(userId, playlistId, trackId) {
-    let res;
     let playlist = await getPlaylist(playlistId, userId);
     let newTracks = playlist.tracks;
-    if (!newTracks.includes(trackId)) {
-        newTracks.push(trackId);
+    let foundTrack = false;
+    for (let track of newTracks) {
+        if (track.id === trackId) {
+            foundTrack = true;
+            break;
+        }
+    }
+    let trackInfo = await trackRepository.getTrack(trackId);
+    if (!foundTrack && trackInfo.error === undefined) {
+        newTracks.push({id: trackId, name: trackInfo.name});
     }
     return await editPlaylist(playlistId, userId, playlist.name, playlist.public, newTracks, playlist.tags, playlist.description);
 }
@@ -113,7 +121,7 @@ async function removeTrackFromPlaylist(userId, playlistId, trackId) {
     let res;
     let playlist = await getPlaylist(playlistId, userId);
     let newTracks = playlist.tracks;
-    newTracks = newTracks.filter((item) => item !== trackId)
+    newTracks = newTracks.filter((item) => item.id !== trackId)
     return await editPlaylist(playlistId, userId, playlist.name, playlist.public, newTracks, playlist.tags, playlist.description);
 }
 
@@ -171,13 +179,17 @@ async function searchPublicPlaylists(name) {
         return res;
     }
     await dataAccess.executeQuery(async (db) => {
+        let searchRegex = new RegExp(".*" + name + ".*", "i");
         let cursor = await db.collection('Playlists').find({
             $or: [{
                 public: true,
-                name: {$regex: new RegExp(".*" + name + ".*", "i")}
+                name: {$regex: searchRegex}
             }, {
                 public: true,
-                tags: {$regex: new RegExp(".*" + name + ".*", "i")}
+                tags: {$regex: searchRegex}
+            }, {
+                public: true,
+                "tracks.name": {$regex: searchRegex}
             }]
         });
         for await (const doc of cursor) {

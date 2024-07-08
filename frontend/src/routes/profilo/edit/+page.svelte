@@ -1,5 +1,6 @@
 <script>
     import {
+<<<<<<< HEAD
         Label, 
         Input, 
         Textarea, 
@@ -10,15 +11,46 @@
         Heading
     } from 'flowbite-svelte';
     import {deleteUser, editUser, getMyInfo, getArtist} from '$lib/backend.js';
+=======
+        Label,
+        Input,
+        Textarea,
+        Toggle,
+        Button,
+        Spinner,
+        Heading,
+        Table,
+        TableBody,
+        TableBodyRow,
+        TableBodyCell, Alert
+    } from 'flowbite-svelte';
+    import {deleteUser, editUser, getMyInfo, changePassword} from '$lib/backend.js';
+>>>>>>> cd108ab2cbb4082bdcfd874649d1e899c509ac01
     import {goto} from "$app/navigation";
+    import {useForm, Hint, HintGroup, minLength, required, validators} from "svelte-use-form";
+    import {containNumbers, hasUppercase} from "../../registration/customValidators.js";
+    import {InfoCircleSolid} from "flowbite-svelte-icons";
+
+    const requiredMessage = 'Questo campo è necessario';
 
     const formValues = {
         "username": "",
         "email": ""
     }
 
+<<<<<<< HEAD
     let artistiPref = [];
     let generiPref = [];
+=======
+    let newPassword = "";
+
+    async function submitChangePassword() {
+        /*await changePassword(newPassword);
+        localStorage.removeItem('authToken');
+        window.location.reload();
+         */
+    }
+>>>>>>> cd108ab2cbb4082bdcfd874649d1e899c509ac01
 
     if (localStorage.getItem('authToken') === null) {
         alert("Non puoi visualizzare questa pagina");
@@ -39,8 +71,12 @@
     }
 
     async function submitForm() {
+<<<<<<< HEAD
         console.log(generiPref)
         await editUser(formValues.username, formValues.email, artistiPref, generiPref);
+=======
+        let res = await submitChangePassword(newPassword);
+>>>>>>> cd108ab2cbb4082bdcfd874649d1e899c509ac01
         window.location.reload();
     }
 
@@ -56,9 +92,18 @@
             headers: {
                 'Content-Type': 'application/json'
             },
+<<<<<<< HEAD
             body: JSON.stringify({ artistname: keywordArt }),
         });
         return res.json();
+=======
+            body: JSON.stringify({artistname: keyword}),
+        });
+
+        console.log(JSON.stringify(res))
+
+        searchResults = JSON.stringify(res);
+>>>>>>> cd108ab2cbb4082bdcfd874649d1e899c509ac01
     }
 
     function startSearchArt() {
@@ -104,10 +149,46 @@
             <Button type="submit">Aggiorna</Button>
         </div>
     </form>
+
+    <form on:submit={submitChangePassword}>
+        <div class="mb-6">
+            <Label for="password" class="block mb-2">Password</Label>
+            <input bind:value={newPassword} id="password" name="password" placeholder="NewPassword123!"
+                   use:validators={[required, minLength(8), containNumbers(2), hasUppercase()]} required/>
+            <HintGroup for="password">
+                <Hint on="required">
+                    <Alert color="red" class="bg-white dark:bg-zinc-800">
+                        <InfoCircleSolid slot="icon" class="w-5 h-5"/>
+                        {requiredMessage}
+                    </Alert>
+                </Hint>
+                <Hint on="minLength" let:value>
+                    <Alert color="red" class="bg-white dark:bg-zinc-800">
+                        <InfoCircleSolid slot="icon" class="w-5 h-5"/>
+                        Questo campo deve avere almeno {value} caratteri.
+                    </Alert>
+                </Hint>
+                <Hint on="containNumbers" hideWhen="minLength" let:value>
+                    <Alert color="red" class="bg-white dark:bg-zinc-800">
+                        <InfoCircleSolid slot="icon" class="w-5 h-5"/>
+                        Questo campo deve contenere almeno {value} numeri.
+                    </Alert>
+                </Hint>
+                <Hint on="hasUppercase">
+                    <Alert color="red" class="bg-white dark:bg-zinc-800">
+                        <InfoCircleSolid slot="icon" class="w-5 h-5"/>
+                        Questo campo deve contenere una lettera maiuscola.
+                    </Alert>
+                </Hint>
+            </HintGroup>
+        </div>
+        <Button type="submit">Cambia password</Button>
+    </form>
 {/await}
 
 <br><br>
 
+<<<<<<< HEAD
 <div class="flex">
     <div class="w-1/2 p-4">
         <form class="max-w-md mx-auto" on:submit={startSearchArt}>
@@ -226,3 +307,48 @@
 <Button color="red" class="w-3/4 mx-auto" on:click={() => {deleteUser(); localStorage.removeItem('authToken'); goto("/"); }}>
     Cancella utente
 </Button>
+=======
+<form class="max-w-md mx-auto" on:submit={searchFormArtists}>
+    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Cerca
+        Artista</label>
+    <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                 fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input bind:value={keyword} type="search" id="default-search"
+               class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
+               placeholder="Cerca Artista" required/>
+        <button type="submit" color="primary"
+                class="text-white absolute end-2.5 bottom-2.5 bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-emerald-600 dark:hover:bg-emerald-700 dark:focus:ring-emerald-800">
+            Cerca
+        </button>
+    </div>
+</form>
+
+
+{#await searchResults}
+    <div class="text-center">
+        <Spinner size={8} color="green"/>
+    </div>
+{:then results}
+    <Heading tag="h1" class="flex items-center" size="text-5xl">
+        Artisti trovati
+    </Heading>
+    {results}
+    <!-- {#each results.tracks.items as track}
+        <Table class="max-w-7xl w-11/12 m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" shadow hoverable>
+            <TableBody tableBodyClass="divide-y">
+                <TableBodyRow class="bg-white dark:bg-zinc-800">
+                    <TableBodyCell>
+                        <a href="/track/{track.id}">{track.name}</a>
+                    </TableBodyCell>
+                </TableBodyRow>
+            </TableBody>
+        </Table>
+    {/each} -->
+{/await}
+>>>>>>> cd108ab2cbb4082bdcfd874649d1e899c509ac01
