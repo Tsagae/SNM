@@ -16,6 +16,7 @@ import genres from './services/repositories/genres.js';
 import spotify from "./services/spotify.js";
 import {body, validationResult} from "express-validator";
 import authentication from "./services/authentication.js";
+import communities from "./services/repositories/communities.js";
 
 const app = express();
 const port = config.get('server.port');
@@ -346,6 +347,43 @@ app.post('/search', async (req, res) => {
 app.post('/getGenres', async (req, res) => {
     try {
         let results = await genres.getGenres();
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
+// -------- Communities --------
+app.post('/createCommunity', async (req, res) => {
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await communities.createCommunity(authReq.user._id, req.body.users, req.body.communityName);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
+app.post('/getCommunity', async (req, res) => {
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await communities.getCommunity(authReq.user._id, req.body._id);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
+app.post('/sharePlaylist', async (req, res) => {
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await communities.sharePlaylist(authReq.user._id, req.body.communityId, req.body.playlistId);
         return await handleRequest(results, res);
     } catch (e) {
         console.log(e)
