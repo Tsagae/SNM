@@ -391,6 +391,18 @@ app.post('/sharePlaylist', async (req, res) => {
     }
 });
 
+app.post('/getMyCommunities', async (req, res) => {
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await communities.getMyCommunities(authReq.user._id);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
 app.listen(port, host, async () => {
     console.log(`Server is running on ${host}:${port}`);
     await dataAccess.testConnection();

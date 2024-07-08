@@ -46,5 +46,19 @@ async function sharePlaylist(userId, communityId, playlistId) {
     return res;
 }
 
+async function getMyCommunities(userId) {
+    let communities = [];
+    await dataAccess.executeQuery(async (db) => {
+        let cursor = await db.collection('Communities').find({
+            users: {$in: [userId]}
+        });
+        for await (const doc of cursor) {
+            communities.push(doc);
+        }
+    });
 
-export default {createCommunity, sharePlaylist, getCommunity};
+    return communities;
+}
+
+
+export default {createCommunity, sharePlaylist, getCommunity, getMyCommunities};
