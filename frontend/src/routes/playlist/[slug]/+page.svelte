@@ -15,7 +15,7 @@
         TableHead,
         TableHeadCell, Toggle
     } from 'flowbite-svelte';
-    import {InfoCircleSolid, PauseSolid, PlaySolid} from 'flowbite-svelte-icons';
+    import {InfoCircleSolid, PauseSolid, PlaySolid, HeartOutline, HeartSolid} from 'flowbite-svelte-icons';
     import {
         getPlaylistInfo,
         getTrackInfo,
@@ -119,38 +119,52 @@
                         <Badge rounded color="green" class="mr-2">#{tag}</Badge>
                     {/each}
                 </div>
+
                 <br>
-                {#await getUser(playlist.user)}
-                    <div class="text-center mt-16">
-                        <Spinner size={8} color="green"/>
-                    </div>
-                {:then user}
-                    <p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">by {user.username}</p> <br>
-                {/await}
+
+                <div class="flex"> 
+
+                    {#await getUser(playlist.user)}
+                        <div class="text-center mt-16">
+                            <Spinner size={8} color="green"/>
+                        </div>
+                    {:then user}
+                        <p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">by {user.username}</p> <br>
+                    {/await}
+
+                    {#await getMySavedPlaylists()}
+                        <div class="text-center mt-16">
+                            <Spinner size={8} color="green"/>
+                        </div>
+                    {:then savedPlaylists}
+                        {#if containsPlaylistId(savedPlaylists, playlist._id)}
+                            <Button outline={true} class="!p-2" size="lg" on:click={async () => {
+                                await removeSavedPlaylist(playlist._id);
+                                window.location.reload();
+                            }}>
+                                <HeartSolid class="w-7 h-7 text-primary-700"/>
+                            </Button>
+                        {:else}
+                            <Button outline={true} style="background: transparent; border:none;" on:click={async () => {
+                                await savePlaylist(playlist._id);
+                                window.location.reload();
+                            }}>
+                                <HeartOutline class="w-16 h-16 text-primary-700 ml-auto mr-0"/>
+                            </Button>
+                        {/if}
+                    {/await}
+                </div>
+
             </Card>
             <br>
         </div>
+
         {#if userId === playlist.user}
             <Toggle checked={playlist.public}
                     on:click={() => togglePublic(playlist._id, playlist.public)}>Pubblica
             </Toggle>
         {/if}
-        {#await getMySavedPlaylists()}
-            <div class="text-center mt-16">
-                <Spinner size={8} color="green"/>
-            </div>
-        {:then savedPlaylists}
-            <Toggle checked={containsPlaylistId(savedPlaylists, playlist._id)}
-                    on:click={async () => {
-                        if(containsPlaylistId(savedPlaylists, playlist._id)){
-                           await removeSavedPlaylist(playlist._id);
-                        } else {
-                           await savePlaylist(playlist._id);
-                        }
-                        window.location.reload();
-                    }}>Preferiti
-            </Toggle>
-        {/await}
+
         <div>
             <Table class="max-w-7xl w-11/12 m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" shadow hoverable>
                 <TableHead class="bg-gray-100 dark:bg-zinc-700">
@@ -204,7 +218,7 @@
         </div>
     {/if}
     {#if userId === playlist.user}
-        <Button on:click={() => {deletePlaylist(playlist._id); goto("/")}}>
+        <Button color="red" class="w-1/2 mx-auto mt-6" on:click={() => {deletePlaylist(playlist._id); goto("/")}}>
             Elimina playlist
         </Button>
     {/if}
