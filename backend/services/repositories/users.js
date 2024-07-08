@@ -78,32 +78,42 @@ async function editUser(userid, username, email, artists, genres) {
                 email: email
             });
         });
-        if (userInDb != null) {
+        if (userInDb != null && userInDb.email !== email) {
             return {error: "Un utente con questa email è già presente", statusCode: 403};
         }
         dataToChange.email = email;
     }
 
-    if (artists != null) {
-        let artistsFromSpotify = (await artistsRepository.getArtists(artists)).artists
-        let i = 0;
-        for (let item of artistsFromSpotify) {
-            if (item === null) {
-                return {error: `L'artista ${artists[i]} non esiste`, statusCode: 404};
+    if (artists !== null) {
+        if (artists.length === 0) {
+            dataToChange.artists = artists;
+        } else {
+            artists = [...new Set(artists)];
+            let artistsFromSpotify = (await artistsRepository.getArtists(artists)).artists
+            let i = 0;
+            for (let item of artistsFromSpotify) {
+                if (item === null) {
+                    return {error: `L'artista ${artists[i]} non esiste`, statusCode: 404};
+                }
+                i++;
             }
-            i++;
+            dataToChange.artists = artists;
         }
-        dataToChange.artists = artists;
     }
 
     if (genres != null) {
-        let validGenres = (await genresRepository.getGenres()).genres;
-        for (let item of genres) {
-            if (!validGenres.includes(item)) {
-                return {error: `Il genere ${item} non esiste`, statusCode: 404};
+        if (genres.length === 0) {
+            dataToChange.genres = genres;
+        } else {
+            genres = [...new Set(genres)];
+            let validGenres = (await genresRepository.getGenres()).genres;
+            for (let item of genres) {
+                if (!validGenres.includes(item)) {
+                    return {error: `Il genere ${item} non esiste`, statusCode: 404};
+                }
             }
+            dataToChange.genres = genres;
         }
-        dataToChange.genres = genres;
     }
 
     await dataAccess.executeQuery(async (db) => {

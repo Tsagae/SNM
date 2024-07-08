@@ -43,10 +43,10 @@
         const userInfo = await getMyInfo();
         formValues.username = userInfo.username;
         formValues.email = userInfo.email;
-        if(userInfo.artists != undefined){
+        if(userInfo.artists !== undefined){
             artistiPref = userInfo.artists;
         }
-        if(userInfo.genres != undefined){
+        if(userInfo.genres !== undefined){
             generiPref = userInfo.genres;
         }
         return userInfo
@@ -124,32 +124,7 @@
             <Label for="password" class="block mb-2">Password</Label>
             <input bind:value={newPassword} id="password" name="password" placeholder="NewPassword123!"
                    use:validators={[required, minLength(8), containNumbers(2), hasUppercase()]} required/>
-            <HintGroup for="password">
-                <Hint on="required">
-                    <Alert color="red" class="bg-white dark:bg-zinc-800">
-                        <InfoCircleSolid slot="icon" class="w-5 h-5"/>
-                        {requiredMessage}
-                    </Alert>
-                </Hint>
-                <Hint on="minLength" let:value>
-                    <Alert color="red" class="bg-white dark:bg-zinc-800">
-                        <InfoCircleSolid slot="icon" class="w-5 h-5"/>
-                        Questo campo deve avere almeno {value} caratteri.
-                    </Alert>
-                </Hint>
-                <Hint on="containNumbers" hideWhen="minLength" let:value>
-                    <Alert color="red" class="bg-white dark:bg-zinc-800">
-                        <InfoCircleSolid slot="icon" class="w-5 h-5"/>
-                        Questo campo deve contenere almeno {value} numeri.
-                    </Alert>
-                </Hint>
-                <Hint on="hasUppercase">
-                    <Alert color="red" class="bg-white dark:bg-zinc-800">
-                        <InfoCircleSolid slot="icon" class="w-5 h-5"/>
-                        Questo campo deve contenere una lettera maiuscola.
-                    </Alert>
-                </Hint>
-            </HintGroup>
+
         </div>
         <Button type="submit">Cambia password</Button>
     </form>
