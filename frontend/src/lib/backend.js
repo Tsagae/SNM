@@ -326,3 +326,21 @@ export async function removeSavedPlaylist(playlistId) {
 
     return await res.json();
 }
+
+export async function changePassword(newPassword) {
+    let url = `http://localhost:3000/changePassword`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            "password": newPassword,
+        })
+    });
+
+    return await res.json();
+}
+

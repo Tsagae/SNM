@@ -1,23 +1,37 @@
 <script>
     import {
-        Label, 
-        Input, 
-        Textarea, 
-        Toggle, 
-        Button, 
+        Label,
+        Input,
+        Textarea,
+        Toggle,
+        Button,
         Spinner,
         Heading,
         Table,
         TableBody,
         TableBodyRow,
-        TableBodyCell
+        TableBodyCell, Alert
     } from 'flowbite-svelte';
-    import {deleteUser, editUser, getMyInfo} from '$lib/backend.js';
+    import {deleteUser, editUser, getMyInfo, changePassword} from '$lib/backend.js';
     import {goto} from "$app/navigation";
+    import {useForm, Hint, HintGroup, minLength, required, validators} from "svelte-use-form";
+    import {containNumbers, hasUppercase} from "../../registration/customValidators.js";
+    import {InfoCircleSolid} from "flowbite-svelte-icons";
+
+    const requiredMessage = 'Questo campo è necessario';
 
     const formValues = {
         "username": "",
         "email": ""
+    }
+
+    let newPassword = "";
+
+    async function submitChangePassword() {
+        /*await changePassword(newPassword);
+        localStorage.removeItem('authToken');
+        window.location.reload();
+         */
     }
 
     if (localStorage.getItem('authToken') === null) {
@@ -33,7 +47,7 @@
     }
 
     async function submitForm() {
-        await editUser(formValues.username, formValues.email, null, null);
+        let res = await submitChangePassword(newPassword);
         window.location.reload();
     }
 
@@ -46,10 +60,10 @@
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ artistname: keyword }),
+            body: JSON.stringify({artistname: keyword}),
         });
 
-        console.log( JSON.stringify(res))
+        console.log(JSON.stringify(res))
 
         searchResults = JSON.stringify(res);
     }
@@ -76,12 +90,48 @@
             Cancella utente
         </Button>
     </form>
+
+    <form on:submit={submitChangePassword}>
+        <div class="mb-6">
+            <Label for="password" class="block mb-2">Password</Label>
+            <input bind:value={newPassword} id="password" name="password" placeholder="NewPassword123!"
+                   use:validators={[required, minLength(8), containNumbers(2), hasUppercase()]} required/>
+            <HintGroup for="password">
+                <Hint on="required">
+                    <Alert color="red" class="bg-white dark:bg-zinc-800">
+                        <InfoCircleSolid slot="icon" class="w-5 h-5"/>
+                        {requiredMessage}
+                    </Alert>
+                </Hint>
+                <Hint on="minLength" let:value>
+                    <Alert color="red" class="bg-white dark:bg-zinc-800">
+                        <InfoCircleSolid slot="icon" class="w-5 h-5"/>
+                        Questo campo deve avere almeno {value} caratteri.
+                    </Alert>
+                </Hint>
+                <Hint on="containNumbers" hideWhen="minLength" let:value>
+                    <Alert color="red" class="bg-white dark:bg-zinc-800">
+                        <InfoCircleSolid slot="icon" class="w-5 h-5"/>
+                        Questo campo deve contenere almeno {value} numeri.
+                    </Alert>
+                </Hint>
+                <Hint on="hasUppercase">
+                    <Alert color="red" class="bg-white dark:bg-zinc-800">
+                        <InfoCircleSolid slot="icon" class="w-5 h-5"/>
+                        Questo campo deve contenere una lettera maiuscola.
+                    </Alert>
+                </Hint>
+            </HintGroup>
+        </div>
+        <Button type="submit">Cambia password</Button>
+    </form>
 {/await}
 
 <br><br>
 
 <form class="max-w-md mx-auto" on:submit={searchFormArtists}>
-    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Cerca Artista</label>
+    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Cerca
+        Artista</label>
     <div class="relative">
         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
             <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -102,9 +152,9 @@
 
 
 {#await searchResults}
-<div class="text-center">
-    <Spinner size={8} color="green"/>
-</div>
+    <div class="text-center">
+        <Spinner size={8} color="green"/>
+    </div>
 {:then results}
     <Heading tag="h1" class="flex items-center" size="text-5xl">
         Artisti trovati

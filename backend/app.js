@@ -14,6 +14,8 @@ import tracks from './services/repositories/tracks.js';
 import users from './services/repositories/users.js';
 import genres from './services/repositories/genres.js';
 import spotify from "./services/spotify.js";
+import {body, validationResult} from "express-validator";
+import authentication from "./services/authentication.js";
 
 const app = express();
 const port = config.get('server.port');
@@ -283,6 +285,22 @@ app.post('/editUser', async (req, res) => {
     if (!authReq.authenticated) return;
     try {
         let results = await users.editUser(authReq.user._id, req.body.username, req.body.email, req.body.artists, req.body.genres);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
+app.post('/changePassword', validation.passwordValidate, async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
+    }
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await authentication.changePassword(authReq.user._id, req.body.password);
         return await handleRequest(results, res);
     } catch (e) {
         console.log(e)
