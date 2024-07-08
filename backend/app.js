@@ -115,7 +115,6 @@ app.post('/getArtists', async (req, res) => {
 });
 
 app.post('/searchArtist', async (req, res) => {
-    console.log("******** ", req.body.artistname)
     try {
         let results = await artists.searchArtist(req.body.artistname);
         return await handleRequest(results, res);
