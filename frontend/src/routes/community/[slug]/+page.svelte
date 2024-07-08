@@ -1,5 +1,6 @@
 <script>
     import {
+        Avatar,
         Heading,
         Spinner
     } from 'flowbite-svelte';
@@ -32,6 +33,13 @@
         <div class="w-1/3" style="background-color:green;">
 
             Elenco utenti
+
+            {#each results.utenti as member}
+                <Avatar src="{member.avatar}" rounded />
+                <div class="space-y-1 font-medium dark:text-white">
+                    {member.name}
+                </div>
+            {/each}
         
         </div>
 

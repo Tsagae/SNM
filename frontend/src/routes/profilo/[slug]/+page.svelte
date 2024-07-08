@@ -51,13 +51,13 @@
 {:then userInfo}
 
     {#if userInfo.avatar}
-        <Card img={userInfo.avatar} class="w-4/5 max-w-full m-auto mt-2 mb-6 bg-gray-100 dark:bg-zinc-700" horizontal>
+        <Card img={userInfo.avatar} size="lg" class="w-4/5 max-w-full m-auto mt-2 mb-6 bg-gray-100 dark:bg-zinc-700" horizontal>
             <div class="flex">
-                <DotsHorizontalOutline class="dots-menu place-self-end dark:text-white" />
+                <Heading tag="h1" class="mb-4" customSize="text-2xl font-extrabold md:text-5xl lg:text-6xl">{userInfo.username}</Heading>
+                <DotsHorizontalOutline class="dots-menu dark:text-white" />
                 <Dropdown triggeredBy=".dots-menu">
                     <DropdownItem href="/profilo/edit">Modifica</DropdownItem>
                 </Dropdown>
-                <Heading tag="h1" class="mb-4" customSize="text-2xl font-extrabold md:text-5xl lg:text-6xl">{userInfo.username}</Heading>
             </div>
             <p class="text-2xl dark:text-white">Preferenze</p>
             <div class="mt-2">
