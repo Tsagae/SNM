@@ -124,6 +124,24 @@ export async function getArtists(ids) {
     return await res.json();
 }
 
+/**
+ *
+ * @param {string} id
+ * @returns {Promise<any>}
+ */
+export async function getArtist(id) {
+    let url = `http://localhost:3000/getArtist`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({"id": id})
+    });
+
+    return await res.json();
+}
 
 export async function myPlaylists() {
     let url = `http://localhost:3000/myPlaylists`;

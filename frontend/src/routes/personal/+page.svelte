@@ -13,9 +13,9 @@
 
 </script>
 
-<div class="container">
+<div class="container p-4">
 
-    <Heading tag="h2" class="flex items-center m-4" size="text-5xl">
+    <Heading tag="h2" class="flex items-center mb-4" size="text-5xl">
         <Span gradient>Playlist</Span> Create
     </Heading>
 
@@ -30,7 +30,7 @@
         {/each}
     {/await}
 
-    <Heading tag="h2" class="flex items-center m-4" size="text-5xl">
+    <Heading tag="h2" class="flex items-center mb-4" size="text-5xl">
         <Span gradient>Playlist</Span> Salvate
     </Heading>
 
