@@ -85,7 +85,7 @@
 									<CaretRightSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
 								</svelte:fragment>
 							</SidebarItem>
-							<SidebarItem label="Community" href="/">
+							<SidebarItem label="Community" href="/community">
 								<svelte:fragment slot="icon">
 									<UsersGroupSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
 								</svelte:fragment>
