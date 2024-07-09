@@ -383,7 +383,7 @@ app.post('/getCommunity', async (req, res) => {
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
     try {
-        let results = await communities.getCommunity(authReq.user._id, req.body.id);
+        let results = await communities.getCommunity(authReq.user._id, req.body._id);
         return await handleRequest(results, res);
     } catch (e) {
         console.log(e)
