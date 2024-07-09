@@ -36,7 +36,7 @@ async function sharePlaylist(userId, communityId, playlistId) {
     if (community.error !== undefined) {
         return community;
     }
-    community.sharedPlaylists.push({user: userId, playlist: playlistId})
+    community.sharedPlaylists.unshift({user: userId, playlist: playlistId})
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Communities').updateOne({_id: new mongodb.ObjectId(communityId)}, {
             $set: {sharedPlaylists: community.sharedPlaylists}

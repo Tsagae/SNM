@@ -188,7 +188,7 @@
                     {:then communities}
                         {#each communities as community}
                             <li class="rounded p-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <Button on:click={async () => {await sharePlaylist(id, community._id); await goto(`/community/${community._id}}`)}}
+                                <Button on:click={async () => {await sharePlaylist(id, community._id); await goto(`/community/${community._id}`)}}
                                         class="w-full">{community.communityName}</Button>
                             </li>
                         {/each}
