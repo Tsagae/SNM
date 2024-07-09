@@ -17,6 +17,7 @@ import spotify from "./services/spotify.js";
 import {body, validationResult} from "express-validator";
 import authentication from "./services/authentication.js";
 import communities from "./services/repositories/communities.js";
+import { use } from 'bcrypt/promises.js';
 
 const app = express();
 const port = config.get('server.port');
