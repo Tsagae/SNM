@@ -11,6 +11,7 @@
     import {addTrackToPlaylist, getTrackInfo, myPlaylists, isValidToken} from '$lib/backend.js';
     import {ChevronDownOutline, PlusOutline, UserCircleSolid, PauseSolid, PlaySolid, InfoCircleSolid} from "flowbite-svelte-icons";
     import {goto} from "$app/navigation";
+	import Playlist from '$lib/components/playlist.svelte';
 
     let pageInfo = window.location.pathname;
     let trackId = pageInfo.replace("/track/", "");
@@ -114,12 +115,14 @@
                         </div>
                     {:then playlists}
                         {#each playlists as playlist}
-                            <li class="rounded p-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <Button on:click={() => {
-                                    let res = addTrackToPlaylist(trackId, playlist._id);
-                                    trackAdded = true;
-                                    }} class="w-full">{playlist.name}</Button>
-                            </li>
+                            {#if !playlist.tracks.find(o => o.id === trackId)}
+                                <li class="rounded p-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <Button on:click={() => {
+                                        let res = addTrackToPlaylist(trackId, playlist._id);
+                                        trackAdded = true;
+                                        }} class="w-full">{playlist.name}</Button>
+                                </li>
+                            {/if}
                         {/each}
                         <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
                             <Button on:click={() => goto(`/playlist/new?from=${track.id}`)}>
