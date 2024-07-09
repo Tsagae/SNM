@@ -47,8 +47,6 @@ app.use(express.json());
 const swaggerFile = require('./swagger-output.json');
 
 
-app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile, {explorer: true}));
-
 // Registration
 app.post('/register', validation.registerValidate, auth.registerUser);
 
@@ -597,9 +595,12 @@ app.post('/getMyCommunities', async (req, res) => {
 
 // -------- Listen --------
 
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile, {explorer: true}));
+
 app.listen(port, host, async () => {
     console.log(`Server is running on ${host}:${port}`);
     await dataAccess.testConnection();
     await dataAccess.connect();
     await spotify.getApiTokenFromDB();
 });
+
