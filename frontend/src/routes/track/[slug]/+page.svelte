@@ -61,8 +61,8 @@
         <Heading tag="h1" class="mb-4" customSize="text-2xl font-extrabold md:text-5xl lg:text-6xl">{track.name}</Heading>
         <br><br>
         {#each track.artists as artist}
-            {artist.name}
-        {/each} -
+            {artist.name}&nbsp;
+        {/each} - &nbsp;
         <b>{track.album.name}</b>, {track.album.release_date}
     </Card>
     
