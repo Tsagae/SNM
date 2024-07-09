@@ -130,6 +130,12 @@
                         </div>
                     {:then user}
                         <p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">by {user.username}</p> <br>
+
+                        {#if userId === playlist.user}
+                            <Toggle checked={playlist.public} class="place-self-end"
+                                    on:click={() => togglePublic(playlist._id, playlist.public)}> Pubblica
+                            </Toggle>
+                        {/if}
                     {/await}
 
                     {#await getMySavedPlaylists()}
@@ -138,18 +144,18 @@
                         </div>
                     {:then savedPlaylists}
                         {#if containsPlaylistId(savedPlaylists, playlist._id)}
-                            <Button outline={true} class="!p-2" size="lg" on:click={async () => {
+                        <Button class="mr-0 ml-auto" style="background: transparent; border:none;" on:click={async () => {
                                 await removeSavedPlaylist(playlist._id);
                                 window.location.reload();
                             }}>
-                                <HeartSolid class="w-7 h-7 text-primary-700"/>
+                                <HeartSolid class="w-16 h-16 text-primary-500"/>
                             </Button>
                         {:else}
-                            <Button outline={true} style="background: transparent; border:none;" on:click={async () => {
+                            <Button class="mr-0 ml-auto" style="background: transparent; border:none;" on:click={async () => {
                                 await savePlaylist(playlist._id);
                                 window.location.reload();
                             }}>
-                                <HeartOutline class="w-16 h-16 text-primary-700 ml-auto mr-0"/>
+                                <HeartOutline class="w-16 h-16 text-primary-500"/>
                             </Button>
                         {/if}
                     {/await}
@@ -158,12 +164,6 @@
             </Card>
             <br>
         </div>
-
-        {#if userId === playlist.user}
-            <Toggle checked={playlist.public}
-                    on:click={() => togglePublic(playlist._id, playlist.public)}>Pubblica
-            </Toggle>
-        {/if}
 
         <div>
             <Table class="max-w-7xl w-11/12 m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" shadow hoverable>

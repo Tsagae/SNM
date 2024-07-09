@@ -52,8 +52,10 @@
         resOk = res.ok;
 
         if (resOk) {
-            localStorage.setItem('authToken', json.accessToken);
-            window.location.replace("/");
+			localStorage.setItem('authToken', json.accessToken);
+            localStorage.setItem('username', json.name);
+            localStorage.setItem('avatar', json.profilePic);
+            localStorage.setItem('userId', json._id);
         }
     }
 
@@ -76,6 +78,7 @@
 				username: user.username,
 				password: user.password
 			};
+			
 			await login(loginData);
 
             window.location.replace("/preferences");

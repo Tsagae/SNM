@@ -53,7 +53,6 @@
     }
 
     async function submitForm() {
-        console.log(generiPref)
         await editUser(formValues.username, formValues.email, artistiPref, generiPref);
         window.location.reload();
     }

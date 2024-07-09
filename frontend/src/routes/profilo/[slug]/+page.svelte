@@ -55,7 +55,7 @@
             <div class="flex">
                 <Heading tag="h1" class="mb-4" customSize="text-2xl font-extrabold md:text-5xl lg:text-6xl">{userInfo.username}</Heading>
                 <DotsHorizontalOutline class="dots-menu dark:text-white" />
-                <Dropdown triggeredBy=".dots-menu">
+                <Dropdown triggeredBy=".dots-menu" class="bg-gray-200 dark:bg-zinc-600">
                     <DropdownItem href="/profilo/edit">Modifica</DropdownItem>
                 </Dropdown>
             </div>
