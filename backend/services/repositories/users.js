@@ -145,5 +145,21 @@ async function deleteUser(userId) {
     return res;
 }
 
+async function searchUser(usernameToSearch) {
+    let usersFromDb = [];
+    await dataAccess.executeQuery(async (db) => {
+        let cursor  = await db.collection('Users').find({
+            username: {$regex: new RegExp(".*" + usernameToSearch + ".*", "i")}
+        });
+        for await (const doc of cursor) {
+            delete doc.email;
+            delete doc.password;
+            usersFromDb.push(doc);
+        }
+    });
+    return usersFromDb;
+}
 
-export default {getUser, editUser, deleteUser, getAllUserInfo};
+
+
+export default {getUser, editUser, deleteUser, getAllUserInfo, searchUser};

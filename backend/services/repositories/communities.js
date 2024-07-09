@@ -50,7 +50,10 @@ async function getMyCommunities(userId) {
     let communities = [];
     await dataAccess.executeQuery(async (db) => {
         let cursor = await db.collection('Communities').find({
-            users: {$in: [userId]}
+            $or: [
+                {users: {$in: [userId]}},
+                {owner: userId},
+            ]
         });
         for await (const doc of cursor) {
             communities.push(doc);

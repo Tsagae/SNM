@@ -13,9 +13,16 @@
         TableBodyCell,
         TableBodyRow,
         TableHead,
-        TableHeadCell, Toggle
+        TableHeadCell, Toggle, Dropdown
     } from 'flowbite-svelte';
-    import {InfoCircleSolid, PauseSolid, PlaySolid, HeartOutline, HeartSolid} from 'flowbite-svelte-icons';
+    import {
+        InfoCircleSolid,
+        PauseSolid,
+        PlaySolid,
+        HeartOutline,
+        HeartSolid,
+        ChevronDownOutline, PlusOutline
+    } from 'flowbite-svelte-icons';
     import {
         getPlaylistInfo,
         getTrackInfo,
@@ -25,7 +32,10 @@
         editPlaylist,
         getMySavedPlaylists,
         removeSavedPlaylist,
-        savePlaylist
+        savePlaylist,
+        sharePlaylist,
+        getMyCommunities,
+        addTrackToPlaylist
     } from '$lib/backend.js';
     import {goto} from '$app/navigation';
     import {error} from '@sveltejs/kit';
@@ -80,9 +90,9 @@
         window.location.reload();
     }
 
-    function containsPlaylistId(playlists, playlistId){
-        for(let playlist of playlists){
-            if(playlist._id === playlistId){
+    function containsPlaylistId(playlists, playlistId) {
+        for (let playlist of playlists) {
+            if (playlist._id === playlistId) {
                 return true;
             }
         }
@@ -122,14 +132,15 @@
 
                 <br>
 
-                <div class="flex"> 
+                <div class="flex">
 
                     {#await getUser(playlist.user)}
                         <div class="text-center mt-16">
                             <Spinner size={8} color="green"/>
                         </div>
                     {:then user}
-                        <p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">by {user.username}</p> <br>
+                        <p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">by {user.username}</p>
+                        <br>
 
                         {#if userId === playlist.user}
                             <Toggle checked={playlist.public} class="place-self-end"
@@ -144,7 +155,7 @@
                         </div>
                     {:then savedPlaylists}
                         {#if containsPlaylistId(savedPlaylists, playlist._id)}
-                        <Button class="mr-0 ml-auto" style="background: transparent; border:none;" on:click={async () => {
+                            <Button class="mr-0 ml-auto" style="background: transparent; border:none;" on:click={async () => {
                                 await removeSavedPlaylist(playlist._id);
                                 window.location.reload();
                             }}>
@@ -162,6 +173,28 @@
                 </div>
 
             </Card>
+            <br>
+            <div class="flex flex-col items-center ml-4">
+                <Button color="primary" pill>
+                    <PlusOutline class="w-6 h-6 mr-2 text-white dark:text-white"/>
+                    Aggiungi a una playlist
+                    <ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white"/>
+                </Button>
+                <Dropdown class="overflow-y-auto px-3 pb-3 text-sm">
+                    {#await getMyCommunities()}
+                        <div class="text-center mt-16">
+                            <Spinner size={8} color="green"/>
+                        </div>
+                    {:then communities}
+                        {#each communities as community}
+                            <li class="rounded p-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600">
+                                <Button on:click={async () => {await sharePlaylist(id, community._id); await goto(`/community/${community._id}}`)}}
+                                        class="w-full">{community.communityName}</Button>
+                            </li>
+                        {/each}
+                    {/await}
+                </Dropdown>
+            </div>
             <br>
         </div>
 
