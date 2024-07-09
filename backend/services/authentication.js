@@ -23,6 +23,12 @@ async function compareHashed(plaintext, hash) {
  * @param res
  */
 async function login(req, res) {
+    /*
+        #swagger.tags = ["Authentication"]
+        #swagger.description = "Login a user"
+        #swagger.parameters['username'] = {description: "Username of the user to login", type: "string"}
+        #swagger.parameters['password'] = {description: "Password of the user to login", type: "string"}
+     */
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({errors: errors.array()});
@@ -61,6 +67,13 @@ async function login(req, res) {
  * @param res
  */
 async function registerUser(req, res) {
+    /*
+        #swagger.tags = ["Authentication"]
+        #swagger.description = "Register a new user"
+        #swagger.parameters['username'] = {description: "Username of the user to register", type: "string"}
+        #swagger.parameters['email'] = {description: "Email of the user to register", type: "string"}
+        #swagger.parameters['password'] = {description: "Password of the user to register", type: "string"}
+     */
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json({errors: errors.array()});
