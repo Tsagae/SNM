@@ -2,6 +2,7 @@
     import {
         Avatar, Button,
         Heading,
+        Span,
         Spinner
     } from 'flowbite-svelte';
     import {
@@ -22,13 +23,14 @@
         <Spinner size={8} color="green"/>
     </div>
 {:then results}
-    <Heading tag="h1" class="w-full mt-6 mb-4 text-center">{results.communityName}</Heading>
+    <Heading tag="h1" class="w-full mt-6 mb-4 text-center"><Span gradient>{results.communityName}</Span></Heading>
 
-    <div class="flex">
+    <div class="text-gray-500 dark:text-gray-400 flex w-full h-full flex-col md:flex-row mx-auto mt-6">
 
-        <div class="w-2/3" style="background-color:red;">
+        <div class="w-full md:w-2/3 p-4">
 
-            Playlist condivise
+            <Heading tag="h3" class="text-center mb-4">Playlist condivise</Heading>
+            
             {#each results.sharedPlaylists as sharedPlaylist}
                 {#await getPlaylistInfo(sharedPlaylist.playlist)}
                     <div class="text-center">
@@ -40,26 +42,26 @@
                             <Spinner size={8} color="green"/>
                         </div>
                     {:then playlistCreator}
-                        <div>
-                            {#await getUser(sharedPlaylist.user)}
-                                <div class="text-center">
-                                    <Spinner size={8} color="green"/>
-                                </div>
-                            {:then sharingUser}
-                                <b>Shared by: {sharingUser.username}</b>
-                            {/await}
-                            <Playlist id={playlistInfo._id} name={playlistInfo.name} user={playlistCreator.username}
+                        {#await getUser(sharedPlaylist.user)}
+                            <div class="text-center">
+                                <Spinner size={8} color="green"/>
+                            </div>
+                        {:then sharingUser}
+                            <p>Condivisa da: <strong> {sharingUser.username} </strong></p><br>
+                        {/await}
+                        <Playlist id={playlistInfo._id} name={playlistInfo.name} user={playlistCreator.username}
                                       tracks={playlistInfo.tracks} tags={playlistInfo.tags}
-                                      thumbnail={playlistInfo.thumbnail} i={0}/>
-                        </div>
+                                      thumbnail={playlistInfo.thumbnail} i={0} />
+                        <br>
                     {/await}
                 {/await}
             {/each}
+
         </div>
 
-        <div class="w-1/3" style="background-color:green;">
+        <div class="w-full md:w-1/3" style="border-left: 1px solid grey;">
 
-            Elenco utenti
+            <Heading tag="h3" class="text-center mb-4">Membri</Heading>
 
             {#each results.users as member}
                 {#await getUser(member)}
@@ -67,14 +69,17 @@
                         <Spinner size={8} color="green"/>
                     </div>
                 {:then user}
-                    <Avatar src="{user.avatar}" rounded/>
-                    <div class="space-y-1 font-medium dark:text-white">
-                        {user.username}
+                    <div class="flex items-center space-x-4 rtl:space-x-reverse mb-4 ml-4">
+                        <Avatar src="{user.avatar}" rounded />
+                        <div class="space-y-1 font-medium dark:text-white">
+                        <div>{user.username}</div>
+                        </div>
                     </div>
                 {/await}
             {/each}
 
         </div>
+
     </div>
 
 {/await}

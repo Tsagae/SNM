@@ -33,6 +33,8 @@ export async function search(query, filters) {
     return await res.json();
 }
 
+// ----- Playlists -----
+
 export async function getPubPlaylist() {
     let url = `http://localhost:3000/getAllPublicPlaylists`;
     const res = await fetch(url, {
@@ -70,79 +72,6 @@ export async function getPlaylistInfo(query) {
     }
 }
 
-/**
- * @param {ObjectId} query
- */
-export async function getTrackInfo(query) {
-    let url = `http://localhost:3000/getTrack`;
-
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({id: query})
-    });
-
-    return await res.json();
-}
-
-/**
- *
- * @param userId
- * @returns {Promise<any|boolean>}
- */
-export async function getUser(userId) {
-    let url = `http://localhost:3000/getUser`;
-
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({"_id": userId})
-    });
-    return await res.json();
-}
-
-/**
- *
- * @param {string[]} ids
- * @returns {Promise<any>}
- */
-export async function getArtists(ids) {
-    let url = `http://localhost:3000/getArtists`;
-
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({"ids": ids})
-    });
-
-    return await res.json();
-}
-
-/**
- *
- * @param {string} id
- * @returns {Promise<any>}
- */
-export async function getArtist(id) {
-    let url = `http://localhost:3000/getArtist`;
-
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({"id": id})
-    });
-
-    return await res.json();
-}
-
 export async function myPlaylists() {
     let url = `http://localhost:3000/myPlaylists`;
 
@@ -152,43 +81,6 @@ export async function myPlaylists() {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + localStorage.getItem('authToken')
         },
-    });
-
-    return await res.json();
-}
-
-
-export async function addTrackToPlaylist(trackId, playlistId) {
-    let url = `http://localhost:3000/addTrackToPlaylist`;
-
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('authToken')
-        },
-        body: JSON.stringify({
-            "playlist": playlistId,
-            "track": trackId
-        })
-    });
-
-    return await res.json();
-}
-
-export async function removeTrackFromPlaylist(trackId, playlistId) {
-    let url = `http://localhost:3000/removeTrackFromPlaylist`;
-
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('authToken')
-        },
-        body: JSON.stringify({
-            "playlist": playlistId,
-            "track": trackId
-        })
     });
 
     return await res.json();
@@ -218,53 +110,6 @@ export async function createPlaylist(name, isPublic, tracks, tags, description) 
     }
 }
 
-export async function deleteUser() {
-    let url = `http://localhost:3000/deleteUser`;
-
-    await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('authToken')
-        },
-    });
-}
-
-
-export async function editUser(username, email, artists, genres) {
-    let url = `http://localhost:3000/editUser`;
-
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('authToken')
-        },
-        body: JSON.stringify({
-            "username": username,
-            "email": email,
-            "artists": artists,
-            "genres": genres,
-        })
-    });
-
-    return await res.json();
-}
-
-export async function getMyInfo() {
-    let url = `http://localhost:3000/getMyInfo`;
-
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('authToken')
-        }
-    });
-
-    return await res.json();
-}
-
 export async function deletePlaylist(playlistId) {
     let url = `http://localhost:3000/deletePlaylist`;
 
@@ -281,7 +126,6 @@ export async function deletePlaylist(playlistId) {
 
     return await res.json();
 }
-
 
 export async function editPlaylist(id, name, isPublic, tracks, tags, description) {
     let url = `http://localhost:3000/editPlaylist`;
@@ -345,6 +189,144 @@ export async function removeSavedPlaylist(playlistId) {
     return await res.json();
 }
 
+export async function sharePlaylist(playlistId, communityId) {
+    let url = `http://localhost:3000/sharePlaylist`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            "communityId": communityId,
+            "playlistId": playlistId
+        })
+    });
+
+    return await res.json();
+}
+
+// ----- Tracks -----
+
+/**
+ * @param {ObjectId} query
+ */
+export async function getTrackInfo(query) {
+    let url = `http://localhost:3000/getTrack`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: query})
+    });
+
+    return await res.json();
+}
+
+export async function addTrackToPlaylist(trackId, playlistId) {
+    let url = `http://localhost:3000/addTrackToPlaylist`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            "playlist": playlistId,
+            "track": trackId
+        })
+    });
+
+    return await res.json();
+}
+
+export async function removeTrackFromPlaylist(trackId, playlistId) {
+    let url = `http://localhost:3000/removeTrackFromPlaylist`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            "playlist": playlistId,
+            "track": trackId
+        })
+    });
+
+    return await res.json();
+}
+
+// ----- Users -----
+
+/**
+ * @param userId
+ * @returns {Promise<any|boolean>}
+ */
+export async function getUser(userId) {
+    let url = `http://localhost:3000/getUser`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({"_id": userId})
+    });
+    return await res.json();
+}
+
+export async function deleteUser() {
+    let url = `http://localhost:3000/deleteUser`;
+
+    await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+    });
+}
+
+export async function editUser(username, email, artists, genres) {
+    let url = `http://localhost:3000/editUser`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            "username": username,
+            "email": email,
+            "artists": artists,
+            "genres": genres,
+        })
+    });
+
+    return await res.json();
+}
+
+export async function getMyInfo() {
+    let url = `http://localhost:3000/getMyInfo`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        }
+    });
+
+    return await res.json();
+}
+
 export async function changePassword(newPassword) {
     let url = `http://localhost:3000/changePassword`;
 
@@ -362,6 +344,45 @@ export async function changePassword(newPassword) {
     return await res.json();
 }
 
+// ----- Artists -----
+
+/**
+ * @param {string[]} ids
+ * @returns {Promise<any>}
+ */
+export async function getArtists(ids) {
+    let url = `http://localhost:3000/getArtists`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({"ids": ids})
+    });
+
+    return await res.json();
+}
+
+/**
+ * @param {string} id
+ * @returns {Promise<any>}
+ */
+export async function getArtist(id) {
+    let url = `http://localhost:3000/getArtist`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({"id": id})
+    });
+
+    return await res.json();
+}
+
+// ----- Communities -----
 
 export async function getMyCommunities() {
     let url = `http://localhost:3000/getMyCommunities`;
@@ -372,24 +393,6 @@ export async function getMyCommunities() {
             'Content-Type': 'application/json',
             Authorization: 'Bearer ' + localStorage.getItem('authToken')
         }
-    });
-
-    return await res.json();
-}
-
-export async function sharePlaylist(playlistId, communityId) {
-    let url = `http://localhost:3000/sharePlaylist`;
-
-    const res = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + localStorage.getItem('authToken')
-        },
-        body: JSON.stringify({
-            "communityId": communityId,
-            "playlistId": playlistId
-        })
     });
 
     return await res.json();
