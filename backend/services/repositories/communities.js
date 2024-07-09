@@ -24,7 +24,7 @@ async function getCommunity(userId, communityId) {
     if (res == null) {
         return {error: "Community non trovata", statusCode: 404};
     }
-    if (res.owner !== userId && !res.includes(userId)) {
+    if (res.owner !== userId && !res.users.includes(userId)) {
         return {error: "Non puoi visualizzare questa community", statusCode: 403};
     }
     return res;

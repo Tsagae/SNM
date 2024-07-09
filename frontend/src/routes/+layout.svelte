@@ -36,7 +36,7 @@
 	const logout = () => {
 		localStorage.removeItem('authToken');
 		alert("Token scaduto!");
-		window.location.reload();
+		window.location.replace("/");
 	};
 
 	async function checkToken() {
