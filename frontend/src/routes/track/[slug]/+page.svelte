@@ -1,6 +1,6 @@
 <script>
     import {
-        Avatar,
+        Alert,
         Button,
         Card,
         Dropdown,
@@ -8,14 +8,33 @@
         Rating,
         Spinner
     } from 'flowbite-svelte';
-    import {addTrackToPlaylist, getTrackInfo, myPlaylists} from '$lib/backend.js';
-    import {ChevronDownOutline, PlusOutline, UserCircleSolid, PauseSolid, PlaySolid} from "flowbite-svelte-icons";
+    import {addTrackToPlaylist, getTrackInfo, myPlaylists, isValidToken} from '$lib/backend.js';
+    import {ChevronDownOutline, PlusOutline, UserCircleSolid, PauseSolid, PlaySolid, InfoCircleSolid} from "flowbite-svelte-icons";
     import {goto} from "$app/navigation";
 
     let pageInfo = window.location.pathname;
     let trackId = pageInfo.replace("/track/", "");
     trackId = trackId.replace("/", "");
-    let playlistsPromise = myPlaylists();
+
+    let trackAdded = false;
+
+    let logged = false;
+    let playlistsPromise;
+
+    async function checkToken() {
+		let res = await isValidToken();
+		return await res;
+	};
+
+	checkToken().then((res) => {
+		console.log("RES: ", res)
+		if (res != false) {
+			if (!res.error){
+				logged = true;
+                playlistsPromise = myPlaylists();
+			}
+		}
+	});		
     
     let playingState = 'paused'
     let song = ''
@@ -47,7 +66,6 @@
         playingState = 'paused'
         song.pause()
     }
-    //TODO: aggiungere feedback al completamento di addTrackToPlaylist
 </script>
 
 {#await getTrackInfo(trackId)}
@@ -82,32 +100,43 @@
             {/if}
         </Button> 
     
-        <div class="flex flex-col items-center ml-4">
-            <Button color="primary" pill>
-                <PlusOutline class="w-6 h-6 mr-2 text-white dark:text-white"/>
-                Aggiungi a una playlist
-                <ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white"/>
-            </Button>
-            <Dropdown class="overflow-y-auto px-3 pb-3 text-sm">
-                {#await playlistsPromise}
-                    <div class="text-center mt-16">
-                        <Spinner size={8} color="green"/>
-                    </div>
-                {:then playlists}
-                    {#each playlists as playlist}
-                        <li class="rounded p-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600">
-                            <Button on:click={() => addTrackToPlaylist(trackId, playlist._id)} class="w-full">{playlist.name}</Button>
+        {#if logged}
+            <div class="flex flex-col items-center ml-4">
+                <Button color="primary" pill>
+                    <PlusOutline class="w-6 h-6 mr-2 text-white dark:text-white"/>
+                    Aggiungi a una playlist
+                    <ChevronDownOutline class="w-6 h-6 ms-2 text-white dark:text-white"/>
+                </Button>
+                <Dropdown class="overflow-y-auto px-3 pb-3 text-sm">
+                    {#await playlistsPromise}
+                        <div class="text-center mt-16">
+                            <Spinner size={8} color="green"/>
+                        </div>
+                    {:then playlists}
+                        {#each playlists as playlist}
+                            <li class="rounded p-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600">
+                                <Button on:click={() => {
+                                    let res = addTrackToPlaylist(trackId, playlist._id);
+                                    trackAdded = true;
+                                    }} class="w-full">{playlist.name}</Button>
+                            </li>
+                        {/each}
+                        <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
+                            <Button on:click={() => goto(`/playlist/new?from=${track.id}`)}>
+                                <PlusOutline class="w-6 h-6 mr-2 text-white dark:text-white"/>
+                                Nuova playlist
+                            </Button>
                         </li>
-                    {/each}
-                    <li class="rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-600">
-                        <Button on:click={() => goto(`/playlist/new?from=${track.id}`)}>
-                            <PlusOutline class="w-6 h-6 mr-2 text-white dark:text-white"/>
-                            Nuova playlist
-                        </Button>
-                    </li>
-                {/await}
-            </Dropdown>
-        </div>
-
+                    {/await}
+                </Dropdown>
+            </div>
+        {/if}
     </div>
 {/await}
+
+{#if trackAdded}            
+    <Alert color="green" class="bg-white dark:bg-zinc-800">
+        <InfoCircleSolid slot="icon" class="w-5 h-5" />
+        ATTENZIONE: Canzone inserita con successo!
+    </Alert>
+{/if}
