@@ -117,9 +117,9 @@
             {#each results.tracks.items as track}
                 <Table class="max-w-7xl w-11/12 m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" shadow hoverable>
                     <TableBody tableBodyClass="divide-y">
-                        <TableBodyRow class="bg-white dark:bg-zinc-800">
+                        <TableBodyRow on:click={() => goto("/track/" + track.id)} class="bg-white dark:bg-zinc-800 cursor-pointer">
                             <TableBodyCell>
-                                <a href="/track/{track.id}">{track.name}</a>
+                                {track.name}
                             </TableBodyCell>
                         </TableBodyRow>
                     </TableBody>
@@ -134,9 +134,9 @@
             {#each results.playlists as playlist}
                 <Table class="max-w-7xl w-11/12 m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700" shadow hoverable>
                     <TableBody tableBodyClass="divide-y">
-                        <TableBodyRow class="bg-white dark:bg-zinc-800">
+                        <TableBodyRow on:click={() => goto("/playlist/" + playlist._id)} class="bg-white dark:bg-zinc-800 cursor-pointer">
                             <TableBodyCell>
-                                <a href="/playlist/{playlist._id}">{playlist.name}</a>
+                               {playlist.name}
                             </TableBodyCell>
                         </TableBodyRow>
                     </TableBody>

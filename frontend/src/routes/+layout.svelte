@@ -22,7 +22,7 @@
 		Img
 	} from 'flowbite-svelte';
 	import { twMerge } from 'tailwind-merge';
-	import {ArrowLeftToBracketOutline, UserSolid, ArrowRightToBracketOutline, EditOutline, CaretRightSolid, UsersGroupSolid } from 'flowbite-svelte-icons';
+	import {ArrowLeftToBracketOutline, HomeSolid, ArrowRightToBracketOutline, EditOutline, CaretRightSolid, UsersGroupSolid } from 'flowbite-svelte-icons';
 	import {isValidToken} from '$lib/backend.js';
 
 	let src = '/logo.png';
@@ -74,6 +74,11 @@
 							<span class="self-center text-3xl font-bold whitespace-nowrap dark:text-white">SNM</span>
 						</a>
 						
+						<SidebarItem label="Home - Cerca" href="/">
+							<svelte:fragment slot="icon">
+								<HomeSolid class="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+							</svelte:fragment>
+						</SidebarItem>
 						{#if logged}
 							<SidebarItem label="Le mie playlist" href="/personal">
 								<svelte:fragment slot="icon">
