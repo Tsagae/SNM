@@ -27,7 +27,7 @@
         removeSavedPlaylist,
         savePlaylist
     } from '$lib/backend.js';
-    import {goto} from '$app/navigation'
+    import {goto} from '$app/navigation';
     import {error} from '@sveltejs/kit';
 
     let pageInfo = window.location.pathname;

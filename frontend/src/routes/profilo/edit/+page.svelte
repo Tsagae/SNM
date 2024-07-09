@@ -107,11 +107,11 @@
     <form on:submit={submitForm} class="w-1/2 mt-6 mx-auto">
         <div class="mb-6">
             <Label for="playlist-name" class="block mb-2">Username</Label>
-            <Input bind:value={formValues.username} id="playlist-name" placeholder="..."/>
+            <Input bind:value={formValues.username} class="bg-gray-100 dark:bg-zinc-700" id="playlist-name" placeholder="..."/>
         </div>
         <div class="mb-6">
             <Label for="playlist-name" class="block mb-2">email</Label>
-            <Input bind:value={formValues.email} id="playlist-name" placeholder="..."/>
+            <Input bind:value={formValues.email} class="bg-gray-100 dark:bg-zinc-700" id="playlist-name" placeholder="..."/>
         </div>
         <div class="mb-6">
             <Button type="submit">Aggiorna</Button>
@@ -121,7 +121,7 @@
     <form on:submit={submitChangePassword}>
         <div class="mb-6">
             <Label for="password" class="block mb-2">Password</Label>
-            <input bind:value={newPassword} id="password" name="password" placeholder="NewPassword123!"
+            <input bind:value={newPassword} class="bg-gray-100 dark:bg-zinc-700" id="password" name="password" placeholder="NewPassword123!"
                    use:validators={[required, minLength(8), containNumbers(2), hasUppercase()]} required/>
 
         </div>
