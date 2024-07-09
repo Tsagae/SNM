@@ -333,6 +333,18 @@ app.post('/getMyInfo', async (req, res) => {
     }
 });
 
+app.post('/searchUser', async (req, res) => {
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await users.searchUser(req.body.username);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
 // -------- Search --------
 app.post('/search', async (req, res) => {
     try {
