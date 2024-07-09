@@ -171,3 +171,6 @@ vite.config.ts.timestamp-*
 
 # backend
 /backend/config
+
+#swagger
+swagger-output.json
