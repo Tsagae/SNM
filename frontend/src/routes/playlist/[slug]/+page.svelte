@@ -21,7 +21,8 @@
         PlaySolid,
         HeartOutline,
         HeartSolid,
-        ChevronDownOutline, PlusOutline
+        ChevronDownOutline, 
+        PlusOutline
     } from 'flowbite-svelte-icons';
     import {
         getPlaylistInfo,
