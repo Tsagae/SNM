@@ -376,3 +376,22 @@ export async function getMyCommunities() {
 
     return await res.json();
 }
+
+export async function sharePlaylist(playlistId, communityId) {
+    let url = `http://localhost:3000/sharePlaylist`;
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            "communityId": communityId,
+            "playlistId": playlistId
+        })
+    });
+
+    return await res.json();
+}
+
