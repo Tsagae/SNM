@@ -27,7 +27,7 @@ import spotify from "./services/spotify.js";
 import {body, validationResult} from "express-validator";
 import authentication from "./services/authentication.js";
 import communities from "./services/repositories/communities.js";
-import { use } from 'bcrypt/promises.js';
+import {use} from 'bcrypt/promises.js';
 
 const app = express();
 const port = config.get('server.port');
@@ -209,7 +209,7 @@ app.post('/getAllPublicPlaylists', async (req, res) => {
 app.post('/searchPublicPlaylists', async (req, res) => {
     /*
         #swagger.tags = ["Playlists"]
-        #swagger.summary = "Searches for public playlists"
+        #swagger.summary = "Searches for public playlists that contain the string in the name/tags/song titles"
         #swagger.parameters['name'] = {description: "Name of the playlist to search for", type: "string"}
      */
     try {
