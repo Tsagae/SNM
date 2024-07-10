@@ -1,5 +1,7 @@
+const baseUrl = "http://localhost:3000";
+
 export async function isValidToken() {
-    let url = `http://localhost:3000/authToken`;
+    let url = `${baseUrl}/authToken`;
 
     if (localStorage.getItem('authToken') === null) {
         return false;
@@ -20,7 +22,7 @@ export async function isValidToken() {
  * @param {string[]} filters
  */
 export async function search(query, filters) {
-    let url = `http://localhost:3000/search`;
+    let url = `${baseUrl}/search`;
     const res = await fetch(url, {
         method: 'POST',
         headers: {
@@ -36,7 +38,7 @@ export async function search(query, filters) {
 // ----- Playlists -----
 
 export async function getPubPlaylist() {
-    let url = `http://localhost:3000/getAllPublicPlaylists`;
+    let url = `${baseUrl}/getAllPublicPlaylists`;
     const res = await fetch(url, {
         method: 'POST',
         headers: {
@@ -51,7 +53,7 @@ export async function getPubPlaylist() {
  * @param {ObjectId} query
  */
 export async function getPlaylistInfo(query) {
-    let url = `http://localhost:3000/getPlaylist?id=${query}`;
+    let url = `${baseUrl}/getPlaylist?id=${query}`;
 
     if (localStorage.getItem('authToken') === null) {
         return {error: "Esegui il login per vedere le playlist"};
@@ -73,7 +75,7 @@ export async function getPlaylistInfo(query) {
 }
 
 export async function myPlaylists() {
-    let url = `http://localhost:3000/myPlaylists`;
+    let url = `${baseUrl}/myPlaylists`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -87,7 +89,7 @@ export async function myPlaylists() {
 }
 
 export async function createPlaylist(name, isPublic, tracks, tags, description, thumbnail) {
-    let url = `http://localhost:3000/createPlaylist`;
+    let url = `${baseUrl}/createPlaylist`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -112,7 +114,7 @@ export async function createPlaylist(name, isPublic, tracks, tags, description, 
 }
 
 export async function deletePlaylist(playlistId) {
-    let url = `http://localhost:3000/deletePlaylist`;
+    let url = `${baseUrl}/deletePlaylist`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -129,7 +131,7 @@ export async function deletePlaylist(playlistId) {
 }
 
 export async function editPlaylist(id, name, isPublic, tracks, tags, description) {
-    let url = `http://localhost:3000/editPlaylist`;
+    let url = `${baseUrl}/editPlaylist`;
     const res = await fetch(url, {
         method: 'POST',
         headers: {
@@ -150,7 +152,7 @@ export async function editPlaylist(id, name, isPublic, tracks, tags, description
 }
 
 export async function getMySavedPlaylists() {
-    let url = `http://localhost:3000/getMySavedPlaylists`;
+    let url = `${baseUrl}/getMySavedPlaylists`;
     const res = await fetch(url, {
         method: 'POST',
         headers: {
@@ -163,7 +165,7 @@ export async function getMySavedPlaylists() {
 }
 
 export async function savePlaylist(playlistId) {
-    let url = `http://localhost:3000/savePlaylist`;
+    let url = `${baseUrl}/savePlaylist`;
     const res = await fetch(url, {
         method: 'POST',
         headers: {
@@ -177,7 +179,7 @@ export async function savePlaylist(playlistId) {
 }
 
 export async function removeSavedPlaylist(playlistId) {
-    let url = `http://localhost:3000/removeSavedPlaylist`;
+    let url = `${baseUrl}/removeSavedPlaylist`;
     const res = await fetch(url, {
         method: 'POST',
         headers: {
@@ -191,7 +193,7 @@ export async function removeSavedPlaylist(playlistId) {
 }
 
 export async function sharePlaylist(playlistId, communityId) {
-    let url = `http://localhost:3000/sharePlaylist`;
+    let url = `${baseUrl}/sharePlaylist`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -214,7 +216,7 @@ export async function sharePlaylist(playlistId, communityId) {
  * @param {ObjectId} query
  */
 export async function getTrackInfo(query) {
-    let url = `http://localhost:3000/getTrack`;
+    let url = `${baseUrl}/getTrack`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -228,7 +230,7 @@ export async function getTrackInfo(query) {
 }
 
 export async function addTrackToPlaylist(trackId, playlistId) {
-    let url = `http://localhost:3000/addTrackToPlaylist`;
+    let url = `${baseUrl}/addTrackToPlaylist`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -246,7 +248,7 @@ export async function addTrackToPlaylist(trackId, playlistId) {
 }
 
 export async function removeTrackFromPlaylist(trackId, playlistId) {
-    let url = `http://localhost:3000/removeTrackFromPlaylist`;
+    let url = `${baseUrl}/removeTrackFromPlaylist`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -270,7 +272,7 @@ export async function removeTrackFromPlaylist(trackId, playlistId) {
  * @returns {Promise<any|boolean>}
  */
 export async function getUser(userId) {
-    let url = `http://localhost:3000/getUser`;
+    let url = `${baseUrl}/getUser`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -283,7 +285,7 @@ export async function getUser(userId) {
 }
 
 export async function deleteUser() {
-    let url = `http://localhost:3000/deleteUser`;
+    let url = `${baseUrl}/deleteUser`;
 
     await fetch(url, {
         method: 'POST',
@@ -295,7 +297,7 @@ export async function deleteUser() {
 }
 
 export async function editUser(username, email, artists, genres) {
-    let url = `http://localhost:3000/editUser`;
+    let url = `${baseUrl}/editUser`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -315,7 +317,7 @@ export async function editUser(username, email, artists, genres) {
 }
 
 export async function getMyInfo() {
-    let url = `http://localhost:3000/getMyInfo`;
+    let url = `${baseUrl}/getMyInfo`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -329,7 +331,7 @@ export async function getMyInfo() {
 }
 
 export async function changePassword(newPassword) {
-    let url = `http://localhost:3000/changePassword`;
+    let url = `${baseUrl}/changePassword`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -352,7 +354,7 @@ export async function changePassword(newPassword) {
  * @returns {Promise<any>}
  */
 export async function getArtists(ids) {
-    let url = `http://localhost:3000/getArtists`;
+    let url = `${baseUrl}/getArtists`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -370,7 +372,7 @@ export async function getArtists(ids) {
  * @returns {Promise<any>}
  */
 export async function getArtist(id) {
-    let url = `http://localhost:3000/getArtist`;
+    let url = `${baseUrl}/getArtist`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -386,7 +388,7 @@ export async function getArtist(id) {
 // ----- Communities -----
 
 export async function getMyCommunities() {
-    let url = `http://localhost:3000/getMyCommunities`;
+    let url = `${baseUrl}/getMyCommunities`;
 
     const res = await fetch(url, {
         method: 'POST',
@@ -400,7 +402,7 @@ export async function getMyCommunities() {
 }
 
 export async function getCommunity(communityId) {
-    let url = `http://localhost:3000/getCommunity`;
+    let url = `${baseUrl}/getCommunity`;
     const res = await fetch(url, {
         method: 'POST',
         headers: {
