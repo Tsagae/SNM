@@ -134,7 +134,7 @@ async function removeTrackFromPlaylist(userId, playlistId, trackId) {
  @param {string[]} tags
  @param {string} description
  */
-async function createPlaylist(userId, name, isPublic, tracks, tags, description) {
+async function createPlaylist(userId, name, isPublic, tracks, tags, description, thumbnail) {
     let res;
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Playlists').insertOne({
@@ -143,7 +143,8 @@ async function createPlaylist(userId, name, isPublic, tracks, tags, description)
             public: isPublic,
             tracks: tracks,
             tags: tags,
-            description: description
+            description: description,
+            thumbnail: thumbnail
         });
     });
     return res;

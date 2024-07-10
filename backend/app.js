@@ -290,11 +290,12 @@ app.post('/createPlaylist', async (req, res) => {
         #swagger.parameters['tracks'] = {description: "List of tracks in the playlist", type: "array", items: {type: "string"}}
         #swagger.parameters['tags'] = {description: "List of tags for the playlist", type: "array", items: {type: "string"}}
         #swagger.parameters['description'] = {description: "Description of the playlist", type: "string"}
+        #swagger.parameters['thumbnail'] = {description: "Rapresentative image", type: "string"}
      */
     let authReq = auth.authenticateRequest(req, res);
     if (!authReq.authenticated) return;
     try {
-        let results = await playlists.createPlaylist(authReq.user._id, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags, req.body.description);
+        let results = await playlists.createPlaylist(authReq.user._id, req.body.name, req.body.isPublic, req.body.tracks, req.body.tags, req.body.description, req.body.thumbnail);
         return await handleRequest(results, res);
     } catch (e) {
         console.log(e)

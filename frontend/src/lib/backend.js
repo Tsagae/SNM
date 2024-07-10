@@ -86,7 +86,7 @@ export async function myPlaylists() {
     return await res.json();
 }
 
-export async function createPlaylist(name, isPublic, tracks, tags, description) {
+export async function createPlaylist(name, isPublic, tracks, tags, description, thumbnail) {
     let url = `http://localhost:3000/createPlaylist`;
 
     const res = await fetch(url, {
@@ -100,7 +100,8 @@ export async function createPlaylist(name, isPublic, tracks, tags, description) 
             "isPublic": isPublic,
             "tracks": tracks,
             "tags": tags,
-            "description": description
+            "description": description,
+            "thumbnail": thumbnail
         })
     });
     if (res.ok) {

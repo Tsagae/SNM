@@ -36,8 +36,18 @@
         if (tagsString.match(/^\s*$/) === null) {
             formValues.tags = tagsString.split(",");
         }
+
+        let thumbnail;
+        if (document.getElementById("thumbnail")){
+            thumbnail = document.getElementById("thumbnail").value;
+        } else {
+            thumbnail = "/playlistThumbnail.jpg";
+        }
+
+        console.log(thumbnail)
+
         try {
-            let res = await createPlaylist(formValues.name, formValues.isPublic, formValues.tracks, formValues.tags, formValues.description);
+            let res = await createPlaylist(formValues.name, formValues.isPublic, formValues.tracks, formValues.tags, formValues.description, thumbnail);
             if (urlParams.has('from')) {
                 await addTrackToPlaylist(urlParams.get("from"), res.insertedId);
             }
@@ -57,6 +67,7 @@
                 </div>
             {:then track}
                 <Span gradient>{track.name}</Span>
+                <input hidden id="thumbnail" value={track.album.images[0].url}>
             {/await}
         </Heading>
     {:else}
