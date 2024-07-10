@@ -12,36 +12,53 @@
     } from 'flowbite-svelte';
     import { DotsHorizontalOutline} from 'flowbite-svelte-icons';
     import Playlist from '$lib/components/playlist.svelte';
-    import {myPlaylists, getUser, getArtists} from '$lib/backend.js'; //temporary
+    import {myPlaylists, getUser, getPubPlaylist, getArtists} from '$lib/backend.js';
+    import { page } from '$app/stores';
 
-    let pageInfo = window.location.pathname;
-    let idUser = pageInfo.replace("/profilo/", "");
-    idUser = idUser.replace("/", "");
-
+    let idUser = $page.params.slug;
     let imgAvatar = '';
     let index = 0;
     let image;
-
     let userInfoPromise = getUser(idUser);
-    let userPlaylists = getUserPlaylists();
+    let userPlaylists = getUserPlaylists(idUser);
 
-    async function getUserPlaylists() {
-        const res = await myPlaylists();
-        let previews = [];
+    async function getUserPlaylists(id) {
+        if(id == localStorage.getItem("userId")){
+            const res = await myPlaylists();
+            let previews = [];
 
-        for (var i = 0; i < res.length; i++) {
-            previews.push(
-                {
-                    alt: res[i].name,
-                    src: res[i].thumbnail,
-                    title: res[i]._id
+            for (var i = 0; i < res.length; i++) {
+                previews.push(
+                    {
+                        alt: res[i].name,
+                        src: res[i].thumbnail,
+                        title: res[i]._id
+                    }
+                );
+            }
+
+            return previews;
+        } else {
+            const res = await getPubPlaylist();
+
+            console.log(JSON.stringify(res))
+            let previews = [];
+
+            for (var i = 0; i < res.length; i++) {
+                if(res[i].user == id){
+                    previews.push(
+                        {
+                            alt: res[i].name,
+                            src: res[i].thumbnail,
+                            title: res[i]._id
+                        }
+                    );
                 }
-            );
+            }
+
+            return previews;
         }
-
-        return previews;
     }
-
 </script>
 
 {#await userInfoPromise}
@@ -54,10 +71,12 @@
         <Card img={userInfo.avatar} size="lg" class="w-4/5 max-w-full m-auto mt-2 mb-6 bg-gray-100 dark:bg-zinc-700" horizontal>
             <div class="flex">
                 <Heading tag="h1" class="mb-4" customSize="text-2xl font-extrabold md:text-5xl lg:text-6xl">{userInfo.username}</Heading>
-                <DotsHorizontalOutline class="dots-menu dark:text-white" />
-                <Dropdown triggeredBy=".dots-menu" class="bg-gray-200 dark:bg-zinc-600">
-                    <DropdownItem href="/profilo/edit">Modifica</DropdownItem>
-                </Dropdown>
+                {#if userInfo._id === localStorage.getItem("userId")}
+                    <DotsHorizontalOutline class="dots-menu dark:text-white" />
+                    <Dropdown triggeredBy=".dots-menu" class="bg-gray-200 dark:bg-zinc-600">
+                        <DropdownItem href="/profilo/edit">Modifica</DropdownItem>
+                    </Dropdown>
+                {/if}
             </div>
             <p class="text-2xl dark:text-white">Preferenze</p>
             <div class="mt-2">
@@ -96,10 +115,12 @@
         <Card class="w-4/5 max-w-full m-auto mt-2 mb-6 bg-gray-100 dark:bg-zinc-700">
             <div class="flex">
                 <Heading tag="h1" class="mb-4 flex" customSize="text-2xl font-extrabold md:text-5xl lg:text-6xl">{userInfo.username}</Heading>
-                <DotsHorizontalOutline class="dots-menu dark:text-white" />
-                <Dropdown triggeredBy=".dots-menu" class="bg-gray-200 dark:bg-zinc-600">
-                    <DropdownItem href="/profilo/edit">Modifica</DropdownItem>
-                </Dropdown>
+                {#if userInfo._id === localStorage.getItem("userId")}
+                    <DotsHorizontalOutline class="dots-menu dark:text-white" />
+                    <Dropdown triggeredBy=".dots-menu" class="bg-gray-200 dark:bg-zinc-600">
+                        <DropdownItem href="/profilo/edit">Modifica</DropdownItem>
+                    </Dropdown>
+                {/if}
             </div>
             <p class="text-2xl dark:text-white">Preferenze</p>
             <div class="mt-2">
@@ -157,6 +178,3 @@
     </div>
 
 {/await}
-
-
-

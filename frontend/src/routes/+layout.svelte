@@ -4,6 +4,8 @@
 	import {
 		Avatar,
 		DarkMode,
+		Dropdown,
+		DropdownItem,
 		Navbar,
 		NavBrand,
 		NavLi,
@@ -23,6 +25,7 @@
 	} from 'flowbite-svelte';
 	import { twMerge } from 'tailwind-merge';
 	import {ArrowLeftToBracketOutline, HomeSolid, ArrowRightToBracketOutline, EditOutline, CaretRightSolid, UsersGroupSolid } from 'flowbite-svelte-icons';
+	import {goto, invalidateAll} from "$app/navigation";
 	import {isValidToken} from '$lib/backend.js';
 
 	let src = '/logo.png';
@@ -109,7 +112,11 @@
 			<NavHamburger/>
 			<NavUl>
 				{#if logged}
-					<Avatar src="{imgAvatar}" href="/profilo/{idUtente}"/>
+					<Avatar id="user-drop" src="{imgAvatar}" class="cursor-pointer"/>
+					<Dropdown triggeredBy="#user-drop">
+						<!-- svelte-ignore missing-declaration -->
+						<DropdownItem on:click={() => goto("/profilo/" + idUtente)}>Profilo</DropdownItem>
+					</Dropdown>
 					<NavLi><Button on:click={logout} color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Esci</Button></NavLi>	 
 				{:else}
 					<NavLi href="/registration"><Button color="primary" outline pill><EditOutline class="w-4 h-4" color="primary" />Registrati</Button></NavLi>

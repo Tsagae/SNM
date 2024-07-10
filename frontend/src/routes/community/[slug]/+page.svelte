@@ -85,7 +85,7 @@
                 <div class="flex items-center space-x-4 rtl:space-x-reverse mb-4 ml-4">
                     <Avatar src="{owner.avatar}" rounded />
                     <div class="space-y-1 font-medium dark:text-white">
-                    <div>{owner.username}</div>
+                    <div><a href="/profilo/{owner._id}">{owner.username}</a></div>
                     </div>
                 </div>
             {/await}
@@ -101,7 +101,7 @@
                     <div class="flex items-center space-x-4 rtl:space-x-reverse mb-4 ml-4">
                         <Avatar src="{user.avatar}" rounded />
                         <div class="space-y-1 font-medium dark:text-white">
-                        <div>{user.username}</div>
+                        <div><a href="/profilo/{user._id}">{user.username}</a></div>
                         </div>
                     </div>
                 {/await}
