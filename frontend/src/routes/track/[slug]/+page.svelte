@@ -12,11 +12,9 @@
     import {ChevronDownOutline, PlusOutline, UserCircleSolid, PauseSolid, PlaySolid, InfoCircleSolid} from "flowbite-svelte-icons";
     import {goto} from "$app/navigation";
 	import Playlist from '$lib/components/playlist.svelte';
+    import { page } from '$app/stores';
 
-    let pageInfo = window.location.pathname;
-    let trackId = pageInfo.replace("/track/", "");
-    trackId = trackId.replace("/", "");
-
+    let trackId = $page.params.slug;
     let trackAdded = false;
 
     let logged = false;

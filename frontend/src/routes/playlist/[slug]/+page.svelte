@@ -40,10 +40,9 @@
     } from '$lib/backend.js';
     import {goto} from '$app/navigation';
     import {error} from '@sveltejs/kit';
+    import { page } from '$app/stores';
 
-    let pageInfo = window.location.pathname;
-    let id = pageInfo.replace("/playlist/", "");
-    id = id.replace("/", "");
+    let id = $page.params.slug;
 
     const playlistInfo = getPlaylistInfo(id);
     const userId = localStorage.getItem("userId");

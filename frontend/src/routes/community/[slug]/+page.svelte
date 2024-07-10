@@ -15,11 +15,9 @@
     } from '$lib/backend.js';
     import { DotsHorizontalOutline} from 'flowbite-svelte-icons';
     import Playlist from "$lib/components/playlist.svelte";
+    import { page } from '$app/stores';
 
-    let pageInfo = window.location.pathname;
-    let id = pageInfo.replace("/community/", "");
-    id = id.replace("/", "");
-
+    let id = $page.params.slug;
 </script>
 
 {#await getCommunity(id)}
