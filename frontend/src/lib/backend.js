@@ -400,7 +400,6 @@ export async function getMyCommunities() {
 
 export async function getCommunity(communityId) {
     let url = `http://localhost:3000/getCommunity`;
-
     const res = await fetch(url, {
         method: 'POST',
         headers: {
