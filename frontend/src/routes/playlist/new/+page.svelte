@@ -60,7 +60,7 @@
             {/await}
         </Heading>
     {:else}
-        <Heading tag="h3">Stai creando una playlist vuota</Heading>
+        <Heading tag="h3" class="w-full text-center mt-6">Stai creando una playlist vuota</Heading>
     {/if}
 </div>
 
@@ -81,14 +81,7 @@
     </div>
     <div class="mb-6">
         <Label for="playlist-tags" class="block mb-2">Tags</Label>
-        <Input bind:value={tagsString} id="playlist-tags" placeholder="Tag1,Tag2,Tag3"/>
-    </div>
-    <div class="mb-6">
-        {#if urlParams.has('from')}
-            <p>Stai creando una playlist con questa canzone: {urlParams.get("from")}</p>
-        {:else}
-            <p>Stai creando una playlist vuota</p>
-        {/if}
+        <Input bind:value={tagsString} id="playlist-tags" class="bg-gray-100 dark:bg-zinc-700" placeholder="Tag1,Tag2,Tag3"/>
     </div>
     <div class="mb-6">
         <Button type="submit">Crea</Button>

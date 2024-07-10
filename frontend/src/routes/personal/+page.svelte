@@ -1,10 +1,11 @@
 <script>
     import {
+        Button,
         Heading,
         Spinner,
         Span
     } from 'flowbite-svelte';
-    import {ChevronDownOutline, FilterOutline} from 'flowbite-svelte-icons';
+    import {ChevronDownOutline, FilterOutline, PlusOutline} from 'flowbite-svelte-icons';
     import {myPlaylists, getMySavedPlaylists} from '$lib/backend.js';
     import Playlist from '$lib/components/playlist.svelte';
     import {goto} from "$app/navigation";
@@ -18,6 +19,13 @@
     <Heading tag="h2" class="flex items-center mb-4" size="text-5xl">
         <Span gradient>Playlist</Span> Create
     </Heading>
+
+    <div class="w-full flex mb-6">
+        <Button class="mx-auto" on:click={() => goto(`/playlist/new`)}>
+            <PlusOutline class="w-6 h-6 mr-2 text-white dark:text-white"/>
+            Nuova playlist
+        </Button>
+    </div>  
 
     {#await myPlaylists()}
         <div class="text-center">
