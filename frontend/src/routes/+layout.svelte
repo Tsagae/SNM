@@ -112,11 +112,8 @@
 			<NavHamburger/>
 			<NavUl>
 				{#if logged}
-					<Avatar id="user-drop" src="{imgAvatar}" class="cursor-pointer"/>
-					<Dropdown triggeredBy="#user-drop">
-						<!-- svelte-ignore missing-declaration -->
-						<DropdownItem on:click={() => goto("/profilo/" + idUtente)}>Profilo</DropdownItem>
-					</Dropdown>
+					<Button on:click={() => goto("/profilo/" + idUtente)} style="border:none; background-color:transparent;"><Avatar id="user-drop" src="{imgAvatar}" class="cursor-pointer"/></Button>
+
 					<NavLi><Button on:click={logout} color="primary" outline pill><ArrowRightToBracketOutline class="w-4 h-4" color="primary" />Esci</Button></NavLi>	 
 				{:else}
 					<NavLi href="/registration"><Button color="primary" outline pill><EditOutline class="w-4 h-4" color="primary" />Registrati</Button></NavLi>
