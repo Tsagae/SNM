@@ -167,10 +167,6 @@
                         </Alert>
                     </Hint>
                 </HintGroup>
-                <div class="flex items-start">
-                    <Checkbox>Accetto i <a class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                                           href="/"> &nbsp;Termini e Condizioni</a></Checkbox>
-                </div>
                 <button class="text-center font-medium focus-within:ring-4 focus-within:outline-none inline-flex items-center justify-center px-5 py-2.5 text-sm text-white bg-primary-700 hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700 focus-within:ring-primary-300 dark:focus-within:ring-primary-800 rounded-lg w-full1"
                         type="submit" disabled={!$form.valid} on:click|preventDefault={onSubmit}>Crea l'account
                 </button>
