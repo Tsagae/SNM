@@ -1,37 +1,38 @@
 <script>
     import {
-        Alert,
         Label,
+        Input,
+        Button,
         Checkbox,
-        Spinner,
-        Heading
+        Spinner
     } from 'flowbite-svelte';
-    import {
-        useForm,
-        Hint,
-        HintGroup,
-        validators,
-        required,
-    } from 'svelte-use-form';
-    import {InfoCircleSolid} from 'flowbite-svelte-icons';
-    import {createCommunity, searchUser} from '$lib/backend.js'
+    import {getCommunity, getUser, searchUser, editCommunity} from '$lib/backend.js';
+    import {page} from "$app/stores";
     import LoginRequired from '$lib/components/loginrequired.svelte';
 
-    const form = useForm();
-    const requiredMessage = 'Questo campo è necessario';
-
+    const formValues = {
+        "name": ""
+    }
+    const idComm = $page.params.slug;
     let listaUtenti = [];
     let listaNomi = [];
 
-    async function submitForm() {
-        const res = await createCommunity(listaUtenti, $form.name.value)
-
-        if (res.ok) {
-            window.location.reload();
-        } else {
-            alert("qualcosa è andato storto");
+    async function fetchCommunityData() {
+        const commInfo = await getCommunity(idComm);
+        formValues.name = commInfo.communityName;
+        if (commInfo.users !== undefined) {
+            listaUtenti = commInfo.users;
         }
+        for (let i in listaUtenti) {
+            let membro = await getUser(listaUtenti[i]);
+            listaNomi.push(membro.username);
+        }
+        return commInfo
+    }
 
+    async function submitForm() {
+        await editCommunity(idComm, listaUtenti, formValues.name);
+        window.location.reload();
     }
 
     let keywordUsr = '';
@@ -62,28 +63,22 @@
 </script>
 
 <LoginRequired>
-    <Heading tag="h1" class="w-full mt-6 mb-4 text-center">Crea un nuovo gruppo!</Heading>
-
-
-    <form class="w-2/3 mx-auto" use:form method="post">
-        <Label class="space-y-2">
-            <span>Nome Gruppo</span>
-            <input class="block w-full disabled:cursor-not-allowed disabled:opacity-50 rtl:text-right p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 bg-gray-100 dark:bg-zinc-700 text-gray-900 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 text-sm rounded-lg"
-                   placeholder="Tokyo Drifter Gang" name="name" use:validators={[required]} required/>
-        </Label>
-        <HintGroup for="name">
-            <Hint on="required">
-                <Alert color="red" class="bg-white dark:bg-zinc-800">
-                    <InfoCircleSolid slot="icon" class="w-5 h-5"/>
-                    {requiredMessage}
-                </Alert>
-            </Hint>
-        </HintGroup>
-        <button class="text-center font-medium focus-within:ring-4 focus-within:outline-none inline-flex items-center justify-center px-5 py-2.5 text-sm text-white bg-primary-700 hover:bg-primary-800 dark:bg-primary-600 dark:hover:bg-primary-700 focus-within:ring-primary-300 dark:focus-within:ring-primary-800 rounded-lg mt-6"
-                type="submit" disabled={!$form.valid} on:click|preventDefault={submitForm}>Crea
-        </button>
-    </form>
-    <br>
+    {#await fetchCommunityData()}
+        <div class="text-center mt-16">
+            <Spinner size={8} color="green"/>
+        </div>
+    {:then commData}
+        <form on:submit={submitForm} class="w-1/2 mt-6 mx-auto">
+            <div class="mb-6">
+                <Label for="playlist-name" class="block mb-2">Nome</Label>
+                <Input bind:value={formValues.name} class="bg-gray-100 dark:bg-zinc-700" id="playlist-name"
+                       placeholder="..."/>
+            </div>
+            <div class="mb-6">
+                <Button type="submit">Aggiorna</Button>
+            </div>
+        </form>
+    {/await}
 
     <div class="w-2/3 mx-auto">
         <form class="w-full" on:submit={startSearchUser}>
@@ -142,7 +137,6 @@
                                 aggUtente(newUser._id, newUser.username);
                             } else {
                                 togliUtente(newUser._id, newUser.username);
-
                             }
                         }}>{newUser.username}</Checkbox>
                             {/if}

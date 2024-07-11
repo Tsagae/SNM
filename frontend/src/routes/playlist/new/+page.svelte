@@ -11,6 +11,7 @@
     } from 'flowbite-svelte';
     import {createPlaylist, getTrackInfo, addTrackToPlaylist} from '$lib/backend.js';
     import {goto} from "$app/navigation";
+    import LoginRequired from '$lib/components/loginrequired.svelte';
 
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -38,7 +39,7 @@
         }
 
         let thumbnail;
-        if (document.getElementById("thumbnail")){
+        if (document.getElementById("thumbnail")) {
             thumbnail = document.getElementById("thumbnail").value;
         } else {
             thumbnail = "/playlistThumbnail.jpg";
@@ -58,44 +59,46 @@
     }
 </script>
 
-<div class="mb-6">
-    {#if urlParams.has('from')}
-        <Heading tag="h3" class="w-full text-center mt-6">Stai creando una playlist con questa canzone:
-            {#await getTrackInfo(urlParams.get("from"))}
-                <div class="text-center mt-16">
-                    <Spinner size={8} color="green"/>
-                </div>
-            {:then track}
-                <Span gradient>{track.name}</Span>
-                <input hidden id="thumbnail" value={track.album.images[0].url}>
-            {/await}
-        </Heading>
-    {:else}
-        <Heading tag="h3" class="w-full text-center mt-6">Stai creando una playlist vuota</Heading>
-    {/if}
-</div>
+<LoginRequired>
+    <div class="mb-6">
+        {#if urlParams.has('from')}
+            <Heading tag="h3" class="w-full text-center mt-6">Stai creando una playlist con questa canzone:
+                {#await getTrackInfo(urlParams.get("from"))}
+                    <div class="text-center mt-16">
+                        <Spinner size={8} color="green"/>
+                    </div>
+                {:then track}
+                    <Span gradient>{track.name}</Span>
+                    <input hidden id="thumbnail" value={track.album.images[0].url}>
+                {/await}
+            </Heading>
+        {:else}
+            <Heading tag="h3" class="w-full text-center mt-6">Stai creando una playlist vuota</Heading>
+        {/if}
+    </div>
 
-<form on:submit={submitForm} class="w-2/3 mx-auto">
-    <div class="mb-6">
-        <Label for="playlist-name" class="block mb-2">Nome</Label>
-        <Input bind:value={formValues.name} id="playlist-name" placeholder="Nome della playlist"
-               class="block w-full text-sm text-zinc-900 border border-zinc-300 rounded-lg bg-zinc-50 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"/>
-    </div>
-    <div class="mb-6">
-        <Label for="playlist-description" class="block mb-2">Descrizione</Label>
-        <Textarea bind:value={formValues.description} for="playlist-description" {...textareaprops}
-                  class="block w-full text-sm text-zinc-900 border border-zinc-300 rounded-lg bg-zinc-50 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"/>
-    </div>
-    <div class="mb-6">
-        <Toggle checked={formValues.isPublic} on:click={() => formValues.isPublic = !formValues.isPublic}>Pubblica
-        </Toggle>
-    </div>
-    <div class="mb-6">
-        <Label for="playlist-tags" class="block mb-2">Tags</Label>
-        <Input bind:value={tagsString} id="playlist-tags" class="bg-gray-100 dark:bg-zinc-700" placeholder="Tag1,Tag2,Tag3"/>
-    </div>
-    <div class="mb-6">
-        <Button type="submit">Crea</Button>
-    </div>
-</form>
-
+    <form on:submit={submitForm} class="w-2/3 mx-auto">
+        <div class="mb-6">
+            <Label for="playlist-name" class="block mb-2">Nome</Label>
+            <Input bind:value={formValues.name} id="playlist-name" placeholder="Nome della playlist"
+                   class="block w-full text-sm text-zinc-900 border border-zinc-300 rounded-lg bg-zinc-50 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"/>
+        </div>
+        <div class="mb-6">
+            <Label for="playlist-description" class="block mb-2">Descrizione</Label>
+            <Textarea bind:value={formValues.description} for="playlist-description" {...textareaprops}
+                      class="block w-full text-sm text-zinc-900 border border-zinc-300 rounded-lg bg-zinc-50 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-zinc-700 dark:border-zinc-600 dark:placeholder-zinc-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"/>
+        </div>
+        <div class="mb-6">
+            <Toggle checked={formValues.isPublic} on:click={() => formValues.isPublic = !formValues.isPublic}>Pubblica
+            </Toggle>
+        </div>
+        <div class="mb-6">
+            <Label for="playlist-tags" class="block mb-2">Tags</Label>
+            <Input bind:value={tagsString} id="playlist-tags" class="bg-gray-100 dark:bg-zinc-700"
+                   placeholder="Tag1,Tag2,Tag3"/>
+        </div>
+        <div class="mb-6">
+            <Button type="submit">Crea</Button>
+        </div>
+    </form>
+</LoginRequired>

@@ -491,3 +491,18 @@ export async function createCommunity(listaUtenti, communityName) {
     });
 }
 
+export async function editCommunity(communityId, listaUtenti, communityName) {
+    let url = `${baseUrl}/editCommunity`;
+    return await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            communityId: communityId,
+            users: listaUtenti,
+            communityName: communityName
+        })
+    });
+}
