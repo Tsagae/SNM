@@ -16,6 +16,8 @@ Progetto _"Social Network for Music (SNM)"_ di Provini Martina (02492A) e Zaghen
   
 ## Requisiti
 
+Testato funzionare con Nodejs da versione 18^ e npm da versione 8^
+
 
 ## Installazione
 
