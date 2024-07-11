@@ -2,8 +2,6 @@
     import {
         Alert,
         Label,
-        Input,
-        Button,
         Checkbox,
         Spinner,
         Heading
@@ -16,15 +14,11 @@
         required,
     } from 'svelte-use-form';
     import {InfoCircleSolid} from 'flowbite-svelte-icons';
-    import {goto} from "$app/navigation";
     import {createCommunity, searchUser} from '$lib/backend.js'
     import LoginRequired from '$lib/components/loginrequired.svelte';
 
     const form = useForm();
     const requiredMessage = 'Questo campo è necessario';
-    const formValues = {
-        "name": "",
-    }
 
     let listaUtenti = [];
     let listaNomi = [];

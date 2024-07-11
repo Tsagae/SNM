@@ -5,7 +5,7 @@
         Spinner,
         Span
     } from 'flowbite-svelte';
-    import {ChevronDownOutline, FilterOutline, PlusOutline} from 'flowbite-svelte-icons';
+    import {PlusOutline} from 'flowbite-svelte-icons';
     import {myPlaylists, getMySavedPlaylists, getUser} from '$lib/backend.js';
     import Playlist from '$lib/components/playlist.svelte';
     import {goto} from "$app/navigation";

@@ -1,7 +1,5 @@
 <script>
     import {
-        Label,
-        Input,
         Button,
         Checkbox,
         Spinner,
@@ -10,7 +8,6 @@
     } from 'flowbite-svelte';
     import {editUser, getMyInfo, getArtist, searchArtist, getGenres} from '$lib/backend.js';
     import {goto} from "$app/navigation";
-    import {InfoCircleSolid} from "flowbite-svelte-icons";
     import Loginrequired from '$lib/components/loginrequired.svelte';
 
     let artistiPref = [];

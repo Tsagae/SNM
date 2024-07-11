@@ -1,6 +1,5 @@
 <script>
     import {
-        Alert,
         Button,
         Spinner,
         Card,
@@ -16,7 +15,6 @@
         TableHeadCell, Toggle, Dropdown
     } from 'flowbite-svelte';
     import {
-        InfoCircleSolid,
         PauseSolid,
         PlaySolid,
         HeartOutline,
@@ -36,10 +34,8 @@
         savePlaylist,
         sharePlaylist,
         getMyCommunities,
-        addTrackToPlaylist
     } from '$lib/backend.js';
     import {goto} from '$app/navigation';
-    import {error} from '@sveltejs/kit';
     import {page} from '$app/stores';
     import ErrorMessage from '$lib/components/errormessage.svelte';
     import LoginRequired from '$lib/components/loginrequired.svelte';

@@ -6,7 +6,7 @@ import albums from "./albums.js";
 
 /**
  * Generic search in database
- * @param {object} query
+ * @param {string} query
  * @param {string[]} filters
  * @returns {Promise<{error: string, statusCode: number}|{playlists: *[], tracks: *[]}>} error if filters are empty
  */
