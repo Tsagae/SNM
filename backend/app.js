@@ -35,8 +35,10 @@ const host = config.get('server.host');
 const authSecret = config.get('auth.secret');
 
 async function handleRequest(results, response) {
-    if (results.error !== undefined && results.statusCode !== undefined) { //TODO: should change this to check if results has this exact structure {error: string, status: number}
+    if (results.error !== undefined && results.statusCode !== undefined) {
         return response.status(results.statusCode).send({error: results.error});
+    } else if (results.error !== undefined && results.error.status !== undefined && results.error.message !== undefined) {
+        return response.status(results.error.status).send({error: results.error.message});
     }
     return response.send(results);
 }
@@ -559,6 +561,25 @@ app.post('/getCommunity', async (req, res) => {
         return res.sendStatus(500);
     }
 });
+
+app.post('/editCommunity', async (req, res) => {
+    /*
+        #swagger.tags = ["Communities"]
+        #swagger.summary = "Edits a community"
+        #swagger.parameters['users'] = {description: "List of users (as ids) of the community", type: "array", items: {type: "string"}}
+        #swagger.parameters['communityName'] = {description: "Name of the community", type: "string"}
+     */
+    let authReq = auth.authenticateRequest(req, res);
+    if (!authReq.authenticated) return;
+    try {
+        let results = await communities.editCommunity(authReq.user._id, req.body.communityId, req.body.communityName, req.body.users);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
 
 app.post('/sharePlaylist', async (req, res) => {
     /*
