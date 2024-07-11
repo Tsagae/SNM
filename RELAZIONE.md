@@ -12,6 +12,7 @@ Progetto _"Social Network for Music (SNM)"_ di Provini Martina (02492A) e Zaghen
   - [Autenticazione](#autenticazione)
   - [Token Spotify](#token-spotify)
   - [Gestione Community](#gestione-community)
+- [Screenshots](#screenshots)
   
 ## Requisiti
 
@@ -199,6 +200,6 @@ Tuttavia l'impostazione che abbiamo dato al progetto lascia apposta molti aggang
 
 ![Screenshot_20240711_223213](/screenshots/Screenshot_20240711_223213.png)
 
-![Screenshot_20240711_223213](/screenshots/Screenshot_20240711_223213.png)
+![Screenshot_20240711_223233](/screenshots/Screenshot_20240711_223233.png)
 
 ![Screenshot_20240711_223253](/screenshots/Screenshot_20240711_223253.png)
