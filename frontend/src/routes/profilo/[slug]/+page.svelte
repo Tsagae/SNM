@@ -21,11 +21,17 @@
     let image;
     let userInfoPromise = getUser(idUser);
     let userPlaylists = getUserPlaylists(idUser);
+    let previews = [
+        {
+            alt: "Playlist pubbliche",
+            src: "/playlistThumbnail.jpg",
+            title: "new"
+        }
+    ];
 
     async function getUserPlaylists(id) {
         if(id == localStorage.getItem("userId")){
             const res = await myPlaylists();
-            let previews = [];
 
             for (var i = 0; i < res.length; i++) {
                 previews.push(
@@ -40,9 +46,6 @@
             return previews;
         } else {
             const res = await getPubPlaylist();
-
-            console.log(JSON.stringify(res))
-            let previews = [];
 
             for (var i = 0; i < res.length; i++) {
                 if(res[i].user == id){
