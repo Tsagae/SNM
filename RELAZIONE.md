@@ -1,6 +1,6 @@
 # Relazione
 
-Progetto _"Social Network for Music (SNM)"_ di Provini Martin a(02492A) e Zagheno Matteo (matricola)
+Progetto _"Social Network for Music (SNM)"_ di Provini Martina (02492A) e Zagheno Matteo (matricola)
 
 - [Requisiti](#requisiti)
 - [Installazione](#installazione)
