@@ -99,12 +99,12 @@
             </div>
         </form>
 
-        <form on:submit={submitChangePassword}>
-            <div class="mb-6">
-                <Label for="password" class="block mb-2">Password</Label>
-                <input bind:value={newPassword} class="bg-gray-100 dark:bg-zinc-700" id="password" name="password"
-                       placeholder="NewPassword123!"
-                       use:validators={[required, minLength(8), containNumbers(2), hasUppercase()]} required/>
+    <form on:submit={submitChangePassword} class="w-1/2 mt-6 mx-auto">
+        <div class="mb-6">
+            <Label for="password" class="block mb-2">Password</Label>
+            <input bind:value={newPassword} class="block w-full disabled:cursor-not-allowed disabled:opacity-50 rtl:text-right p-2.5 focus:border-primary-500 focus:ring-primary-500 dark:focus:border-primary-500 dark:focus:ring-primary-500 text-gray-900 dark:text-white dark:placeholder-gray-400 border-gray-300 dark:border-gray-600 text-sm rounded-lg bg-gray-100 dark:bg-zinc-700" id="password" name="password"
+                   placeholder="NewPassword123!"
+                   use:validators={[required, minLength(8), containNumbers(2), hasUppercase()]} required/>
 
             </div>
             <Button type="submit">Cambia password</Button>
