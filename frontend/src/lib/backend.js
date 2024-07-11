@@ -416,3 +416,78 @@ export async function getCommunity(communityId) {
 
     return await res.json();
 }
+
+export async function login(user) {
+    let url = `${baseUrl}/login`;
+    return await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    });
+}
+
+export async function register(user) {
+    let url = `${baseUrl}/register`;
+
+    return await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    });
+}
+
+export async function searchArtist(artistName) {
+    let url = `${baseUrl}/searchArtist`;
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({artistname: artistName}),
+    });
+    return res.json();
+}
+
+export async function getGenres() {
+    let url = `${baseUrl}/getGenres`;
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    return res.json();
+}
+
+export async function searchUser(keywordUsr) {
+    let url = `${baseUrl}/searchUser`;
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({username: keywordUsr}),
+    });
+    return res.json();
+}
+
+export async function createCommunity(listaUtenti, communityName) {
+    let url = `${baseUrl}/createCommunity`;
+    return await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + localStorage.getItem('authToken')
+        },
+        body: JSON.stringify({
+            users: listaUtenti,
+            communityName: communityName
+        })
+    });
+}
+

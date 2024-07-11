@@ -1,16 +1,16 @@
 <script>
     import {
         Alert,
-        Label, 
-        Input, 
-        Textarea, 
-        Toggle, 
-        Button, 
+        Label,
+        Input,
+        Textarea,
+        Toggle,
+        Button,
         Checkbox,
         Spinner,
         Heading
     } from 'flowbite-svelte';
-    import {deleteUser, editUser, getMyInfo, getArtist} from '$lib/backend.js';
+    import {deleteUser, editUser, getMyInfo, getArtist, searchArtist, getGenres} from '$lib/backend.js';
     import {goto} from "$app/navigation";
     import {useForm, Hint, HintGroup, minLength, required, validators} from "svelte-use-form";
     import {containNumbers, hasUppercase} from "../../registration/customValidators.js";
@@ -43,10 +43,10 @@
         const userInfo = await getMyInfo();
         formValues.username = userInfo.username;
         formValues.email = userInfo.email;
-        if(userInfo.artists !== undefined){
+        if (userInfo.artists !== undefined) {
             artistiPref = userInfo.artists;
         }
-        if(userInfo.genres !== undefined){
+        if (userInfo.genres !== undefined) {
             generiPref = userInfo.genres;
         }
         return userInfo
@@ -64,19 +64,12 @@
 
     async function searchFormArtists() {
         searchingArt = true;
-        const res = await fetch('http://localhost:3000/searchArtist', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ artistname: keywordArt }),
-        });
-        return res.json();
+        return await searchArtist(keywordArt);
     }
 
     function startSearchArt() {
-		artistRes = searchFormArtists();
-	}
+        artistRes = searchFormArtists();
+    }
 
     let searchingGen = false;
 
@@ -84,18 +77,12 @@
 
     async function searchFormGenres() {
         searchingGen = true;
-        const res = await fetch('http://localhost:3000/getGenres', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        return res.json();
+        return getGenres();
     }
 
     function startSearchGen() {
-		genresRes = searchFormGenres();
-	}
+        genresRes = searchFormGenres();
+    }
 
 </script>
 
@@ -107,11 +94,13 @@
     <form on:submit={submitForm} class="w-1/2 mt-6 mx-auto">
         <div class="mb-6">
             <Label for="playlist-name" class="block mb-2">Username</Label>
-            <Input bind:value={formValues.username} class="bg-gray-100 dark:bg-zinc-700" id="playlist-name" placeholder="..."/>
+            <Input bind:value={formValues.username} class="bg-gray-100 dark:bg-zinc-700" id="playlist-name"
+                   placeholder="..."/>
         </div>
         <div class="mb-6">
             <Label for="playlist-name" class="block mb-2">email</Label>
-            <Input bind:value={formValues.email} class="bg-gray-100 dark:bg-zinc-700" id="playlist-name" placeholder="..."/>
+            <Input bind:value={formValues.email} class="bg-gray-100 dark:bg-zinc-700" id="playlist-name"
+                   placeholder="..."/>
         </div>
         <div class="mb-6">
             <Button type="submit">Aggiorna</Button>
@@ -121,7 +110,8 @@
     <form on:submit={submitChangePassword}>
         <div class="mb-6">
             <Label for="password" class="block mb-2">Password</Label>
-            <input bind:value={newPassword} class="bg-gray-100 dark:bg-zinc-700" id="password" name="password" placeholder="NewPassword123!"
+            <input bind:value={newPassword} class="bg-gray-100 dark:bg-zinc-700" id="password" name="password"
+                   placeholder="NewPassword123!"
                    use:validators={[required, minLength(8), containNumbers(2), hasUppercase()]} required/>
 
         </div>
@@ -134,10 +124,12 @@
 <div class="flex">
     <div class="w-1/2 p-4">
         <form class="max-w-md mx-auto" on:submit={startSearchArt}>
-            <label for="default-search" class="mb-2 text-sm font-medium text-zinc-900 sr-only dark:text-white">Cerca Artista</label>
+            <label for="default-search" class="mb-2 text-sm font-medium text-zinc-900 sr-only dark:text-white">Cerca
+                Artista</label>
             <div class="relative">
                 <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-zinc-500 dark:text-zinc-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    <svg class="w-4 h-4 text-zinc-500 dark:text-zinc-400" aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg"
                          fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -152,9 +144,9 @@
                 </button>
             </div>
         </form>
-        
+
         <br>
-    
+
         {#if searchingArt}
             {#await artistRes}
                 <div class="text-center">
@@ -173,9 +165,9 @@
                                 }
                             }}>
                                 {#await getArtist(artista)}
-                                <div class="text-center">
-                                    <Spinner size={8} color="green"/>
-                                </div>
+                                    <div class="text-center">
+                                        <Spinner size={8} color="green"/>
+                                    </div>
                                 {:then res}
                                     {res.name}
                                 {/await}
@@ -183,9 +175,9 @@
                         </li>
                     {/each}
                 </ul>
-        
+
                 <p class="mb-4 font-semibold text-zinc-900 dark:text-white">Artisti trovati:</p>
-                <ul class="w-48 mx-auto bg-white rounded-lg border border-zinc-200 dark:bg-zinc-800 dark:border-zinc-600 divide-y divide-zinc-200 dark:divide-zinc-600">            
+                <ul class="w-48 mx-auto bg-white rounded-lg border border-zinc-200 dark:bg-zinc-800 dark:border-zinc-600 divide-y divide-zinc-200 dark:divide-zinc-600">
                     {#each results.artists.items as newArtista, i}
                         <li>
                             <Checkbox class="p-3" id="newArt{i}" on:change={() => {
@@ -199,21 +191,21 @@
                     {/each}
                 </ul>
             {/await}
-        {/if}    
+        {/if}
     </div>
-    
+
     <div class="w-1/2 p-4">
-        <Button class="mb-6" on:click={() => {startSearchGen()}}>Cerca Generi</Button>        
+        <Button class="mb-6" on:click={() => {startSearchGen()}}>Cerca Generi</Button>
         <br>
-    
+
         {#if searchingGen}
             {#await genresRes}
                 <div class="text-center">
                     <Spinner size={8} color="green"/>
                 </div>
-            {:then resultsGen}        
+            {:then resultsGen}
                 <p class="mb-4 font-semibold text-zinc-900 dark:text-white">Generi disponibili:</p>
-                <ul class="w-48 mx-auto bg-white rounded-lg border border-zinc-200 dark:bg-zinc-800 dark:border-zinc-600 divide-y divide-zinc-200 dark:divide-zinc-600">            
+                <ul class="w-48 mx-auto bg-white rounded-lg border border-zinc-200 dark:bg-zinc-800 dark:border-zinc-600 divide-y divide-zinc-200 dark:divide-zinc-600">
                     {#each resultsGen.genres as genere, i}
                         {#if generiPref.includes(genere)}
                             <li>
@@ -239,13 +231,14 @@
                     {/each}
                 </ul>
             {/await}
-        {/if}    
+        {/if}
     </div>
 </div>
 
 <hr>
 <br>
 
-<Button color="red" class="w-3/4 mx-auto" on:click={() => {deleteUser(); localStorage.removeItem('authToken'); goto("/"); }}>
+<Button color="red" class="w-3/4 mx-auto"
+        on:click={() => {deleteUser(); localStorage.removeItem('authToken'); goto("/"); }}>
     Cancella utente
 </Button>

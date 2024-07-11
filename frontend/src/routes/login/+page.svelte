@@ -12,6 +12,8 @@
         Alert
     } from "flowbite-svelte";
     import { InfoCircleSolid } from 'flowbite-svelte-icons';
+    import { login } from '$lib/backend.js';
+
 
     const form = useForm();
 
@@ -24,28 +26,22 @@
             username: $form.username.value,
             password: $form.password.value
         };
-        await login(data);
+        await doLogin(data);
     }
 
-    async function login(user) {
-        const res = await fetch('http://localhost:3000/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        });
-
-        const json = await res.json();
+    async function doLogin(user){
+        const res = await login(user);
 
         hasRes = true;
         resOk = res.ok;
 
+        const loginResponse = await res.json();
+
         if (resOk) {
-            localStorage.setItem('authToken', json.accessToken);
-            localStorage.setItem('username', json.name);
-            localStorage.setItem('avatar', json.profilePic);
-            localStorage.setItem('userId', json._id);
+            localStorage.setItem('authToken', loginResponse.accessToken);
+            localStorage.setItem('username', loginResponse.name);
+            localStorage.setItem('avatar', loginResponse.profilePic);
+            localStorage.setItem('userId', loginResponse._id);
             window.location.replace("/");
         }
     }
