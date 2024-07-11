@@ -99,6 +99,7 @@ async function registerUser(req, res) {
                 email: email,
                 password: await hash(password),
                 avatar: profileImg,
+                savedPlaylists: []
             });
         });
         return res.send({result: `Registrazione avvenuta con successo! ${username}`});
