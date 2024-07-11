@@ -190,3 +190,15 @@ async function sharePlaylist(userId, communityId, playlistId) {
 ```
 
 Tuttavia l'impostazione che abbiamo dato al progetto lascia apposta molti aggangi per espandere le funzionalità e rendere più interattivo il concetto di community di SNM
+
+## Screenshots
+
+![Screenshot_20240711_223126](/screenshots/Screenshot_20240711_223126.png)
+
+![Screenshot_20240711_223141](/screenshots/Screenshot_20240711_223141.png)
+
+![Screenshot_20240711_223213](/screenshots/Screenshot_20240711_223213.png)
+
+![Screenshot_20240711_223213](/screenshots/Screenshot_20240711_223213.png)
+
+![Screenshot_20240711_223253](/screenshots/Screenshot_20240711_223253.png)
