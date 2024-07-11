@@ -129,7 +129,7 @@
                                 <Spinner size={8} color="green"/>
                             </div>
                         {:then user}
-                            <p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">by {user.username}</p>
+                            <p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">by <a href="/profilo/{user._id}">{user.username}</a></p>
                             <br>
 
                             {#if userId === playlist.user}
