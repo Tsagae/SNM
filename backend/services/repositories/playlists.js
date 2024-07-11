@@ -308,9 +308,11 @@ async function removeSavedPlaylist(userId, playlistId) {
 async function getUserPublicPlaylists(userId) {
     let playlists = [];
     await dataAccess.executeQuery(async (db) => {
-        const cursor = await db.collection('Playlists').find({user: userId, isPublic: true});
-        for await (const doc of cursor) {
-            playlists.push(doc);
+        const userPlaylists = await getAllUserPlaylists(userId);
+        for await (const playlist of userPlaylists) {
+            if (playlist.public) {
+                playlists.push(playlists);
+            }
         }
     });
     return playlists;

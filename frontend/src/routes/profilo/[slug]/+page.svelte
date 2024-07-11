@@ -19,14 +19,7 @@
     let index = 0;
     let image;
     let userInfoPromise = getUser(idUser);
-    let userPlaylists = getUserPlaylists(idUser);
-    let previews = [
-        {
-            alt: "Playlist pubbliche",
-            src: "/playlistThumbnail.jpg",
-            title: "new"
-        }
-    ];
+    let previews = [];
 
     async function getUserPlaylists(id) {
         if (id === localStorage.getItem("userId")) {
@@ -164,7 +157,7 @@
         {/if}
     {/await}
 
-    {#await userPlaylists}
+    {#await getUserPlaylists(idUser)}
         <div class="text-center mt-16">
             <Spinner size={8} color="green"/>
         </div>
@@ -173,14 +166,17 @@
         <div class="w-4/5 space-y-4 place-self-center">
 
             <h2 class="mb-6 text-3xl font-medium text-gray-900 dark:text-white text-center">Playlist pubbliche</h2>
-            <Carousel {images} let:Indicators let:Controls on:change={({ detail }) => (image = detail)}>
-                <Controls/>
-                <Indicators/>
-            </Carousel>
-
-            <div class="rounded h-10 bg-gray-300 dark:bg-zinc-700 dark:text-white p-2 my-2 text-center">
-                <a href="/playlist/{image?.title}">{image?.alt}</a>
-            </div>
+            {#if images.length === 0}
+                <h2 class="mb-6 text-3xl font-medium text-gray-900 dark:text-white text-center">Nessuna playlist pubblica</h2>
+            {:else}
+                <Carousel {images} let:Indicators let:Controls on:change={({ detail }) => (image = detail)}>
+                    <Controls/>
+                    <Indicators/>
+                </Carousel>
+                <div class="rounded h-10 bg-gray-300 dark:bg-zinc-700 dark:text-white p-2 my-2 text-center">
+                    <a href="/playlist/{image?.title}">{image?.alt}</a>
+                </div>
+            {/if}
         </div>
 
     {/await}
