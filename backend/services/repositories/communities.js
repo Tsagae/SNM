@@ -5,6 +5,7 @@ import mongodb from "mongodb";
 
 async function createCommunity(ownerId, users, communityName) {
     let res;
+    users = users.filter((item) => item !== ownerId)
     await dataAccess.executeQuery(async (db) => {
         res = await db.collection('Communities').insertOne({
             owner: ownerId,
@@ -15,6 +16,32 @@ async function createCommunity(ownerId, users, communityName) {
     });
     return res;
 }
+
+async function editCommunity(ownerId, communityId, communityName, users) {
+    let res;
+    const comm = await getCommunity(ownerId, communityId);
+    if (comm.error !== undefined) {
+        return comm;
+    }
+    if (comm.owner !== ownerId) {
+        return {error: "Non sei il proprietario della community", statusCode: 403};
+    }
+    let dataToChange = {};
+    if (users !== null) {
+        users = users.filter((item) => item !== ownerId)
+        dataToChange.users = users;
+    }
+    if (communityName !== null) {
+        dataToChange.communityName = communityName;
+    }
+    await dataAccess.executeQuery(async (db) => {
+        res = await db.collection('Communities').updateOne({_id: new mongodb.ObjectId(communityId)}, {
+            $set: dataToChange
+        });
+    });
+    return res;
+}
+
 
 async function getCommunity(userId, communityId) {
     let res;
@@ -64,4 +91,4 @@ async function getMyCommunities(userId) {
 }
 
 
-export default {createCommunity, sharePlaylist, getCommunity, getMyCommunities};
+export default {createCommunity, sharePlaylist, getCommunity, getMyCommunities, editCommunity};

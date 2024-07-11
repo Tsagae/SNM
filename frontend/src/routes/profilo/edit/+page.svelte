@@ -239,6 +239,6 @@
 <br>
 
 <Button color="red" class="w-3/4 mx-auto"
-        on:click={() => {deleteUser(); localStorage.removeItem('authToken'); goto("/"); }}>
+        on:click={async () => {await deleteUser(); localStorage.removeItem('authToken'); await goto("/"); }}>
     Cancella utente
 </Button>

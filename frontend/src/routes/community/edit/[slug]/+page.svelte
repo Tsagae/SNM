@@ -6,13 +6,13 @@
         Checkbox,
         Spinner
     } from 'flowbite-svelte';
-    import {getCommunity, getUser, searchUser} from '$lib/backend.js';
+    import {getCommunity, getUser, searchUser, editCommunity} from '$lib/backend.js';
+    import {page} from "$app/stores";
 
     const formValues = {
         "name": ""
     }
-    const urlParams = new URLSearchParams(window.location.search);
-    const idComm = urlParams.get("from");
+    const idComm = $page.params.slug;
     let listaUtenti = [];
     let listaNomi = [];
 
@@ -30,8 +30,8 @@
     }
 
     async function submitForm() {
-        // await editCommunty(idComm, formValues.name, listaUtenti);
-        // window.location.reload();
+        const res = await editCommunity(idComm, listaUtenti, formValues.name);
+        window.location.reload();
     }
 
     let keywordUsr = '';
