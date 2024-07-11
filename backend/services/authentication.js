@@ -37,26 +37,25 @@ async function login(req, res) {
         const username = data.username;
         const password = data.password;
         let userFromDb;
-        let successfulLogin = false;
         await dataAccess.executeQuery(async (db) => {
             userFromDb = await db.collection('Users').findOne({
                 username: username,
             });
         });
         if (userFromDb !== null && password !== null) {
-            successfulLogin = await compareHashed(password, userFromDb.password);
+            if (await compareHashed(password, userFromDb.password)) {
+                return res.send({
+                    accessToken: generateAccessToken({
+                        _id: userFromDb._id.toString(),
+                        username: username
+                    }),
+                    name: username,
+                    profilePic: userFromDb.avatar,
+                    _id: userFromDb._id.toString()
+                });
+            }
         }
-        if (successfulLogin) {
-            return res.send({
-                accessToken: generateAccessToken({
-                    _id: userFromDb._id.toString(),
-                    username: username
-                }),
-                name: username,
-                profilePic: userFromDb.avatar,
-                _id: userFromDb._id.toString()
-            });
-        }
+
         return res.status(401).send({result: "Login non valido"});
     }
 }
@@ -112,7 +111,7 @@ async function registerUser(req, res) {
  * @param {int} expiringTime in seconds
  * @returns a signed jwt token
  */
-function generateAccessToken(user, expiringTime = 3600) {
+function generateAccessToken(user, expiringTime = 10800) {
     //console.log("expiration: ", expiringTime + 's');
     return jwt.sign(user, authSecret, {expiresIn: expiringTime + 's'});
 }
