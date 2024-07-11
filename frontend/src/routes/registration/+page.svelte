@@ -13,7 +13,6 @@
         Register
     } from "flowbite-svelte-blocks";
     import {
-        Checkbox,
         Label,
         Alert
     } from "flowbite-svelte";

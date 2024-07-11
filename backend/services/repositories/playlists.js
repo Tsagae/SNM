@@ -133,6 +133,7 @@ async function removeTrackFromPlaylist(userId, playlistId, trackId) {
  @param {string[]} tracks
  @param {string[]} tags
  @param {string} description
+ * @param thumbnail
  */
 async function createPlaylist(userId, name, isPublic, tracks, tags, description, thumbnail) {
     let res;
@@ -159,7 +160,7 @@ async function createPlaylist(userId, name, isPublic, tracks, tags, description,
  */
 async function deletePlaylist(id, user) {
     let res;
-    let playlist = await getPlaylist(id);
+    let playlist = await getPlaylist(id, user);
     if (playlist?.user !== user) {
         return {error: "Non puoi cancellare questa playlist", statusCode: 403};
     }

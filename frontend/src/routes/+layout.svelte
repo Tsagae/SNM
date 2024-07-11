@@ -4,8 +4,6 @@
 	import {
 		Avatar,
 		DarkMode,
-		Dropdown,
-		DropdownItem,
 		Navbar,
 		NavBrand,
 		NavLi,
@@ -25,7 +23,7 @@
 	} from 'flowbite-svelte';
 	import { twMerge } from 'tailwind-merge';
 	import {ArrowLeftToBracketOutline, HomeSolid, ArrowRightToBracketOutline, EditOutline, CaretRightSolid, UsersGroupSolid } from 'flowbite-svelte-icons';
-	import {goto, invalidateAll} from "$app/navigation";
+	import {goto} from "$app/navigation";
 	import {isValidToken} from '$lib/backend.js';
 
 	let src = '/logo.png';
@@ -38,7 +36,6 @@
 
 	const logout = () => {
 		localStorage.removeItem('authToken');
-		alert("Token scaduto!");
 		window.location.replace("/");
 	};
 

@@ -1,7 +1,6 @@
 <script>
     import {
         Avatar,
-        Button,
         Dropdown,
         DropdownItem,
         Heading,

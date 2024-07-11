@@ -9,9 +9,8 @@
         Spinner
     } from 'flowbite-svelte';
     import {addTrackToPlaylist, getTrackInfo, myPlaylists, isValidToken} from '$lib/backend.js';
-    import {ChevronDownOutline, PlusOutline, UserCircleSolid, PauseSolid, PlaySolid, InfoCircleSolid} from "flowbite-svelte-icons";
+    import {ChevronDownOutline, PlusOutline, PauseSolid, PlaySolid, InfoCircleSolid} from "flowbite-svelte-icons";
     import {goto} from "$app/navigation";
-	import Playlist from '$lib/components/playlist.svelte';
     import { page } from '$app/stores';
 
     let trackId = $page.params.slug;
@@ -115,8 +114,8 @@
                         {#each playlists as playlist}
                             {#if !playlist.tracks.find(o => o.id === trackId)}
                                 <li class="rounded p-2 w-full hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <Button on:click={() => {
-                                        let res = addTrackToPlaylist(trackId, playlist._id);
+                                    <Button on:click={async () => {
+                                        await addTrackToPlaylist(trackId, playlist._id);
                                         trackAdded = true;
                                         }} class="w-full">{playlist.name}</Button>
                                 </li>

@@ -1,20 +1,15 @@
 <script>
     import {
-        Alert,
         Label,
         Input,
-        Textarea,
-        Toggle,
         Button,
         Checkbox,
         Spinner,
-        Heading
     } from 'flowbite-svelte';
     import {deleteUser, editUser, getMyInfo, getArtist, searchArtist, getGenres} from '$lib/backend.js';
     import {goto} from "$app/navigation";
-    import {useForm, Hint, HintGroup, minLength, required, validators} from "svelte-use-form";
+    import {minLength, required, validators} from "svelte-use-form";
     import {containNumbers, hasUppercase} from "../../registration/customValidators.js";
-    import {InfoCircleSolid} from "flowbite-svelte-icons";
     import LoginRequired from '$lib/components/loginrequired.svelte';
 
     const requiredMessage = 'Questo campo è necessario';

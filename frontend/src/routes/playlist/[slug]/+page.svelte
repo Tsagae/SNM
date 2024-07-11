@@ -1,6 +1,5 @@
 <script>
     import {
-        Alert,
         Button,
         Spinner,
         Card,
@@ -16,7 +15,6 @@
         TableHeadCell, Toggle, Dropdown
     } from 'flowbite-svelte';
     import {
-        InfoCircleSolid,
         PauseSolid,
         PlaySolid,
         HeartOutline,
@@ -36,10 +34,8 @@
         savePlaylist,
         sharePlaylist,
         getMyCommunities,
-        addTrackToPlaylist
     } from '$lib/backend.js';
     import {goto} from '$app/navigation';
-    import {error} from '@sveltejs/kit';
     import {page} from '$app/stores';
     import ErrorMessage from '$lib/components/errormessage.svelte';
     import LoginRequired from '$lib/components/loginrequired.svelte';
@@ -206,7 +202,6 @@
                     <TableBody tableBodyClass="divide-y">
                         {#each playlist.tracks as track}
                             {#await getTrackInfo(track.id)}
-                                <!-- TODO: cambiare questo con getTracks per prenderle tutte in una volta sola (fare attenzione al max di 50) -->
                                 <p>...waiting</p>
                             {:then track}
                                 <TableBodyRow class="bg-white dark:bg-zinc-800">

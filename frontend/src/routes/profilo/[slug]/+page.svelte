@@ -2,7 +2,6 @@
     import {
         Avatar,
         Badge,
-        Button,
         Card,
         Carousel,
         Dropdown,
@@ -11,7 +10,6 @@
         Spinner
     } from 'flowbite-svelte';
     import {DotsHorizontalOutline} from 'flowbite-svelte-icons';
-    import Playlist from '$lib/components/playlist.svelte';
     import {myPlaylists, getUser, getPubPlaylist, getArtists} from '$lib/backend.js';
     import {page} from '$app/stores';
     import LoginRequired from '$lib/components/loginrequired.svelte';
@@ -31,10 +29,10 @@
     ];
 
     async function getUserPlaylists(id) {
-        if (id == localStorage.getItem("userId")) {
+        if (id === localStorage.getItem("userId")) {
             const res = await myPlaylists();
 
-            for (var i = 0; i < res.length; i++) {
+            for (let i = 0; i < res.length; i++) {
                 previews.push(
                     {
                         alt: res[i].name,
@@ -48,8 +46,8 @@
         } else {
             const res = await getPubPlaylist();
 
-            for (var i = 0; i < res.length; i++) {
-                if (res[i].user == id) {
+            for (let i = 0; i < res.length; i++) {
+                if (res[i].user === id) {
                     previews.push(
                         {
                             alt: res[i].name,

@@ -31,7 +31,7 @@
     }
 
     async function submitForm() {
-        const res = await editCommunity(idComm, listaUtenti, formValues.name);
+        await editCommunity(idComm, listaUtenti, formValues.name);
         window.location.reload();
     }
 
