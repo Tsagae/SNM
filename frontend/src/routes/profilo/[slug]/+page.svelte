@@ -10,7 +10,7 @@
         Spinner
     } from 'flowbite-svelte';
     import {DotsHorizontalOutline} from 'flowbite-svelte-icons';
-    import {myPlaylists, getUser, getPubPlaylist, getArtists} from '$lib/backend.js';
+    import {myPlaylists, getUser, getUserPublicPlaylists, getArtists} from '$lib/backend.js';
     import {page} from '$app/stores';
     import LoginRequired from '$lib/components/loginrequired.svelte';
 
@@ -44,7 +44,7 @@
 
             return previews;
         } else {
-            const res = await getPubPlaylist();
+            const res = await getUserPublicPlaylists();
 
             for (let i = 0; i < res.length; i++) {
                 if (res[i].user === id) {

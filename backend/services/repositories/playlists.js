@@ -300,6 +300,21 @@ async function removeSavedPlaylist(userId, playlistId) {
     return res;
 }
 
+/**
+ *
+ * @param userId
+ * @returns {Promise<{error: string, statusCode: number}|*>}
+ */
+async function getUserPublicPlaylists(userId) {
+    let playlists = [];
+    await dataAccess.executeQuery(async (db) => {
+        const cursor = await db.collection('Playlists').find({user: userId, isPublic: true});
+        for await (const doc of cursor) {
+            playlists.push(doc);
+        }
+    });
+    return playlists;
+}
 
 export default {
     getPlaylist,
@@ -313,5 +328,6 @@ export default {
     removeTrackFromPlaylist,
     getSavedPlaylists,
     savePlaylist,
-    removeSavedPlaylist
+    removeSavedPlaylist,
+    getUserPublicPlaylists
 };

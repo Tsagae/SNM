@@ -49,6 +49,18 @@ export async function getPubPlaylist() {
     return await res.json();
 }
 
+export async function getUserPublicPlaylists(userId) {
+    let url = `${baseUrl}/getUserPublicPlaylists`;
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({userId: userId})
+    });
+    return await res.json();
+}
+
 /**
  * @param {ObjectId} query
  */
@@ -84,7 +96,6 @@ export async function myPlaylists() {
             Authorization: 'Bearer ' + localStorage.getItem('authToken')
         },
     });
-
     return await res.json();
 }
 

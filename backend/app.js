@@ -208,6 +208,21 @@ app.post('/getAllPublicPlaylists', async (req, res) => {
     }
 });
 
+app.post('/getUserPublicPlaylists', async (req, res) => {
+    /*
+        #swagger.tags = ["Playlists"]
+        #swagger.summary = "Returns all public playlists of a user"
+     */
+    try {
+        let results = await playlists.getUserPublicPlaylists(req.body.userId);
+        return await handleRequest(results, res);
+    } catch (e) {
+        console.log(e)
+        return res.sendStatus(500);
+    }
+});
+
+
 app.post('/searchPublicPlaylists', async (req, res) => {
     /*
         #swagger.tags = ["Playlists"]
