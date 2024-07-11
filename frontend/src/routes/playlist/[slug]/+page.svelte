@@ -120,9 +120,9 @@
         <div>
             <Card class="max-w-7xl w-11/12 m-auto mt-2 mb-2 bg-gray-100 dark:bg-zinc-700"
                   style="background-image: linear-gradient(to left, rgba(255,0,0,0), rgba(63,63,70,1)),url('{playlist.thumbnail}'); background-repeat: no-repeat; background-position: right top; background-size: 50%;">
-                <Heading tag="h1" customSize="text-6xl font-extrabold ">{playlist.name}</Heading>
+                <Heading tag="h1" customSize="text-4xl font-extrabold md:text-5xl lg:text-6xl">{playlist.name}</Heading>
                 <div class="mt-6">
-                    <Blockquote border bg class=" w-1/2 p-4 my-4 bg-gray-100 dark:bg-zinc-700">
+                    <Blockquote border bg class="w-2/3 p-4 my-4 bg-transparent dark:bg-transparent">
                         <P size="xl" height="relaxed">{playlist.description}</P>
                     </Blockquote>
                     {#each playlist.tags as tag}
