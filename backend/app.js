@@ -10,10 +10,7 @@ import {createRequire} from "module";
 const require = createRequire(import.meta.url);
 
 //Swagger
-import bodyParser from 'body-parser';
-import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import swaggerAutogen from 'swagger-autogen';
 
 // Repositories
 import albums from './services/repositories/albums.js';
@@ -24,10 +21,9 @@ import tracks from './services/repositories/tracks.js';
 import users from './services/repositories/users.js';
 import genres from './services/repositories/genres.js';
 import spotify from "./services/spotify.js";
-import {body, validationResult} from "express-validator";
+import {validationResult} from "express-validator";
 import authentication from "./services/authentication.js";
 import communities from "./services/repositories/communities.js";
-import {use} from 'bcrypt/promises.js';
 
 const app = express();
 const port = config.get('server.port');
