@@ -24,10 +24,9 @@
     let newPassword = "";
 
     async function submitChangePassword() {
-        /*await changePassword(newPassword);
+        await changePassword(newPassword);
         localStorage.removeItem('authToken');
         window.location.reload();
-         */
     }
 
     async function fetchUserData() {

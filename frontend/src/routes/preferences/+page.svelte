@@ -125,9 +125,10 @@
                             <li>
                                 <Checkbox class="p-3" id="newArt{i}" on:change={() => {
                                 if(document.getElementById("newArt" + i).checked){
-                                    artistiPref.push(newArtista.id);
+                                    artistiPref = [...artistiPref, newArtista.id];
                                 } else {
                                     artistiPref.splice(artistiPref.indexOf(newArtista.id),1);
+                                    artistiPref = artistiPref;
                                 }
                             }}>{newArtista.name}</Checkbox>
                             </li>
